@@ -15,7 +15,7 @@ export default function VotingSystemCard({
     className = "",
 }: VotingSystemCardProps) {
     const { name, shortDescription, taxonomyId, slug } = system;
-    const href = `/voting-systems/${slug}`;
+    const href = `/voting-system/${slug}`;
 
     return (
         <Link
