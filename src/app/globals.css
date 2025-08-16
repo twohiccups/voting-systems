@@ -1,26 +1,134 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* ---------- Base + Variables ---------- */
+@layer base {
   :root {
+    /* Light (default) — high contrast */
+    --background: #cccccc;
+    /* page bg */
+    --foreground: #171717;
+    /* body text */
+
+    --card: #f5f5f5;
+    /* card surface */
+    --card-foreground: #0f0f0f;
+    /* card text */
+    --muted: #e7e7e7;
+    /* subtle fills */
+    --muted-foreground: #3a3a3a;
+    /* secondary text */
+
+    --border: #d1d1d1;
+    /* borders/dividers */
+    --ring: #111827;
+    /* focus ring */
+    --link: #1d4ed8;
+    /* links */
+    --link-visited: #6d28d9;
+    /* visited links */
+  }
+
+  /* Follow system */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #0a0a0a;
+      --foreground: #ededed;
+
+      --card: #141414;
+      --card-foreground: #f3f3f3;
+      --muted: #1c1c1c;
+      --muted-foreground: #c9c9c9;
+
+      --border: #2a2a2a;
+      --ring: #93c5fd;
+      --link: #93c5fd;
+      --link-visited: #c4b5fd;
+    }
+  }
+
+  /* Manual override (add .dark on <html> or <body>) */
+  .dark {
     --background: #0a0a0a;
     --foreground: #ededed;
+
+    --card: #141414;
+    --card-foreground: #f3f3f3;
+    --muted: #1c1c1c;
+    --muted-foreground: #c9c9c9;
+
+    --border: #2a2a2a;
+    --ring: #93c5fd;
+    --link: #93c5fd;
+    --link-visited: #c4b5fd;
+  }
+
+  body {
+    @apply font-sans;
+    background: var(--background);
+    color: var(--foreground);
+  }
+
+  a {
+    color: var(--link);
+  }
+
+  a:visited {
+    color: var(--link-visited);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ---------- Components ---------- */
+@layer components {
+  .card {
+    background: var(--card);
+    color: var(--card-foreground);
+    border-color: var(--border);
+    @apply rounded-2xl border shadow-sm p-5;
+  }
+
+  .card-muted {
+    background: var(--muted);
+    color: var(--muted-foreground);
+    border-color: var(--border);
+    @apply rounded-xl border p-4;
+  }
+
+  .btn {
+    background: var(--foreground);
+    color: var(--background);
+    @apply inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium;
+  }
+
+  .btn:hover {
+    filter: brightness(0.95);
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  .input {
+    background: var(--card);
+    color: var(--card-foreground);
+    border-color: var(--border);
+    @apply w-full rounded-lg border px-3 py-2 text-sm;
+  }
+
+  .input:focus {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* ---------- Utilities ---------- */
+@layer utilities {
+  .theme-transition {
+    transition:
+      background-color 150ms,
+      color 150ms,
+      border-color 150ms,
+      fill 150ms,
+      stroke 150ms;
+  }
 }
