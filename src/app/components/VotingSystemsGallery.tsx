@@ -4,20 +4,9 @@
 import * as React from "react";
 import type { TaxonomySystem, VotingSystem } from "../types";
 import VotingSystemCard from "./VotingSystemCard";
-import { Chip, Td, Th, ViewToggle } from "./primitives";
+import { Chip, ViewToggle } from "./primitives";
+import VotingSystemsTable from "./VotingSystemsTable";
 
-/**
- * VotingSystemsGallery (theme-aware)
- * - Uses CSS variables: --card, --card-foreground, --muted, --muted-foreground, --border
- * - Disables Table/List view on small screens; forces Grid on mobile
- * - Keeps zebra striping with card/muted surfaces for contrast
- */
-
-// Extend the provided VotingSystem with an optional taxonomyId.
-export type VotingSystemWithType = VotingSystem & {
-    taxonomyId?: TaxonomySystem["id"];
-    href?: string;
-};
 
 
 function useCanUseTable(breakpoint: string = "(min-width: 768px)") {
@@ -38,13 +27,13 @@ function useCanUseTable(breakpoint: string = "(min-width: 768px)") {
 export default function VotingSystemsGallery({
     systems,
     taxonomy,
-    heading = "Explore Voting Systems",
-    intro = `Browse voting systems by core type. Use the bubbles to filter, then switch between a clean grid of cards or a compact table.`,
+    heading,
+    intro,
 }: {
-    systems: VotingSystemWithType[];
+    systems: VotingSystem[];
     taxonomy: TaxonomySystem[];
-    heading?: string;
-    intro?: string;
+    heading: string;
+    intro: string;
 }) {
     const ALL = "All" as const;
     type FilterKey = typeof ALL | TaxonomySystem["id"];
@@ -103,7 +92,7 @@ export default function VotingSystemsGallery({
                             key={t.id}
                             isActive={active === t.id}
                             onClick={() => setActive(t.id as FilterKey)}
-                            ariaLabel={`Filter by ${t.name}`}
+                            ariaLabel={`Filter by ${t.id}`}
                         >
                             {t.id}
                         </Chip>
@@ -134,40 +123,13 @@ export default function VotingSystemsGallery({
             )}
 
             {view === "table" && canUseTable && (
-                <div className="overflow-x-auto rounded-lg border border-[var(--border)] bg-[var(--card)]">
-                    <table className="min-w-full text-left text-xs sm:text-sm">
-                        <thead>
-                            <tr className="border-b border-[var(--border)] bg-[var(--muted)] text-[var(--muted-foreground)]">
-                                <Th>Name</Th>
-                                <Th>Type</Th>
-                                <Th>Description</Th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filtered.map((s, i) => (
-                                <tr
-                                    key={s.id}
-                                    className={[
-                                        "border-b last:border-0 border-[var(--border)]",
-                                        i % 2 === 1 ? "bg-[var(--muted)]" : "bg-[var(--card)]",
-                                    ].join(" ")}
-                                >
-                                    <Td className="whitespace-nowrap font-medium text-[var(--card-foreground)]">
-                                        {s.name}
-                                    </Td>
-                                    <Td className="whitespace-nowrap">
-                                        <Chip onClick={() => { }}>
-                                            {taxonomy.find((t) => t.id === s.taxonomyId)?.name ?? "Other"}
-                                        </Chip>
-                                    </Td>
-                                    <Td className="text-[var(--muted-foreground)]">
-                                        {s.shortDescription}
-                                    </Td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                <VotingSystemsTable
+                    systems={filtered}
+                    taxonomy={taxonomy}
+                    onTaxonomyClick={(id) => setActive(id as FilterKey)}
+                // guarantee identical label text to the filter chips:
+                />
+
             )}
         </section>
     );

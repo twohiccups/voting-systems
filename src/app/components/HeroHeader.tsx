@@ -52,12 +52,18 @@ export default function HeroHeader({
                 {ctaText && ctaLink ? (
                     <Link
                         href={ctaLink}
-                        className="inline-block px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 font-medium transition"
-                        aria-label={ctaText}
+                        className={[
+                            "inline-block px-6 py-3 rounded-full font-medium transition theme-transition active:scale-[0.98]",
+                            "bg-[var(--accent)] text-[var(--accent-foreground)] border border-[var(--accent)] hover:brightness-110",
+                            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2",
+                        ].join(" ")}
                     >
                         {ctaText}
                     </Link>
+
                 ) : null}
+
+
             </div>
         </header>
     );
