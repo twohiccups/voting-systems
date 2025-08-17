@@ -3,6 +3,19 @@
 import * as React from "react";
 
 
+
+interface SectionHeadingProps {
+    title: string
+}
+
+export default function SectionHeading({ title }: SectionHeadingProps) {
+    return (
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight">
+            {title}
+        </h2>
+    )
+}
+
 export function Dot({ active }: { active: boolean }) {
     return (
         <span
@@ -48,6 +61,100 @@ export function NextIcon({ className = "" }: { className?: string }) {
     );
 }
 
+
+// ---------- Types ----------
+export type StepItemData = {
+    question: React.ReactNode;
+    detail?: React.ReactNode;
+};
+
+export type StepListProps = {
+    items: StepItemData[];
+    startIndex?: number; // default 1
+    className?: string;
+    itemClassName?: string;
+    renderNumber?: (index: number) => React.ReactNode; // custom numbering (e.g., roman numerals)
+};
+
+export type StepItemProps = {
+    index: number; // 1-based display index
+    question: React.ReactNode;
+    detail?: React.ReactNode;
+    className?: string;
+    circleClassName?: string;
+};
+
+export type StepCardProps = {
+    title?: React.ReactNode;
+    children?: React.ReactNode;
+    className?: string;
+    titleClassName?: string;
+};
+
+
+export const StepCircle: React.FC<{ num: React.ReactNode; className?: string }> = ({ num, className }) => (
+    <div
+        className={[
+            "mr-3 sm:mr-4 mt-0.5 inline-flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center",
+            "rounded-full text-xs sm:text-sm font-semibold select-none",
+            "bg-[var(--accent)] text-[var(--accent-foreground)] border border-[var(--accent)]",
+            className,
+        ].filter(Boolean).join(" ")}
+        aria-hidden
+    >
+        {num}
+    </div>
+);
+
+// ---------- Row: StepItem ----------
+export const StepItem: React.FC<StepItemProps> = ({ index, question, detail, className, circleClassName }) => (
+    <li className={["flex items-start", className].filter(Boolean).join(" ")}>
+        <StepCircle num={index} className={circleClassName} />
+        <div>
+            <p className="font-semibold text-[var(--card-foreground)] text-sm sm:text-base">{question}</p>
+            {detail ? (
+                <p className="text-[var(--muted-foreground)] text-xs sm:text-sm">{detail}</p>
+            ) : null}
+        </div>
+    </li>
+);
+
+// ---------- Collection: StepList ----------
+export const StepList: React.FC<StepListProps> = ({
+    items,
+    startIndex = 1,
+    className,
+    itemClassName,
+    renderNumber,
+}) => (
+    <ul className={["space-y-3 sm:space-y-4", className].filter(Boolean).join(" ")}>
+        {items.map((item, i) => (
+            <StepItem
+                key={i}
+                index={(renderNumber ? renderNumber(startIndex + i) : startIndex + i) as number}
+                question={item.question}
+                detail={item.detail}
+                className={itemClassName}
+            />
+        ))}
+    </ul>
+);
+
+// ---------- Layout wrapper: StepCard ----------
+export const StepCard: React.FC<StepCardProps> = ({ title, children, className, titleClassName }) => (
+    <div
+        className={[
+            "theme-transition rounded-2xl border p-3 sm:p-4 md:p-6 lg:p-8 shadow-sm",
+            "bg-[var(--card)] text-[var(--card-foreground)] border-[var(--border)]",
+            className,
+        ].filter(Boolean).join(" ")}
+    >
+        {title ? (
+            <h3 className={["text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-5 md:mb-6", titleClassName].filter(Boolean).join(" ")}>{title}</h3>
+        ) : null}
+        {children}
+    </div>
+);
 
 
 export function Chip({

@@ -1,7 +1,11 @@
 'use client';
 
+import { StepCircle, StepItemData } from "./primitives";
+import { QuoteBlock } from "./QuoteBlock";
+
 export default function IntroSection() {
-    const items = [
+
+    const items: StepItemData[] = [
         {
             question: "How many winners will there be?",
             detail: "One president, a few council members, or an entire legislature?",
@@ -23,16 +27,13 @@ export default function IntroSection() {
     return (
         <section className="theme-transition max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-6 sm:py-8 md:py-12 space-y-6 sm:space-y-8 md:space-y-10 text-[var(--foreground)]">
             {/* Pull-quote intro */}
-            <blockquote
-                className="border-l-4 pl-3 sm:pl-4 md:pl-6 italic text-lg sm:text-xl md:text-2xl lg:text-3xl leading-relaxed
-                   border-[var(--ring)] text-[color:var(--foreground)]/90"
-            >
+            <QuoteBlock>
                 Voting systems are the rules that determine how votes are cast,
                 counted, and turned into outcomes. Whether choosing a single leader
                 like a president or filling every seat in a parliament, the voting
                 system shapes not only the result — but the nature of political power
                 itself.
-            </blockquote>
+            </QuoteBlock>
 
             {/* Card with rest of content */}
             <div
@@ -46,14 +47,9 @@ export default function IntroSection() {
                 <ul className="space-y-3 sm:space-y-4">
                     {items.map((item, i) => (
                         <li key={i} className="flex items-start">
-                            <div
-                                className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full
-                           flex items-center justify-center font-bold mr-3 sm:mr-4 text-xs sm:text-sm
-                           bg-[var(--ring)] text-[var(--background)]"
-                                aria-hidden="true"
-                            >
-                                {i + 1}
-                            </div>
+
+                            <StepCircle num={i + 1} />
+
 
                             <div>
                                 <p className="font-semibold text-[var(--card-foreground)] text-sm sm:text-base">

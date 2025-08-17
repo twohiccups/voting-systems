@@ -9,11 +9,12 @@ import SingleChoiceBallot from './components/SingleChoiceBallot';
 import CumulativeBallot from './components/CumulativeBallot';
 import PartyListBallot from './components/PartyListBallot';
 import PanachageBallot from './components/PanachageBallot';
-import SectionHeading from '../components/SectionHeading';
 import OpenListBallot from './components/OpenListBallot';
 import ClosedListBallot from './components/CloseListBallot';
 import { candidates, parties, partiesClosed } from './components/CandidatesData';
 import HeroHeader from '../components/HeroHeader';
+import SectionHeading, { StepCard, StepList } from '../components/primitives';
+import { QuoteBlock } from '../components/QuoteBlock';
 
 function TableOfContents({ sections }: { sections: { id: string; title: string }[] }) {
     const [activeId, setActiveId] = React.useState<string | null>(null);
@@ -103,14 +104,38 @@ export default function BallotTypesShowcasePage() {
         );
     }
 
+
+    const ballotItems = [
+        {
+            question: "List of options",
+            detail: "Candidates, parties, or issues appear on the ballot.",
+        },
+        {
+            question: "Instructions",
+            detail: "Tell voters how to correctly mark their choice (e.g., ‘Mark one candidate only’ or ‘Rank candidates 1, 2, 3…’).",
+        },
+        {
+            question: "Space to mark the vote",
+            detail: "Check box, circle, ranking, or other method to record the choice.",
+        },
+    ];
+
+
     return (<>
         <HeroHeader title={'Ballot Types Showcase'} subtitle='Explore common electoral ballot designs' bgImage={''} />
-        <main className="mx-auto max-w-3xl px-4 py-10 space-y-12">
-            <header className="space-y-2 text-center">
-                <p className="text-sm text-[var(--muted-foreground)] max-w-xl mx-auto">
 
-                </p>
-            </header>
+        <main className="mx-auto max-w-6xl px-4 py-10 space-y-12">
+
+
+
+            <QuoteBlock>
+                A ballot is the tool voters use to express their choices in an election. It&apos;s usually a piece of paper or electronic form listing the candidates, parties or issues, where the voter marks their selections.
+            </QuoteBlock>
+
+            <StepCard title="A ballot usually contains:">
+                <StepList items={ballotItems} />
+            </StepCard>
+
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-[240px,1fr]">
                 <div className="order-2 md:order-1">
