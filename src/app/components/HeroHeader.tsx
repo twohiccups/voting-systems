@@ -20,9 +20,11 @@ export default function HeroHeader({
     bgImage,
     fullHeight = false,
 }: HeroHeaderProps) {
+
+    bgImage = 'https://www.nps.gov/common/uploads/cropped_image/primary/F0CEDDA8-CDA3-A365-792FF3B0EB0FCFF8.jpg'
     return (
         <header
-            className={`bg-gray-900 relative w-full ${fullHeight ? "h-screen" : "h-[60vh]"
+            className={`relative w-full ${fullHeight ? "h-screen" : "h-[60vh]"
                 } flex items-center justify-center text-center text-white`}
             role="banner"
             aria-label="Hero header"

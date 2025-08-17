@@ -4,9 +4,10 @@
 'use client';
 
 import * as React from 'react';
-import { BallotCard, BallotOption } from '../components/Ballot';
+import { BallotCard, BallotOption } from '../../ballots/components/Ballot';
+import HeroHeader from '@/app/components/HeroHeader';
 
-function FptpBallotPage() {
+function FptpBallot() {
     const [selectedId, setSelectedId] = React.useState<string | null>(null);
 
     const candidates = [
@@ -42,6 +43,10 @@ function FptpBallotPage() {
 
 export default function Page() {
     return (<>
-        <FptpBallotPage />
+
+        <HeroHeader title={'First Past The Post'} subtitle='' bgImage={''}>
+
+        </HeroHeader>
+        <FptpBallot />
     </>)
 }

@@ -99,7 +99,6 @@ function CheckboxSquare({ checked, disabled, size = 30, ariaLabel }: CheckboxSqu
     );
 }
 
-
 export type NumberSquareProps = {
     value: number | null;
     onChange?: (value: number | null) => void;
@@ -153,12 +152,22 @@ export type BallotOptionProps = {
     label: string;
     sublabel?: string;
     variant?: BallotOptionVariant;
+
     checked?: boolean;
     onCheckedChange?: (checked: boolean) => void;
+
     rank?: number | null;
     onRankChange?: (rank: number | null) => void;
+    /** Optional overrides for the rank input range (defaults: 1..99) */
+    rankMin?: number;
+    rankMax?: number;
+
     score?: number | null;
     onScoreChange?: (score: number | null) => void;
+    /** Optional overrides for the score input range (defaults: 0..10) */
+    scoreMin?: number;
+    scoreMax?: number;
+
     disabled?: boolean;
     className?: string;
 };
@@ -172,8 +181,12 @@ export function BallotOption({
     onCheckedChange,
     rank = null,
     onRankChange,
+    rankMin,
+    rankMax,
     score = null,
     onScoreChange,
+    scoreMin,
+    scoreMax,
     disabled = false,
     className,
 }: BallotOptionProps) {
@@ -188,8 +201,8 @@ export function BallotOption({
                 <NumberSquare
                     value={rank}
                     onChange={onRankChange}
-                    min={1}
-                    max={99}
+                    min={rankMin ?? 1}
+                    max={rankMax ?? 99}
                     disabled={disabled}
                     ariaLabel={`${label} rank`}
                     widthPx={40}
@@ -201,8 +214,8 @@ export function BallotOption({
             <NumberSquare
                 value={score}
                 onChange={onScoreChange}
-                min={0}
-                max={10}
+                min={scoreMin ?? 0}
+                max={scoreMax ?? 10}
                 disabled={disabled}
                 ariaLabel={`${label} score`}
                 widthPx={40}

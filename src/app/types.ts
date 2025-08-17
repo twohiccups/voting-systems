@@ -16,3 +16,5 @@ export interface VotingSystem {
 }
 
 
+
+export type Candidate = { id: string; label: string; sublabel?: string };
