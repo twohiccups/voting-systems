@@ -4,55 +4,96 @@ import * as React from 'react';
 // Types
 // ------------------------------------
 
-// ------------------------------------
-// Shared UI Bits
-// ------------------------------------
+export type FooterActionsProps = {
+    summary: React.ReactNode;
+    warning?: React.ReactNode;
+    helper?: React.ReactNode;
 
+    onClear?: () => void;
+    onSubmit?: () => void;               // required if you want the “submitted” state
+    submitLabel?: string;                // default "Submit"
+    isValid?: boolean;
+    className?: string;
+};
 
 export function FooterActions({
-    onClear,
     summary,
-    isValid,
     warning,
     helper,
-}: {
-    onClear: () => void;
-    summary: string;
-    isValid: boolean;
-    warning?: string;
-    helper?: string;
-}) {
+    onClear,
+    onSubmit,
+    submitLabel = 'Submit',
+    isValid = true,
+    className,
+}: FooterActionsProps) {
+    const [submitted, setSubmitted] = React.useState(false);
+
+    const handleClear = () => {
+        onClear?.();
+        setSubmitted(false);
+    };
+
+    const handleSubmit = () => {
+        onSubmit?.();
+        setSubmitted(true);
+    };
+
+    // Announce state change to screen readers
+    const submittedMsg = submitted ? 'Submitted' : undefined;
+
     return (
-        <div className="mt-3 flex items-start justify-between gap-3">
-            <div className="min-w-0">
-                <p className="text-sm text-[var(--foreground)]">{summary}</p>
+        <div
+            className={[
+                'mt-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between',
+                className,
+            ].filter(Boolean).join(' ')}
+        >
+            {/* Left: summary + messages */}
+            <div className="text-sm leading-relaxed text-[var(--muted-foreground)] space-y-2">
+                <div>{summary}</div>
                 {warning ? (
-                    <p className="mt-1 text-xs text-red-600">{warning}</p>
-                ) : helper ? (
-                    <p className="mt-1 text-xs text-[var(--muted-foreground)]">{helper}</p>
+                    <div role="alert" className="text-[13px] text-red-600 dark:text-red-400">
+                        {warning}
+                    </div>
+                ) : null}
+                {helper ? <div className="text-[12px] opacity-80">{helper}</div> : null}
+                {submittedMsg ? (
+                    <span aria-live="polite" className="sr-only">{submittedMsg}</span>
                 ) : null}
             </div>
-            <div className="flex shrink-0 items-center gap-2">
+
+            {/* Right: actions */}
+            <div className="flex flex-col gap-2 sm:flex-row sm:gap-3 w-full sm:w-auto">
                 <button
                     type="button"
-                    onClick={onClear}
-                    className="px-3 py-1 text-sm border rounded-none theme-transition border-[var(--border)] bg-[var(--card)] text-[var(--card-foreground)] hover:bg-[var(--muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+                    onClick={handleClear}
+                    className={[
+                        'border px-4 py-2 theme-transition',
+                        'rounded-none border-[var(--border)] bg-[var(--card)] text-[var(--card-foreground)]',
+                        'hover:bg-[var(--muted)] w-full sm:w-auto',
+                    ].join(' ')}
                 >
                     Clear
                 </button>
+
                 <button
-                    type="button"
-                    disabled={!isValid}
-                    onClick={() => alert('This is a demo. Hook up your own submit handler!')}
-                    className="px-3 py-1 text-sm border rounded-none theme-transition border-[var(--border)] bg-[var(--accent)] text-[var(--accent-foreground)] disabled:opacity-50"
+                    type="button"                  // use callback submit; change if you truly need native form submit
+                    onClick={handleSubmit}
+                    disabled={!isValid || submitted}
+                    className={[
+                        'px-4 py-2 theme-transition w-full sm:w-auto',
+                        submitted
+                            ? 'rounded-none bg-green-600 text-white hover:opacity-90' // success/green
+                            : 'rounded-none bg-[var(--accent)] text-[var(--accent-foreground)] hover:opacity-90',
+                        'disabled:opacity-50 disabled:pointer-events-none',
+                    ].join(' ')}
                 >
-                    Submit
+                    {submitted ? 'Submitted' : submitLabel}
                 </button>
             </div>
         </div>
     );
 }
-
 // ------------------------------------
 // Helpers
 // ------------------------------------
