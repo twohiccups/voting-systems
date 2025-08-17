@@ -13,6 +13,7 @@ import SectionHeading from '../components/SectionHeading';
 import OpenListBallot from './components/OpenListBallot';
 import ClosedListBallot from './components/CloseListBallot';
 import { candidates, parties, partiesClosed } from './components/CandidatesData';
+import HeroHeader from '../components/HeroHeader';
 
 function TableOfContents({ sections }: { sections: { id: string; title: string }[] }) {
     const [activeId, setActiveId] = React.useState<string | null>(null);
@@ -102,13 +103,12 @@ export default function BallotTypesShowcasePage() {
         );
     }
 
-    return (
+    return (<>
+        <HeroHeader title={'Ballot Types Showcase'} subtitle='Explore common electoral ballot designs' bgImage={''} />
         <main className="mx-auto max-w-3xl px-4 py-10 space-y-12">
             <header className="space-y-2 text-center">
-                <h1 className="text-2xl font-bold tracking-tight text-[var(--foreground)]">Ballot Types Showcase</h1>
                 <p className="text-sm text-[var(--muted-foreground)] max-w-xl mx-auto">
-                    Explore five common electoral ballot designs. These examples are interactive and use the shared UI
-                    components you provided.
+
                 </p>
             </header>
 
@@ -176,9 +176,7 @@ export default function BallotTypesShowcasePage() {
                 </div>
             </div>
 
-            <footer className="pt-8 text-center text-xs text-[var(--muted-foreground)]">
-                Built with accessible, keyboard-friendly controls. Customize styling via your theme variables.
-            </footer>
         </main>
+    </>
     );
 }
