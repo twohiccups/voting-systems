@@ -3,14 +3,8 @@
 import * as React from 'react';
 import { BallotCard, BallotOption, BallotDivider } from '@/app/ballots/components/Ballot';
 import { FooterActions, labelFor } from './common';
-import { Candidate } from '@/app/types';
+import { Party } from '@/app/types';
 
-export type Party = {
-    id: string;
-    name: string;
-    tagline?: string;
-    candidates: Candidate[];
-};
 
 export default function PanachageBallot({
     parties,
@@ -99,75 +93,73 @@ export default function PanachageBallot({
         remaining >= 0 ? `Remaining: ${remaining} ${remaining === 1 ? 'vote' : 'votes'}` : `Over by ${Math.abs(remaining)}`;
 
     return (
-        <section aria-labelledby="panachage-heading" className="mb-10">
-            <BallotCard
-                title="Legislature — Panachage"
-                instructions={
-                    simpleMode
-                        ? `Select up to ${seats} candidates across any party list.`
-                        : `Distribute up to ${seats} total votes across candidates (up to ${cumulateMax} per candidate).`
-                }
-                className="mb-8"
-            >
-                <div className="space-y-4">
-                    {parties.map((p) => (
-                        <fieldset
-                            key={p.id}
-                            aria-labelledby={`party-${p.id}-legend`}
-                            className="border border-[var(--border)]"
+        <BallotCard
+            title="Legislature — Panachage"
+            instructions={
+                simpleMode
+                    ? `Select up to ${seats} candidates across any party list.`
+                    : `Distribute up to ${seats} total votes across candidates (up to ${cumulateMax} per candidate).`
+            }
+            className="mb-8"
+        >
+            <div className="space-y-4">
+                {parties.map((p) => (
+                    <fieldset
+                        key={p.id}
+                        aria-labelledby={`party-${p.id}-legend`}
+                        className="border border-[var(--border)]"
+                    >
+                        <legend
+                            id={`party-${p.id}-legend`}
+                            className="px-3 py-2 text-sm font-semibold tracking-wide text-[var(--foreground)]"
                         >
-                            <legend
-                                id={`party-${p.id}-legend`}
-                                className="px-3 py-2 text-sm font-semibold tracking-wide text-[var(--foreground)]"
-                            >
-                                {p.name}
-                                {p.tagline ? (
-                                    <span className="ml-2 text-[var(--muted-foreground)] font-normal">— {p.tagline}</span>
-                                ) : null}
-                            </legend>
+                            {p.name}
+                            {p.tagline ? (
+                                <span className="ml-2 text-[var(--muted-foreground)] font-normal">— {p.tagline}</span>
+                            ) : null}
+                        </legend>
 
-                            <div className="px-3 pb-3 space-y-2">
-                                {p.candidates.map((c) =>
-                                    simpleMode ? (
-                                        <BallotOption
-                                            key={c.id}
-                                            id={`pan-${c.id}`}
-                                            label={c.label}
-                                            sublabel={c.sublabel}
-                                            variant="checkbox"
-                                            checked={selections.has(c.id)}
-                                            onCheckedChange={(checked) => toggleCheckbox(c.id, checked)}
-                                        />
-                                    ) : (
-                                        <BallotOption
-                                            key={c.id}
-                                            id={`pan-${c.id}`}
-                                            label={c.label}
-                                            sublabel={c.sublabel}
-                                            variant="score"
-                                            score={allocations.get(c.id) ?? 0}
-                                            onScoreChange={(v) => setScore(c.id, v)}
-                                            scoreMin={0}
-                                            scoreMax={cumulateMax}
-                                        />
-                                    )
-                                )}
-                            </div>
-                        </fieldset>
-                    ))}
-                </div>
+                        <div className="px-3 pb-3 space-y-2">
+                            {p.candidates.map((c) =>
+                                simpleMode ? (
+                                    <BallotOption
+                                        key={c.id}
+                                        id={`pan-${c.id}`}
+                                        label={c.label}
+                                        sublabel={c.sublabel}
+                                        variant="checkbox"
+                                        checked={selections.has(c.id)}
+                                        onCheckedChange={(checked) => toggleCheckbox(c.id, checked)}
+                                    />
+                                ) : (
+                                    <BallotOption
+                                        key={c.id}
+                                        id={`pan-${c.id}`}
+                                        label={c.label}
+                                        sublabel={c.sublabel}
+                                        variant="score"
+                                        score={allocations.get(c.id) ?? 0}
+                                        onScoreChange={(v) => setScore(c.id, v)}
+                                        scoreMin={0}
+                                        scoreMax={cumulateMax}
+                                    />
+                                )
+                            )}
+                        </div>
+                    </fieldset>
+                ))}
+            </div>
 
-                <BallotDivider />
+            <BallotDivider />
 
-                <FooterActions
-                    onClear={handleClear}
-                    summary={summary}
-                    isValid={isValid}
-                    warning={warning}
-                    helper={helper}
-                />
-            </BallotCard>
-        </section>
+            <FooterActions
+                onClear={handleClear}
+                summary={summary}
+                isValid={isValid}
+                warning={warning}
+                helper={helper}
+            />
+        </BallotCard>
     );
 }
 

@@ -3,14 +3,9 @@
 import * as React from 'react';
 import { BallotCard, BallotOption, BallotDivider } from '@/app/ballots/components/Ballot';
 import { FooterActions, labelFor } from './common';
-import { Candidate } from '@/app/types';
+import { Party } from '@/app/types';
 
-export type Party = {
-    id: string;
-    name: string;
-    tagline?: string;
-    candidates: Candidate[]; // party list
-};
+
 
 export default function OpenListBallot({
     parties,
@@ -96,83 +91,81 @@ export default function OpenListBallot({
     }
 
     return (
-        <section aria-labelledby="open-list-heading" className="mb-10">
-            <BallotCard
-                title="Legislature — Party List (Open List)"
-                instructions={`Mark one party for your list vote. Optionally give up to ${preferMax} preference votes to candidates within that party to influence the order in which they are seated.`}
-                className="mb-8"
-            >
-                <div className="space-y-4">
-                    {parties.map((p) => {
-                        const isSelectedParty = chosenParty === p.id;
-                        const disabledCandidates =
-                            // Candidates are interactive only for the chosen party,
-                            // unless no party is required and none chosen yet.
-                            requireParty ? !isSelectedParty : chosenParty ? !isSelectedParty : false;
+        <BallotCard
+            title="Legislature — Party List (Open List)"
+            instructions={`Mark one party for your list vote. Optionally give up to ${preferMax} preference votes to candidates within that party to influence the order in which they are seated.`}
+            className="mb-8"
+        >
+            <div className="space-y-4">
+                {parties.map((p) => {
+                    const isSelectedParty = chosenParty === p.id;
+                    const disabledCandidates =
+                        // Candidates are interactive only for the chosen party,
+                        // unless no party is required and none chosen yet.
+                        requireParty ? !isSelectedParty : chosenParty ? !isSelectedParty : false;
 
-                        return (
-                            <fieldset
-                                key={p.id}
-                                aria-labelledby={`openlist-${p.id}-legend`}
-                                className="border border-[var(--border)]"
+                    return (
+                        <fieldset
+                            key={p.id}
+                            aria-labelledby={`openlist-${p.id}-legend`}
+                            className="border border-[var(--border)]"
+                        >
+                            <legend
+                                id={`openlist-${p.id}-legend`}
+                                className="px-3 py-2 text-sm font-semibold tracking-wide text-[var(--foreground)]"
                             >
-                                <legend
-                                    id={`openlist-${p.id}-legend`}
-                                    className="px-3 py-2 text-sm font-semibold tracking-wide text-[var(--foreground)]"
-                                >
-                                    {p.name}
-                                    {p.tagline ? (
-                                        <span className="ml-2 text-[var(--muted-foreground)] font-normal">— {p.tagline}</span>
-                                    ) : null}
-                                </legend>
+                                {p.name}
+                                {p.tagline ? (
+                                    <span className="ml-2 text-[var(--muted-foreground)] font-normal">— {p.tagline}</span>
+                                ) : null}
+                            </legend>
 
-                                {/* Party choice (single-choice semantics using a checkbox UI) */}
-                                <div className="px-3 pb-2">
+                            {/* Party choice (single-choice semantics using a checkbox UI) */}
+                            <div className="px-3 pb-2">
+                                <BallotOption
+                                    id={`openlist-party-${p.id}`}
+                                    label={`Vote for ${p.name}`}
+                                    sublabel="(Party/list vote)"
+                                    variant="checkbox"
+                                    checked={selectedPartyId === p.id}
+                                    onCheckedChange={(checked) => toggleParty(p.id, checked)}
+                                    className="rounded-none"
+                                />
+                            </div>
+
+                            {/* Candidate preferences (open-list influence) */}
+                            <div className="px-3 pb-3 space-y-2">
+                                {p.candidates.map((c) => (
                                     <BallotOption
-                                        id={`openlist-party-${p.id}`}
-                                        label={`Vote for ${p.name}`}
-                                        sublabel="(Party/list vote)"
+                                        key={c.id}
+                                        id={`openlist-pref-${c.id}`}
+                                        label={c.label}
+                                        sublabel={c.sublabel}
                                         variant="checkbox"
-                                        checked={selectedPartyId === p.id}
-                                        onCheckedChange={(checked) => toggleParty(p.id, checked)}
-                                        className="rounded-none"
+                                        checked={prefs.has(c.id)}
+                                        onCheckedChange={(checked) => togglePref(c.id, checked)}
+                                        disabled={disabledCandidates}
                                     />
-                                </div>
+                                ))}
+                            </div>
+                        </fieldset>
+                    );
+                })}
+            </div>
 
-                                {/* Candidate preferences (open-list influence) */}
-                                <div className="px-3 pb-3 space-y-2">
-                                    {p.candidates.map((c) => (
-                                        <BallotOption
-                                            key={c.id}
-                                            id={`openlist-pref-${c.id}`}
-                                            label={c.label}
-                                            sublabel={c.sublabel}
-                                            variant="checkbox"
-                                            checked={prefs.has(c.id)}
-                                            onCheckedChange={(checked) => togglePref(c.id, checked)}
-                                            disabled={disabledCandidates}
-                                        />
-                                    ))}
-                                </div>
-                            </fieldset>
-                        );
-                    })}
-                </div>
+            <BallotDivider />
 
-                <BallotDivider />
-
-                <FooterActions
-                    onClear={handleClear}
-                    summary={summary}
-                    isValid={isValid}
-                    warning={warning}
-                    helper={
-                        remaining >= 0
-                            ? `Preference votes remaining: ${remaining}`
-                            : `Over by ${Math.abs(remaining)}`
-                    }
-                />
-            </BallotCard>
-        </section>
+            <FooterActions
+                onClear={handleClear}
+                summary={summary}
+                isValid={isValid}
+                warning={warning}
+                helper={
+                    remaining >= 0
+                        ? `Preference votes remaining: ${remaining}`
+                        : `Over by ${Math.abs(remaining)}`
+                }
+            />
+        </BallotCard>
     );
 }

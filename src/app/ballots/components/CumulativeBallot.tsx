@@ -60,43 +60,41 @@ export default function CumulativeBallot({
     }, [allocations, candidates]);
 
     return (
-        <section aria-labelledby="cumulative-heading" className="mb-10">
-            <BallotCard
-                title="City Council At-Large — Cumulative"
-                instructions={`You have ${maxVotes} total votes. Distribute them among any candidates (including giving multiple votes to one).`}
-                className="mb-8"
-            >
-                <div className="space-y-2">
-                    {candidates.map((c) => (
-                        <BallotOption
-                            key={c.id}
-                            id={`cum-${c.id}`}
-                            label={c.label}
-                            sublabel={c.sublabel}
-                            variant="score"
-                            score={allocations.get(c.id) ?? 0}
-                            onScoreChange={(v) => updateAllocation(c.id, v)}
-                            scoreMin={0}
-                            scoreMax={maxVotes}
-                        />
-                    ))}
-                </div>
+        <BallotCard
+            title="City Council At-Large — Cumulative"
+            instructions={`You have ${maxVotes} total votes. Distribute them among any candidates (including giving multiple votes to one).`}
+            className="mb-8"
+        >
+            <div className="space-y-2">
+                {candidates.map((c) => (
+                    <BallotOption
+                        key={c.id}
+                        id={`cum-${c.id}`}
+                        label={c.label}
+                        sublabel={c.sublabel}
+                        variant="score"
+                        score={allocations.get(c.id) ?? 0}
+                        onScoreChange={(v) => updateAllocation(c.id, v)}
+                        scoreMin={0}
+                        scoreMax={maxVotes}
+                    />
+                ))}
+            </div>
 
-                <BallotDivider />
+            <BallotDivider />
 
-                <FooterActions
-                    onClear={handleClear}
-                    summary={summary}
-                    isValid={isValid}
-                    warning={warning}
-                    helper={
-                        remaining >= 0
-                            ? `Remaining votes: ${remaining}`
-                            : `Over by ${Math.abs(remaining)}`
-                    }
-                />
-            </BallotCard>
-        </section>
+            <FooterActions
+                onClear={handleClear}
+                summary={summary}
+                isValid={isValid}
+                warning={warning}
+                helper={
+                    remaining >= 0
+                        ? `Remaining votes: ${remaining}`
+                        : `Over by ${Math.abs(remaining)}`
+                }
+            />
+        </BallotCard>
     );
 }
 
