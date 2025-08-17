@@ -16,5 +16,12 @@ export interface VotingSystem {
 }
 
 
-
 export type Candidate = { id: string; label: string; sublabel?: string };
+
+export type Party = {
+    id: string;
+    name: string;
+    tagline?: string; // short descriptor (e.g., ideology)
+    candidates: Candidate[]; // party list (closed list)
+};
+
