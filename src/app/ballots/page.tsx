@@ -129,7 +129,7 @@ export default function BallotTypesShowcasePage() {
 
 
             <QuoteBlock>
-                A ballot is the tool voters use to express their choices in an election. It&apos;s usually a piece of paper or electronic form listing the candidates, parties or issues, where the voter marks their selections.
+                A ballot is the tool voters use to express their choices in an election. It&apos;s usually a piece of paper or electronic form listing the candidates, parties or issues, where the voter marks their selection.
             </QuoteBlock>
 
             <StepCard title="A ballot usually contains:">

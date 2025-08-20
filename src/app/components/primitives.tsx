@@ -2,8 +2,6 @@
 
 import * as React from "react";
 
-
-
 interface SectionHeadingProps {
     title: string
 }
@@ -73,11 +71,12 @@ export type StepListProps = {
     startIndex?: number; // default 1
     className?: string;
     itemClassName?: string;
-    renderNumber?: (index: number) => React.ReactNode; // custom numbering (e.g., roman numerals)
+    renderNumber?: boolean | ((index: number) => React.ReactNode);
 };
 
 export type StepItemProps = {
-    index: number; // 1-based display index
+    /** Optional display index/label. If omitted, no circle is shown. */
+    index?: React.ReactNode;
     question: React.ReactNode;
     detail?: React.ReactNode;
     className?: string;
@@ -92,7 +91,7 @@ export type StepCardProps = {
 };
 
 
-export const StepCircle: React.FC<{ num: React.ReactNode; className?: string }> = ({ num, className }) => (
+export const StepCircle: React.FC<{ num?: React.ReactNode; className?: string }> = ({ num, className }) => (
     <div
         className={[
             "mr-3 sm:mr-4 mt-0.5 inline-flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center",
@@ -106,10 +105,14 @@ export const StepCircle: React.FC<{ num: React.ReactNode; className?: string }> 
     </div>
 );
 
+
+
 // ---------- Row: StepItem ----------
 export const StepItem: React.FC<StepItemProps> = ({ index, question, detail, className, circleClassName }) => (
     <li className={["flex items-start", className].filter(Boolean).join(" ")}>
-        <StepCircle num={index} className={circleClassName} />
+        {index !== undefined && index !== null ? (
+            <StepCircle num={index} className={circleClassName} />
+        ) : null}
         <div>
             <p className="font-semibold text-[var(--card-foreground)] text-sm sm:text-base">{question}</p>
             {detail ? (
@@ -125,18 +128,28 @@ export const StepList: React.FC<StepListProps> = ({
     startIndex = 1,
     className,
     itemClassName,
-    renderNumber,
+    renderNumber = true,
 }) => (
     <ul className={["space-y-3 sm:space-y-4", className].filter(Boolean).join(" ")}>
-        {items.map((item, i) => (
-            <StepItem
-                key={i}
-                index={(renderNumber ? renderNumber(startIndex + i) : startIndex + i) as number}
-                question={item.question}
-                detail={item.detail}
-                className={itemClassName}
-            />
-        ))}
+        {items.map((item, i) => {
+            const baseIndex = startIndex + i;
+            const computedIndex =
+                typeof renderNumber === "function"
+                    ? renderNumber(baseIndex)
+                    : renderNumber === false
+                        ? undefined
+                        : baseIndex;
+
+            return (
+                <StepItem
+                    key={i}
+                    index={computedIndex}
+                    question={item.question}
+                    detail={item.detail}
+                    className={itemClassName}
+                />
+            );
+        })}
     </ul>
 );
 
@@ -305,5 +318,49 @@ export function Td({
         >
             {children}
         </td>
+    );
+}
+
+
+// --- BulletList: small dot, centered, mobile-friendly ---
+export function BulletList({
+    items,
+    className = "",
+    itemClassName = "",
+}: {
+    items: { label: React.ReactNode; detail?: React.ReactNode }[];
+    className?: string;
+    itemClassName?: string;
+}) {
+    return (
+        <ul className={["space-y-2 sm:space-y-3", className].join(" ")}>
+            {items.map((it, i) => (
+                <li
+                    key={i}
+                    className={[
+                        // grid keeps the dot size fixed and gives text the rest of the line
+                        "grid grid-cols-[auto_1fr] gap-x-2 sm:gap-x-3",
+                        // vertically center the dot vs. the whole text block
+                        "items-center",
+                        itemClassName,
+                    ].join(" ")}
+                >
+                    <span
+                        className="block h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-[var(--ring)]"
+                        aria-hidden
+                    />
+                    <div className="min-w-0">
+                        <p className="font-medium text-sm sm:text-base text-[var(--card-foreground)] leading-snug">
+                            {it.label}
+                        </p>
+                        {it.detail ? (
+                            <p className="text-xs sm:text-sm text-[var(--muted-foreground)] leading-snug">
+                                {it.detail}
+                            </p>
+                        ) : null}
+                    </div>
+                </li>
+            ))}
+        </ul>
     );
 }

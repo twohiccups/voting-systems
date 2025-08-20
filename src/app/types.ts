@@ -25,3 +25,12 @@ export type Party = {
     candidates: Candidate[]; // party list (closed list)
 };
 
+
+export type FeatureItem = { label: string; detail?: string };
+
+export type SystemFeature = {
+    id: string;
+    title: string;
+    description?: string;
+    items: FeatureItem[];
+}

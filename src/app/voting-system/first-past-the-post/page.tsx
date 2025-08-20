@@ -4,6 +4,8 @@ import * as React from 'react';
 import { BallotCard, BallotOption } from '../../ballots/components/Ballot';
 import HeroHeader from '@/app/components/HeroHeader';
 import { Chip, StepCircle } from '@/app/components/primitives';
+import FptpFeatures from './FPTPFeatures';
+import { QuoteBlock } from '@/app/components/QuoteBlock';
 
 // If your shared UI lives elsewhere, adjust this import path:
 
@@ -20,15 +22,9 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 // --- Quick Facts using shared <Chip/> ---
 function KeyFacts() {
     return (
-        <div className="flex flex-wrap gap-2 not-prose">
-            <Chip>Single-winner (typically)</Chip>
-            <Chip>Ballot: mark ONE candidate</Chip>
-            <Chip>Counting: plurality</Chip>
-            <Chip>Proportionality: low</Chip>
-            <Chip>Complexity: very low</Chip>
-            <Chip>Strategic voting: common</Chip>
-            <Chip>Spoiler risk: higher</Chip>
-        </div>
+
+        <FptpFeatures />
+
     );
 }
 
@@ -43,7 +39,7 @@ function FptpBallot() {
     ];
 
     return (
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-6xl mx-auto">
             <BallotCard
                 title="Mayor Election"
                 instructions="Vote for ONE candidate only by marking the box next to their name."
@@ -160,88 +156,72 @@ export default function Page() {
             />
 
             {/* Other Known Names */}
-            <Section title="Other Known Names">
+            {/* <Section title="Other Known Names">
                 <ul>
                     <li>Plurality Voting</li>
                     <li>Single-Member Plurality (with single-member districts)</li>
                     <li>Winner-Take-All (colloquial)</li>
                 </ul>
-            </Section>
+            </Section> */}
 
-            {/* Quick Facts / Features Overview */}
-            <Section title="Quick Facts">
-                <KeyFacts />
-            </Section>
-
-            {/* Description */}
-            <Section title="Description">
-                <p>
+            <div className="max-w-6xl mx-auto">
+                <QuoteBlock>
                     First Past the Post (FPTP) is a single-mark, plurality voting method. Each voter selects
                     one candidate; the candidate with the highest number of votes wins the seat. There is no
                     requirement to achieve an absolute majority, and no ranking or runoffs are involved. FPTP
                     is often paired with single-member districts to produce one representative per district.
-                </p>
-            </Section>
+                </QuoteBlock>
 
-            {/* Ballot Example */}
-            <Section title="Ballot Example">
-                <FptpBallot />
-            </Section>
 
-            {/* How It Works – Walkthrough (now with StepCircle) */}
-            <Section title="How It Works — Walkthrough">
-                <Walkthrough />
-            </Section>
+                {/* Quick Facts / Features Overview */}
+                <Section title="Quick Facts">
+                    <KeyFacts />
+                </Section>
 
-            {/* Strengths & Weaknesses */}
-            <Section title="Strengths & Weaknesses">
-                <ProsCons />
-            </Section>
+                {/* Description */}
 
-            {/* Common Applications */}
-            <Section title="Common Applications">
-                <ul>
-                    <li>Single-winner offices (e.g., mayor, governor, legislators in single-member districts)</li>
-                    <li>Organizations prioritizing simplicity and fast results</li>
-                    <li>Two-major-candidate contexts where majority ≈ plurality</li>
-                </ul>
-            </Section>
+                {/* Ballot Example */}
+                <Section title="Ballot Example">
+                    <FptpBallot />
+                </Section>
 
-            {/* Real-World Use */}
-            <Section title="Real-World Use">
-                <p className="mb-3">
-                    Jurisdictions commonly using FPTP/single-member plurality include:
-                </p>
-                <ul>
-                    <li>United Kingdom (House of Commons)</li>
-                    <li>Canada (House of Commons and many provinces)</li>
-                    <li>India (Lok Sabha)</li>
-                    <li>United States (most single-member offices, including many U.S. House seats)</li>
-                    <li>Several Caribbean and other Commonwealth countries</li>
-                </ul>
-                <p className="mt-3 text-sm text-zinc-500">
-                    Note: Use varies by level of government and over time; check the specific office and year.
-                </p>
-            </Section>
+                {/* How It Works – Walkthrough (now with StepCircle) */}
+                <Section title="How It Works — Walkthrough">
+                    <Walkthrough />
+                </Section>
 
-            {/* Related Systems */}
-            <Section title="Related Systems">
-                <ul>
-                    <li><strong>Two-Round System (Runoff):</strong> Majority via a second round if no 50%+ in round one.</li>
-                    <li><strong>Ranked Choice Voting (IRV):</strong> Instant runoffs using voter rankings.</li>
-                    <li><strong>Approval Voting:</strong> Approve any number; most approvals wins.</li>
-                    <li><strong>Single Transferable Vote (STV):</strong> Multi-winner, ranked, proportional method.</li>
-                </ul>
-            </Section>
+                {/* Strengths & Weaknesses */}
+                <Section title="Strengths & Weaknesses">
+                    <ProsCons />
+                </Section>
 
-            {/* Further Reading / Resources */}
-            <Section title="Further Reading & Resources">
-                <ul>
-                    <li>Introductory civics primers on plurality voting</li>
-                    <li>Research on disproportionality and Duverger’s law</li>
-                    <li>Official election administrator guides for plurality counting</li>
-                </ul>
-            </Section>
+                {/* Common Applications */}
+                <Section title="Common Applications">
+                    <ul>
+                        <li>Single-winner offices (e.g., mayor, governor, legislators in single-member districts)</li>
+                        <li>Organizations prioritizing simplicity and fast results</li>
+                        <li>Two-major-candidate contexts where majority ≈ plurality</li>
+                    </ul>
+                </Section>
+
+                {/* Real-World Use */}
+                <Section title="Real-World Use">
+                    <p className="mb-3">
+                        Jurisdictions commonly using FPTP/single-member plurality include:
+                    </p>
+                    <ul>
+                        <li>United Kingdom (House of Commons)</li>
+                        <li>Canada (House of Commons and many provinces)</li>
+                        <li>India (Lok Sabha)</li>
+                        <li>United States (most single-member offices, including many U.S. House seats)</li>
+                        <li>Several Caribbean and other Commonwealth countries</li>
+                    </ul>
+                    <p className="mt-3 text-sm text-zinc-500">
+                        Note: Use varies by level of government and over time; check the specific office and year.
+                    </p>
+                </Section>
+
+            </div>
         </>
     );
 }
