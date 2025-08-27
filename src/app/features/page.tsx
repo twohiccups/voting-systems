@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useMemo, useState } from "react";
-import SectionHeading, { BulletList, Td, Th, ViewToggle } from "../components/primitives";
+import { BulletList, Td, Th, ViewToggle } from "../components/primitives";
 import { systemFeatures } from "./features";
+import SectionHeading from "../components/SectionHeading";
 
 // === Types ===
 export type FeatureItem = { label: string; detail?: string };

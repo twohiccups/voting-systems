@@ -1,7 +1,8 @@
 'use client';
 
 import React from "react";
-import SectionHeading, { StepCircle, StepItemData } from "./primitives";
+import { StepCircle, StepItemData } from "./primitives";
+import SectionHeading from "./SectionHeading";
 
 export default function IntroSection() {
     const items: StepItemData[] = [

@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={` ${inter.variable}  antialiased`}
+        className={` ${inter.variable}  antialiased space-y-6`}
       >
         {children}
       </body>

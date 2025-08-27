@@ -28,9 +28,7 @@ export function BallotCard({ title, instructions, children, className }: BallotC
                 </header>
             ) : null}
 
-            {instructions ? (
-                <BallotInstructions className="mb-4">{instructions}</BallotInstructions>
-            ) : null}
+            {instructions ? <BallotInstructions className="mb-4">{instructions}</BallotInstructions> : null}
 
             {children}
         </section>
@@ -148,7 +146,8 @@ function NumberSquare({
 export type BallotOptionVariant = 'checkbox' | 'rank' | 'score';
 
 export type BallotOptionProps = {
-    id: string;
+    /** id is optional now; no htmlFor used */
+    id?: string;
     label: string;
     sublabel?: string;
     variant?: BallotOptionVariant;
@@ -173,7 +172,7 @@ export type BallotOptionProps = {
 };
 
 export function BallotOption({
-    id,
+    // id is intentionally unused to avoid cross-instance collisions
     label,
     sublabel,
     variant = 'checkbox',
@@ -190,11 +189,16 @@ export function BallotOption({
     disabled = false,
     className,
 }: BallotOptionProps) {
-    const inputId = id;
-
     const control = (() => {
         if (variant === 'checkbox') {
-            return <CheckboxSquare checked={!!checked} disabled={disabled} size={30} ariaLabel={`${label} selected`} />;
+            return (
+                <CheckboxSquare
+                    checked={!!checked}
+                    disabled={disabled}
+                    size={30}
+                    ariaLabel={undefined /* rely on visible label text */}
+                />
+            );
         }
         if (variant === 'rank') {
             return (
@@ -226,7 +230,6 @@ export function BallotOption({
 
     return (
         <label
-            htmlFor={inputId}
             className={[
                 'flex items-center justify-between gap-3 border p-2 theme-transition',
                 'rounded-none border-[var(--border)] bg-[var(--card)] text-[var(--card-foreground)]',
@@ -242,17 +245,15 @@ export function BallotOption({
             {control}
 
             {variant === 'checkbox' ? (
+                // Real checkbox stays inside the label → implicit labeling, no id needed
                 <input
-                    id={inputId}
                     type="checkbox"
                     className="sr-only"
                     checked={!!checked}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckedChange?.(e.target.checked)}
                     disabled={disabled}
                 />
-            ) : (
-                <input id={inputId} type="text" className="sr-only" readOnly aria-hidden />
-            )}
+            ) : null /* no hidden dummy input for rank/score */}
         </label>
     );
 }

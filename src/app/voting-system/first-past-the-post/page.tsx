@@ -1,31 +1,17 @@
 'use client';
 
 import * as React from 'react';
-import { BallotCard, BallotOption } from '../../ballots/components/Ballot';
+import { BallotCard, BallotOption } from '@/app/ballots/components/Ballot';
 import HeroHeader from '@/app/components/HeroHeader';
-import { Chip, StepCircle } from '@/app/components/primitives';
+import { StepCircle } from '@/app/components/primitives';
 import FptpFeatures from './FPTPFeatures';
 import { QuoteBlock } from '@/app/components/QuoteBlock';
-
-// If your shared UI lives elsewhere, adjust this import path:
-
-// --- Layout helper ---
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-    return (
-        <section className="max-w-5xl mx-auto px-4 md:px-6 py-10">
-            <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-4">{title}</h2>
-            <div className="prose prose-zinc dark:prose-invert max-w-none">{children}</div>
-        </section>
-    );
-}
+import Section from '@/app/components/Section';
+import SectionHeading from '@/app/components/SectionHeading'; // ✅ import
 
 // --- Quick Facts using shared <Chip/> ---
 function KeyFacts() {
-    return (
-
-        <FptpFeatures />
-
-    );
+    return <FptpFeatures />;
 }
 
 // --- Ballot Example (interactive) ---
@@ -39,7 +25,7 @@ function FptpBallot() {
     ];
 
     return (
-        <div className="max-w-6xl mx-auto">
+        <div>
             <BallotCard
                 title="Mayor Election"
                 instructions="Vote for ONE candidate only by marking the box next to their name."
@@ -67,7 +53,7 @@ function FptpBallot() {
     );
 }
 
-// --- How It Works — Walkthrough (reworked to use <StepCircle />) ---
+// --- How It Works — Walkthrough ---
 function Walkthrough() {
     const totals = [
         { name: 'Alice Johnson (Green)', votes: 3856 },
@@ -147,81 +133,72 @@ function ProsCons() {
 
 export default function Page() {
     return (
-        <>
-            {/* Name & Hero */}
+        <div>
+            {/* Hero */}
             <HeroHeader
                 title="First Past The Post"
                 subtitle="Also called Plurality Voting — the candidate with the most votes wins."
                 bgImage=""
             />
 
-            {/* Other Known Names */}
-            {/* <Section title="Other Known Names">
-                <ul>
-                    <li>Plurality Voting</li>
-                    <li>Single-Member Plurality (with single-member districts)</li>
-                    <li>Winner-Take-All (colloquial)</li>
-                </ul>
-            </Section> */}
+            <main className="py-12 sm:py-16 lg:py-24 px-6 sm:px-8 lg:px-12 max-w-screen-xl mx-auto">
+                <div className="space-y-12 sm:space-y-16 lg:space-y-24">
+                    <Section>
+                        <QuoteBlock>
+                            First Past the Post (FPTP) is a single-mark, plurality voting method. Each voter selects
+                            one candidate; the candidate with the highest number of votes wins the seat. There is no
+                            requirement to achieve an absolute majority, and no ranking or runoffs are involved. FPTP
+                            is often paired with single-member districts to produce one representative per district.
+                        </QuoteBlock>
+                    </Section>
 
-            <div className="max-w-6xl mx-auto">
-                <QuoteBlock>
-                    First Past the Post (FPTP) is a single-mark, plurality voting method. Each voter selects
-                    one candidate; the candidate with the highest number of votes wins the seat. There is no
-                    requirement to achieve an absolute majority, and no ranking or runoffs are involved. FPTP
-                    is often paired with single-member districts to produce one representative per district.
-                </QuoteBlock>
+                    <Section>
+                        <SectionHeading title="Quick Facts" />
+                        <KeyFacts />
+                    </Section>
 
+                    <Section>
+                        <SectionHeading title="Ballot Example" />
+                        <FptpBallot />
+                    </Section>
 
-                {/* Quick Facts / Features Overview */}
-                <Section title="Quick Facts">
-                    <KeyFacts />
-                </Section>
+                    <Section>
+                        <SectionHeading title="How It Works — Walkthrough" />
+                        <Walkthrough />
+                    </Section>
 
-                {/* Description */}
+                    <Section>
+                        <SectionHeading title="Strengths & Weaknesses" />
+                        <ProsCons />
+                    </Section>
 
-                {/* Ballot Example */}
-                <Section title="Ballot Example">
-                    <FptpBallot />
-                </Section>
+                    <Section>
+                        <SectionHeading title="Common Applications" />
+                        <ul>
+                            <li>Single-winner offices (e.g., mayor, governor, legislators in single-member districts)</li>
+                            <li>Organizations prioritizing simplicity and fast results</li>
+                            <li>Two-major-candidate contexts where majority ≈ plurality</li>
+                        </ul>
+                    </Section>
 
-                {/* How It Works – Walkthrough (now with StepCircle) */}
-                <Section title="How It Works — Walkthrough">
-                    <Walkthrough />
-                </Section>
-
-                {/* Strengths & Weaknesses */}
-                <Section title="Strengths & Weaknesses">
-                    <ProsCons />
-                </Section>
-
-                {/* Common Applications */}
-                <Section title="Common Applications">
-                    <ul>
-                        <li>Single-winner offices (e.g., mayor, governor, legislators in single-member districts)</li>
-                        <li>Organizations prioritizing simplicity and fast results</li>
-                        <li>Two-major-candidate contexts where majority ≈ plurality</li>
-                    </ul>
-                </Section>
-
-                {/* Real-World Use */}
-                <Section title="Real-World Use">
-                    <p className="mb-3">
-                        Jurisdictions commonly using FPTP/single-member plurality include:
-                    </p>
-                    <ul>
-                        <li>United Kingdom (House of Commons)</li>
-                        <li>Canada (House of Commons and many provinces)</li>
-                        <li>India (Lok Sabha)</li>
-                        <li>United States (most single-member offices, including many U.S. House seats)</li>
-                        <li>Several Caribbean and other Commonwealth countries</li>
-                    </ul>
-                    <p className="mt-3 text-sm text-zinc-500">
-                        Note: Use varies by level of government and over time; check the specific office and year.
-                    </p>
-                </Section>
-
-            </div>
-        </>
+                    <Section>
+                        <SectionHeading title="Real-World Use" />
+                        <p className="mb-3">
+                            Jurisdictions commonly using FPTP/single-member plurality include:
+                        </p>
+                        <ul>
+                            <li>United Kingdom (House of Commons)</li>
+                            <li>Canada (House of Commons and many provinces)</li>
+                            <li>India (Lok Sabha)</li>
+                            <li>United States (most single-member offices, including many U.S. House seats)</li>
+                            <li>Several Caribbean and other Commonwealth countries</li>
+                        </ul>
+                        <p className="mt-3 text-sm text-zinc-500">
+                            Note: Use varies by level of government and over time; check the specific office and year.
+                        </p>
+                    </Section>
+                </div>
+            </main>
+        </div>
     );
 }
