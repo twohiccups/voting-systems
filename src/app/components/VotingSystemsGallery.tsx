@@ -1,4 +1,3 @@
-// File: components/VotingSystemsGallery.tsx
 "use client";
 
 import * as React from "react";
@@ -6,8 +5,6 @@ import type { TaxonomySystem, VotingSystem } from "../types";
 import VotingSystemCard from "./VotingSystemCard";
 import { Chip, ViewToggle } from "./primitives";
 import VotingSystemsTable from "./VotingSystemsTable";
-
-
 
 function useCanUseTable(breakpoint: string = "(min-width: 768px)") {
     const [canUse, setCanUse] = React.useState<boolean>(false);
@@ -63,18 +60,19 @@ export default function VotingSystemsGallery({
         active === ALL ? "All" : taxonomy.find((t) => t.id === active)?.name ?? "Unknown";
 
     return (
-        <section className="mx-auto max-w-6xl px-3 sm:px-4 md:px-6 py-6 sm:py-8 md:py-10">
-            <div className="mb-5 sm:mb-6 md:mb-8">
+        <div>
+            {/* Header */}
+            <div className="mb-6 md:mb-8">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight">
                     {heading}
                 </h2>
-                <p className="mt-2 sm:mt-3 text-sm sm:text-base md:text-lg text-[var(--muted-foreground)] max-w-3xl">
+                <p className="mt-2 sm:mt-3 text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl">
                     {intro}
                 </p>
             </div>
 
             {/* Bubble filters */}
-            <div className="mb-5 sm:mb-6">
+            <div className="mb-6">
                 <div
                     className="flex flex-wrap items-center gap-2"
                     role="tablist"
@@ -101,13 +99,19 @@ export default function VotingSystemsGallery({
             </div>
 
             {/* View toggle + count */}
-            <div className="mb-4 sm:mb-5 flex items-center justify-between gap-2 sm:gap-3">
-                <p className="text-xs sm:text-sm text-[var(--muted-foreground)]">
-                    Showing <span className="font-medium text-[var(--card-foreground)]">{filtered.length}</span>{" "}
+            <div className="mb-5 flex items-center justify-between gap-2 sm:gap-3">
+                <p className="text-xs sm:text-sm text-muted-foreground">
+                    Showing{" "}
+                    <span className="font-medium text-card-foreground">
+                        {filtered.length}
+                    </span>{" "}
                     {filtered.length === 1 ? "system" : "systems"}
                     {active !== ALL && (
                         <>
-                            {" "}in <span className="font-medium text-[var(--card-foreground)]">{activeLabel}</span>
+                            {" "}in{" "}
+                            <span className="font-medium text-card-foreground">
+                                {activeLabel}
+                            </span>
                         </>
                     )}
                 </p>
@@ -127,10 +131,8 @@ export default function VotingSystemsGallery({
                     systems={filtered}
                     taxonomy={taxonomy}
                     onTaxonomyClick={(id) => setActive(id as FilterKey)}
-                // guarantee identical label text to the filter chips:
                 />
-
             )}
-        </section>
+        </div>
     );
 }

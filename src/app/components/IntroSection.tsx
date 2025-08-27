@@ -1,10 +1,9 @@
 'use client';
 
-import { StepCircle, StepItemData } from "./primitives";
-import { QuoteBlock } from "./QuoteBlock";
+import React from "react";
+import SectionHeading, { StepCircle, StepItemData } from "./primitives";
 
 export default function IntroSection() {
-
     const items: StepItemData[] = [
         {
             question: "How many winners will there be?",
@@ -25,44 +24,24 @@ export default function IntroSection() {
     ];
 
     return (
-        <section className="theme-transition max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-6 sm:py-8 md:py-12 space-y-6 sm:space-y-8 md:space-y-10 text-[var(--foreground)]">
-            {/* Pull-quote intro */}
-            <QuoteBlock>
-                Voting systems are the rules that determine how votes are cast,
-                counted, and turned into outcomes. Whether choosing a single leader
-                like a president or filling every seat in a parliament, the voting
-                system shapes not only the result — but the nature of political power
-                itself.
-            </QuoteBlock>
 
-            {/* Card with rest of content */}
-            <div
-                className="theme-transition rounded-2xl border p-3 sm:p-4 md:p-6 lg:p-8 shadow-sm
-                   bg-[var(--card)] text-[var(--card-foreground)] border-[var(--border)]"
-            >
-                <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-5 md:mb-6">
-                    At their core, voting systems are designed to answer questions like:
-                </h3>
-
-                <ul className="space-y-3 sm:space-y-4">
-                    {items.map((item, i) => (
-                        <li key={i} className="flex items-start">
-
-                            <StepCircle num={i + 1} />
-
-
-                            <div>
-                                <p className="font-semibold text-[var(--card-foreground)] text-sm sm:text-base">
-                                    {item.question}
-                                </p>
-                                <p className="text-[var(--muted-foreground)] text-xs sm:text-sm">
-                                    {item.detail}
-                                </p>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </section>
+        <div className="theme-transition rounded-2xl border border-border bg-card text-card-foreground shadow-sm p-6 sm:p-8 lg:p-10">
+            <SectionHeading title="At their core, voting systems are designed to answer questions like:" />
+            <ul className="space-y-4 sm:space-y-5 lg:space-y-6 mt-6">
+                {items.map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 sm:gap-4">
+                        <StepCircle num={i + 1} />
+                        <div>
+                            <p className="font-semibold text-base sm:text-lg">
+                                {item.question}
+                            </p>
+                            <p className="text-muted-foreground text-sm sm:text-base">
+                                {item.detail}
+                            </p>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
 }

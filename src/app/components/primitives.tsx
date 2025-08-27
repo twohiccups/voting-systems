@@ -8,11 +8,12 @@ interface SectionHeadingProps {
 
 export default function SectionHeading({ title }: SectionHeadingProps) {
     return (
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight text-center">
             {title}
         </h2>
-    )
+    );
 }
+
 
 export function Dot({ active }: { active: boolean }) {
     return (
@@ -94,16 +95,19 @@ export type StepCardProps = {
 export const StepCircle: React.FC<{ num?: React.ReactNode; className?: string }> = ({ num, className }) => (
     <div
         className={[
-            "mr-3 sm:mr-4 mt-0.5 inline-flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center",
+            "mr-3 sm:mr-4 mt-0.5 flex-shrink-0 inline-flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center",
             "rounded-full text-xs sm:text-sm font-semibold select-none",
             "bg-[var(--accent)] text-[var(--accent-foreground)] border border-[var(--accent)]",
             className,
-        ].filter(Boolean).join(" ")}
+        ]
+            .filter(Boolean)
+            .join(" ")}
         aria-hidden
     >
         {num}
     </div>
 );
+
 
 
 

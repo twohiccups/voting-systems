@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Source_Sans_3, DM_Serif_Text, Lora, Merriweather, Merriweather_Sans, Noto_Sans } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Noto_Sans({
   subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+  weight: ["400"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+
 
 export const metadata: Metadata = {
   title: "Voting Systems",
@@ -25,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={` ${inter.variable}  antialiased`}
       >
         {children}
       </body>
