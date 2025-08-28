@@ -20,7 +20,7 @@ function ProgressBar({ value }: { value: number }) {
             aria-valuenow={Number(v.toFixed(1))}
             aria-valuemin={0}
             aria-valuemax={100}
-            className="relative h-3 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700"
+            className="relative h-3 w-full overflow-hidden rounded-full bg-gray-200"
         >
             <div
                 className="h-full rounded-full bg-green-700 transition-[width] duration-500 motion-reduce:transition-none"
@@ -29,6 +29,7 @@ function ProgressBar({ value }: { value: number }) {
         </div>
     );
 }
+
 
 const VotingBreakdown: React.FC<VotingBreakdownProps> = ({
     totals,

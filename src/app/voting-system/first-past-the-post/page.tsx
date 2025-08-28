@@ -127,8 +127,9 @@ export default function Page() {
                         <SectionHeading title="Ballot Example" />
                         <FptpBallot />
                     </Section>
-
-                    <ProsConsExpanded />
+                    <Section>
+                        <ProsConsExpanded />
+                    </Section>
                 </div>
             </main>
         </div>
