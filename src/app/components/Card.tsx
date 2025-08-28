@@ -47,7 +47,7 @@ export function Card({
 
             {/* Description */}
             {description && (
-                <p className="text-xs sm:text-sm text-[var(--muted-foreground)] line-clamp-3 md:line-clamp-none lg:line-clamp-3">
+                <p className="text-base text-[var(--muted-foreground)] line-clamp-3 md:line-clamp-none lg:line-clamp-3">
                     {description}
                 </p>
             )}

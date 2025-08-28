@@ -124,7 +124,7 @@ export default function VotingTaxonomy({
             {/* Header */}
             <div className="mb-6 sm:mb-8 lg:mb-10">
                 <SectionHeading title={heading} />
-                <p className="mt-2 sm:mt-3 text-sm sm:text-base md:text-lg text-muted-foreground">
+                <p className="mt-2 sm:mt-3 text-base sm:text-base md:text-lg text-muted-foreground">
                     {intro}
                 </p>
             </div>

@@ -36,9 +36,10 @@ export default function IntroSection() {
                             <p className="font-semibold text-base sm:text-lg">
                                 {item.question}
                             </p>
-                            <p className="text-muted-foreground text-sm sm:text-base">
+                            <p className="text-muted-foreground text-base sm:text-lg">
                                 {item.detail}
                             </p>
+
                         </div>
                     </li>
                 ))}
