@@ -1,7 +1,7 @@
-
 import * as React from 'react';
 import WinnerCard from '../components/WinnerCard';
 import VotingBreakdown, { CandidateTotal } from '../components/VotingBreakdown';
+import InitialAvatar from '../components/InitialAvatar';
 import { StepCircle } from '@/app/components/primitives';
 
 function Walkthrough() {
@@ -14,11 +14,7 @@ function Walkthrough() {
     const totalVotes = totals.reduce((s, t) => s + t.votes, 0);
     const winner = totals.reduce((max, t) => (t.votes > max.votes ? t : max), totals[0]);
 
-    // Optional: example click handler for rows
-    const handleRowClick = (c: CandidateTotal) => {
-        // Replace with your toast/snackbar
-        console.log(`Clicked ${c.name} `);
-    };
+    const handleRowClick = (c: CandidateTotal) => console.log(`Clicked ${c.name} `);
 
     return (
         <div className="not-prose space-y-6">
@@ -27,9 +23,13 @@ function Walkthrough() {
                 <StepCircle num={1} />
                 <p>Three candidates run for mayor:</p>
             </div>
-            <ul className="ml-9 list-disc pl-2 text-sm">
+
+            <ul className="ml-9 space-y-2 pl-0 text-sm">
                 {totals.map((t) => (
-                    <li key={t.name}>{t.name}</li>
+                    <li key={t.name} className="flex items-center gap-3">
+                        <InitialAvatar name={t.name} />
+                        <span>{t.name}</span>
+                    </li>
                 ))}
             </ul>
 
@@ -47,14 +47,6 @@ function Walkthrough() {
             <div className="ml-9">
                 <VotingBreakdown
                     totals={totals}
-                    sort="none"              // highest votes first
-                    highlight="auto"          // auto-highlight the top candidate
-                    showPercent={true}
-                    showBar={true}
-                    barColorClass="bg-green-700" // theme-able
-                    showTotalFooter={true}
-                    onRowClick={handleRowClick}
-                    ariaLabel="Example voting breakdown"
                 />
             </div>
 
@@ -64,11 +56,7 @@ function Walkthrough() {
                 <p>The candidate with the most votes is declared the winner:</p>
             </div>
             <div className="ml-9">
-                <WinnerCard
-                    name={winner.name}
-                    votes={winner.votes}
-                    totalVotes={totalVotes}
-                />
+                <WinnerCard name={winner.name} votes={winner.votes} totalVotes={totalVotes} />
             </div>
         </div>
     );
