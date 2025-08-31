@@ -48,6 +48,37 @@ export function NextIcon({ className = "" }: { className?: string }) {
 }
 
 
+export function CheckIcon(props: React.SVGAttributes<SVGSVGElement>) {
+    return (
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" {...props}>
+            <path
+                fillRule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3-3a1 1 0 111.414-1.414l2.293 2.293 6.543-6.543a1 1 0 011.414 0z"
+                clipRule="evenodd"
+            />
+        </svg>
+    );
+}
+export function XIcon(props: React.SVGAttributes<SVGSVGElement>) {
+    return (
+        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" {...props}>
+            <path
+                fillRule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clipRule="evenodd"
+            />
+        </svg>
+    );
+}
+export function InfoIcon(props: React.SVGAttributes<SVGSVGElement>) {
+    return (
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+            <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm.75 5.5a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM11 10h2v7h-2v-7z" />
+        </svg>
+    );
+}
+
+
 // ---------- Types ----------
 export type StepItemData = {
     question: React.ReactNode;
@@ -79,21 +110,18 @@ export type StepCardProps = {
 };
 
 
+
+
 export const StepCircle: React.FC<{ num?: React.ReactNode; className?: string }> = ({ num, className }) => (
-    <div
-        className={[
-            "mr-3 sm:mr-4 mt-0.5 flex-shrink-0 inline-flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center",
-            "rounded-full text-xs sm:text-sm font-semibold select-none",
-            "bg-[var(--accent)] text-[var(--accent-foreground)] border border-[var(--accent)]",
-            className,
-        ]
-            .filter(Boolean)
-            .join(" ")}
+    <div className="mr-3 sm:mr-4 mt-0.5 flex-shrink-0 inline-flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center
+                       rounded-md bg-gray-800 text-white text-xs sm:text-sm font-semibold"
         aria-hidden
     >
         {num}
     </div>
 );
+
+
 
 
 
@@ -186,6 +214,41 @@ export function Chip({
         >
             {children}
         </button>
+    );
+}
+
+export type BadgeProps = {
+    children: React.ReactNode;
+    /** Accepts known palette colors, but also any string */
+    color?: "green" | "blue" | "red" | "gray" | (string & {});
+    className?: string;
+};
+
+const colorClasses: Record<"green" | "blue" | "red" | "gray", { bg: string; text: string }> = {
+    green: { bg: "bg-green-100", text: "text-green-700" },
+    blue: { bg: "bg-blue-100", text: "text-blue-700" },
+    red: { bg: "bg-red-100", text: "text-red-700" },
+    gray: { bg: "bg-gray-100", text: "text-gray-700" },
+};
+
+function resolveColor(color?: string) {
+    return (color && color in colorClasses ? color : "gray") as keyof typeof colorClasses;
+}
+
+export function Badge({ children, color, className = "" }: BadgeProps) {
+    const resolved = resolveColor(color);
+    const c = colorClasses[resolved];
+    return (
+        <span
+            className={[
+                "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium",
+                c.bg,
+                c.text,
+                className,
+            ].join(" ")}
+        >
+            {children}
+        </span>
     );
 }
 

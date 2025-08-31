@@ -8,8 +8,9 @@ import FptpFeatures from './FPTPFeatures';
 import { QuoteBlock } from '@/app/components/QuoteBlock';
 import Section from '@/app/components/Section';
 import SectionHeading from '@/app/components/SectionHeading';
-import ProsConsExpanded from './ProCons';
 import Walkthrough from './Walkthrough';
+import { ProsConsListSection } from './ProCons';
+import { ProsCons } from '@/app/types';
 
 // --- Quick Facts using shared <Chip/> ---
 function KeyFacts() {
@@ -85,6 +86,49 @@ function HowItWorks() {
 
 
 
+const STRENGTHS: ProsCons[] = [
+    {
+        title: "Very simple ballots and counting; easy to explain.",
+        summary: "Voters mark one name and you add up the marks—fewer steps, fewer mistakes.",
+        details:
+            "Poll  need minimal training, audit trails are straightforward, and error rates tend to stay low because there are fewer places to go wrong.",
+    },
+    {
+        title: "Fast results and low administrative cost.",
+        summary: "Single-mark tallies produce quick preliminaries and uncomplicated recounts.",
+        details:
+            "Even in large jurisdictions, preliminary results can be reported quickly and recounts are comparatively simple, keeping election-night logistics and budgets lean.",
+    },
+    {
+        title: "Clear single representative per district (with single-member districts).",
+        summary: "Accountability is direct—constituents know exactly who represents them.",
+        details:
+            "Each area elects a single winner who is easy to identify and contact. If voters are unhappy, there’s a clear person to hold to account in the next election.",
+    },
+]
+
+const WEAKNESSES: ProsCons[] = [
+    {
+        title: "Winners may have <50% support in multi-candidate races.",
+        summary: "Plurality winners can take office without majority backing in crowded fields.",
+        details:
+            "When three or more credible candidates split the vote, the winner may be opposed by most voters, which can feel counter-majoritarian—especially when margins are tight.",
+    },
+    {
+        title: "Encourages strategic voting; minor-party ‘spoiler’ effects.",
+        summary: "Voters may pick a viable second choice to avoid ‘wasting’ their vote.",
+        details:
+            "Smaller parties can split ideologically similar blocs and unintentionally help an opponent win. This dynamic can also discourage sincere voting and depress minor-party growth.",
+    },
+    {
+        title: "Often disproportional seat outcomes vs. vote share.",
+        summary: "Seat totals can amplify regional strongholds and under-represent dispersed voters.",
+        details:
+            "A party can secure a majority of seats without a majority of votes if its support is efficiently distributed across districts, producing mismatches between votes and seats.",
+    },
+]
+
+
 
 
 // --- Page Layout ---
@@ -101,9 +145,8 @@ export default function Page() {
                 <div className="space-y-12 sm:space-y-16 lg:space-y-24">
                     <Section>
                         <QuoteBlock>
-                            First Past the Post (FPTP) is a single-mark, plurality voting
-                            method. Each voter selects one candidate; the candidate with the
-                            highest number of votes wins the seat.
+                            First Past the Post is one of the simplest ways to run an election.
+                            Each voter chooses one candidate, and the candidate with the most votes wins.
                         </QuoteBlock>
                     </Section>
 
@@ -127,8 +170,12 @@ export default function Page() {
                         <SectionHeading title="Ballot Example" />
                         <FptpBallot />
                     </Section>
+
                     <Section>
-                        <ProsConsExpanded />
+                        <ProsConsListSection id="strengths" title="Strengths" items={STRENGTHS} tone="pro" />
+                    </Section>
+                    <Section>
+                        <ProsConsListSection id="weaknesses" title="Weaknesses" items={WEAKNESSES} tone="con" />
                     </Section>
                 </div>
             </main>

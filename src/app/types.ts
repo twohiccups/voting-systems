@@ -16,7 +16,9 @@ export interface VotingSystem {
 }
 
 
-export type Candidate = { id: string; label: string; sublabel?: string };
+export type Candidate = { id: string; label: string; sublabel?: string, total?: number, color?: string };
+
+
 
 export type Party = {
     id: string;
@@ -142,3 +144,12 @@ export type FeatureChoices = {
     [FeatureId.StrategicPressure]: StrategicPressure;
     [FeatureId.RepresentationStyle]: RepresentationStyle;
 };
+
+
+export type ProsCons = {
+    title: string,
+    summary: string,
+    details: string
+}
+
+

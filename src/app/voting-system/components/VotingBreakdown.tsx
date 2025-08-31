@@ -1,19 +1,38 @@
-import * as React from "react";
+// VotingBreakdown.tsx
+"use client";
 
-export type CandidateTotal = {
-    name: string; // e.g., "Alice Johnson (Green)"
-    votes: number;
-};
+import * as React from "react";
+import type { Candidate } from "@/app/types";
+import { Badge } from "@/app/components/primitives";
 
 export type VotingBreakdownProps = {
-    totals: CandidateTotal[];
+    candidates: Candidate[];
     className?: string;
-    onRowClick?: (candidate: CandidateTotal) => void;
+    onRowClick?: (candidate: Candidate) => void;
 };
 
-// Progress bar for vote share
-function ProgressBar({ value }: { value: number }) {
+const barColor: Record<string, string> = {
+    green: "bg-green-700",
+    blue: "bg-blue-700",
+    red: "bg-red-700",
+    gray: "bg-gray-700",
+};
+
+const boxBg: Record<string, string> = {
+    green: "bg-green-50",
+    blue: "bg-blue-50",
+    red: "bg-red-50",
+    gray: "bg-gray-50",
+};
+
+function resolveColor(color?: string) {
+    return color && color in barColor ? color : "gray";
+}
+
+// Progress bar for vote share (color-aware)
+function ProgressBar({ value, color }: { value: number; color?: string }) {
     const v = Math.max(0, Math.min(100, value));
+    const resolved = resolveColor(color);
     return (
         <div
             role="progressbar"
@@ -23,39 +42,45 @@ function ProgressBar({ value }: { value: number }) {
             className="relative h-3 w-full overflow-hidden rounded-full bg-gray-200"
         >
             <div
-                className="h-full rounded-full bg-green-700 transition-[width] duration-500 motion-reduce:transition-none"
+                className={[
+                    "h-full rounded-full transition-[width] duration-500 motion-reduce:transition-none",
+                    barColor[resolved],
+                ].join(" ")}
                 style={{ width: `${v}%` }}
             />
         </div>
     );
 }
 
-
 const VotingBreakdown: React.FC<VotingBreakdownProps> = ({
-    totals,
+    candidates,
     className,
     onRowClick,
 }) => {
     const totalVotes = React.useMemo(
-        () => totals.reduce((s, t) => s + (t.votes || 0), 0),
-        [totals]
+        () => candidates.reduce((s, c) => s + (c.total ?? 0), 0),
+        [candidates]
     );
     const nf = React.useMemo(() => new Intl.NumberFormat(undefined), []);
 
     return (
         <div className={"w-full space-y-3 " + (className ?? "")}>
-            {totals.map((t) => {
-                const pct = totalVotes > 0 ? (t.votes / totalVotes) * 100 : 0;
+            {candidates.map((c) => {
+                const votes = c.total ?? 0;
+                const pct = totalVotes > 0 ? (votes / totalVotes) * 100 : 0;
                 const pctLabel = `${pct.toFixed(1)}%`;
                 const clickable = Boolean(onRowClick);
-                const handleClick = () => onRowClick?.(t);
+                const handleClick = () => onRowClick?.(c);
+                const displayName = `${c.label}${c.sublabel ? "" : ""}`;
+                const resolved = resolveColor(c.color);
 
                 return (
                     <div
-                        key={t.name}
+                        key={c.id}
                         className={[
-                            "rounded-xl border bg-card shadow-sm p-3 md:p-4 space-y-2",
-                            clickable ? "cursor-pointer hover:bg-muted/30" : "",
+                            "rounded-xl border shadow-sm p-3 md:p-4 space-y-2",
+                            boxBg[resolved],
+                            clickable ? "cursor-pointer hover:opacity-80" : "",
                         ].join(" ")}
                         {...(clickable && {
                             role: "button" as const,
@@ -69,46 +94,49 @@ const VotingBreakdown: React.FC<VotingBreakdownProps> = ({
                             },
                         })}
                     >
-                        {/* Top row: candidate + votes */}
+                        {/* Top row: candidate + badge + votes */}
                         <div className="flex items-center justify-between gap-2">
-                            <div
-                                className="truncate text-sm font-medium md:text-base"
-                                title={t.name}
-                            >
-                                {t.name}
+                            <div className="truncate text-sm md:text-base">
+                                <div className="flex items-center gap-2">
+                                    <span className="font-bold truncate" title={displayName}>
+                                        {c.label}
+                                    </span>
+                                    {c.sublabel && <Badge color={c.color}>{c.sublabel}</Badge>}
+                                </div>
                             </div>
                             <div className="flex items-center gap-2 text-right">
                                 <div className="text-sm font-semibold tracking-tight md:text-base">
-                                    {nf.format(t.votes)}
+                                    {nf.format(votes)}
                                 </div>
-                                <div className="rounded-full border px-2 py-0.5 text-[11px] text-muted-foreground md:text-xs">
+                                <div className="rounded-full border px-2 py-0.5 text-[11px] bg-white text-muted-foreground md:text-xs">
                                     {pctLabel}
                                 </div>
                             </div>
                         </div>
 
                         {/* Progress bar */}
-                        <ProgressBar value={pct} />
+                        <ProgressBar value={pct} color={c.color} />
 
                         {/* SR-only text */}
                         <span className="sr-only">
-                            {t.name}: {nf.format(t.votes)} votes ({pctLabel})
+                            {c.label}
+                            {c.sublabel ? ` (${c.sublabel})` : ""}: {nf.format(votes)} votes ({pctLabel})
                         </span>
                     </div>
                 );
             })}
-
-            {totals.length > 0 && (
-                <div className="p-3 flex items-center justify-between text-xs text-muted-foreground md:text-sm">
-                    <span>Total votes</span>
-                    <span className="font-medium text-foreground">
+            {candidates.length > 0 && (
+                <div className="mt-3 rounded-lg border bg-muted/30 p-3 flex items-center justify-between text-sm md:text-base shadow-sm">
+                    <span className="font-medium text-muted-foreground">Total votes</span>
+                    <span className="font-semibold text-foreground text-lg">
                         {new Intl.NumberFormat().format(totalVotes)}
                     </span>
                 </div>
             )}
+
+
         </div>
     );
 };
 
 export default VotingBreakdown;
-export type { CandidateTotal as CandidateTotalType };
