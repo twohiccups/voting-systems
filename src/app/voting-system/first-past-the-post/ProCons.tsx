@@ -1,6 +1,6 @@
 "use client";
 
-import { BulletList, CheckIcon, StepCard, XIcon } from "@/app/components/primitives";
+import { CheckIcon, StepCard, XIcon } from "@/app/components/primitives";
 import Section from "@/app/components/Section";
 import SectionHeading from "@/app/components/SectionHeading";
 import { ProsCons } from "@/app/types";

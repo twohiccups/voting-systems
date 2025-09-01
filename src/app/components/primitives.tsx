@@ -112,7 +112,7 @@ export type StepCardProps = {
 
 
 
-export const StepCircle: React.FC<{ num?: React.ReactNode; className?: string }> = ({ num, className }) => (
+export const StepCircle: React.FC<{ num?: React.ReactNode; className?: string }> = ({ num }) => (
     <div className="mr-3 sm:mr-4 mt-0.5 flex-shrink-0 inline-flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center
                        rounded-md bg-gray-800 text-white text-xs sm:text-sm font-semibold"
         aria-hidden

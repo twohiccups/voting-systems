@@ -69,6 +69,9 @@ export default function FeaturesPage() {
     );
 }
 
+
+// ...unchanged imports...
+
 // === Section-based layout (with BulletList) ===
 function SectionView({ sections }: { sections: FeatureSection[] }) {
     return (
@@ -76,6 +79,7 @@ function SectionView({ sections }: { sections: FeatureSection[] }) {
             {sections.map((s) => (
                 <section
                     key={s.id}
+                    id={s.id}                         // 👈 anchor target
                     className={[
                         "rounded-2xl border border-[var(--border)] bg-[var(--card)]",
                         "p-4 sm:p-6",
@@ -119,7 +123,7 @@ function TableView({ sections }: { sections: FeatureSection[] }) {
                 </thead>
                 <tbody className="divide-y divide-[var(--border)]">
                     {sections.map((s) => (
-                        <tr key={s.id} className="align-top">
+                        <tr key={s.id} id={s.id} className="align-top"> {/* 👈 anchor target */}
                             <Td className="font-semibold">
                                 <div className="flex flex-col gap-1">
                                     <span>{s.title}</span>
@@ -145,3 +149,4 @@ function TableView({ sections }: { sections: FeatureSection[] }) {
         </div>
     );
 }
+

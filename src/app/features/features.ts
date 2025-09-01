@@ -1,19 +1,7 @@
 // systemFeatures.ts
-import {
-  FeatureId,
-  SystemFeature,
-  SeatType,
-  BallotType,
-  MajorityGuarantee,
-  CountingRule,
-  Proportionality,
-  VoterComplexity,
-  TallyingComplexity,
-  BallotErrorHandling,
-  SpoilerRisk,
-  StrategicPressure,
-  RepresentationStyle,
-} from "../types";
+
+import { SystemFeature, FeatureId, SeatType, BallotType, MajorityGuarantee, CountingRule, Proportionality, VoterComplexity, TallyingComplexity, BallotErrorHandling, SpoilerRisk, StrategicPressure, RepresentationStyle } from "@/lib/features/types";
+
 
 export const systemFeatures: SystemFeature[] = [
   {

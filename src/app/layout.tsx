@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Source_Sans_3, DM_Serif_Text, Lora, Merriweather, Merriweather_Sans, Noto_Sans } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 import "./globals.css";
+import 'flag-icons/css/flag-icons.min.css'; // <-- global import
 
 const inter = Noto_Sans({
   subsets: ["latin"],

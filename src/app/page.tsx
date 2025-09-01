@@ -54,6 +54,7 @@ export default function Home() {
             intro="Here are some concrete examples, organized by the six core taxonomy types."
           />
         </Section>
+
       </Container>
     </div>
   );

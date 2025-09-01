@@ -35,8 +35,7 @@ export default function WinnerCard({
             ].join(" ")}
             aria-live="polite"
         >
-            <div className="pointer-events-none absolute -inset-20 z-0 bg-[radial-gradient(circle_at_top_left,rgba(34,197,94,0.18),transparent_45%)]" />
-
+            <div className="pointer-events-none absolute -inset-20 z-0 bg-[radial-gradient(circle_at_top_left,rgba(34,197,94,0.38),white_70%)]" />
             <div className="relative z-10 flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">

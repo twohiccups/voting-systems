@@ -214,3 +214,6 @@ export const VotingSystems: VotingSystem[] = [
         slug: "exhaustive-ballot-papal-style"
     }
 ];
+
+export type VotingSystemSlug = typeof VotingSystems[number]["slug"];
+

@@ -3,8 +3,8 @@
 import * as React from "react";
 import type { TaxonomySystem, VotingSystem } from "../types";
 import { Chip, Td, Th } from "./primitives";
-
-
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type Props = {
     systems: VotingSystem[];
@@ -17,10 +17,11 @@ type Props = {
 export default function VotingSystemsTable({
     systems,
     taxonomy,
-    onTaxonomyClick,
     className,
     zebra = true,
 }: Props) {
+    const router = useRouter();
+
     return (
         <div
             className={[
@@ -40,36 +41,54 @@ export default function VotingSystemsTable({
                 </thead>
                 <tbody>
                     {systems.map((s, i) => {
-                        const typeName =
-                            taxonomy.find((t) => t.id === s.taxonomyId)?.name ?? "Other";
-                        const rowBg =
-                            zebra && i % 2 === 1 ? "bg-[var(--muted)]" : "bg-[var(--card)]";
+                        const typeName = taxonomy.find((t) => t.id === s.taxonomyId)?.name ?? "Other";
+                        const rowBg = zebra && i % 2 === 1 ? "bg-[var(--muted)]" : "bg-[var(--card)]";
+                        const href = `/voting-system/${s.slug}`;
+
+                        // Stop row navigation when the Chip is clicked
+
+                        // Make the whole row act like a link (click + keyboard)
+                        const go = () => router.push(href);
+                        const onRowKeyDown = (e: React.KeyboardEvent<HTMLTableRowElement>) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                go();
+                            }
+                        };
+
                         return (
                             <tr
                                 key={s.id}
+                                role="link"
+                                tabIndex={0}
+                                aria-label={`${s.name} details`}
+                                onClick={go}
+                                onKeyDown={onRowKeyDown}
                                 className={[
                                     "border-b last:border-0 border-[var(--border)]",
                                     rowBg,
+                                    // clickable + hover highlight
+                                    "cursor-pointer transition-colors hover:bg-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]",
                                 ].join(" ")}
                             >
                                 <Td className="whitespace-nowrap font-medium text-[var(--card-foreground)]">
-                                    {s.name}
+                                    {/* Keep semantic link for accessibility, but style like plain text */}
+                                    <Link
+                                        href={href}
+                                        // remove link styling; rely on row hover instead
+                                        className="no-underline text-[inherit] focus:outline-none"
+                                        // avoid double-handling; let row handle navigation
+                                        onClick={(e) => e.preventDefault()}
+                                    >
+                                        {s.name}
+                                    </Link>
                                 </Td>
                                 <Td className="whitespace-nowrap">
-                                    <Chip
-                                        onClick={
-                                            onTaxonomyClick && s.taxonomyId
-                                                ? () => onTaxonomyClick(s.taxonomyId as TaxonomySystem["id"])
-                                                : undefined
-                                        }
-                                        ariaLabel={`Filter by ${typeName}`}
-                                    >
+                                    <Chip ariaLabel={`Filter by ${typeName}`}>
                                         {s.taxonomyId}
                                     </Chip>
                                 </Td>
-                                <Td className="text-[var(--muted-foreground)]">
-                                    {s.shortDescription}
-                                </Td>
+                                <Td className="text-[var(--muted-foreground)]">{s.shortDescription}</Td>
                             </tr>
                         );
                     })}
