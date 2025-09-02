@@ -10,11 +10,17 @@ export async function generateStaticParams() {
   return allSystemSlugs.map((slug) => ({ slug }));
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const slug = params.slug as SystemSlug;
-  if (!allSystemSlugs.includes(slug)) return notFound();
+// ✅ params is a Promise in Next 15's generated types
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params; // <-- await the promise
+  const s = slug as SystemSlug;
 
-  const systemContent = await loadSystem(slug);
+  if (!allSystemSlugs.includes(s)) return notFound();
+
+  const systemContent = await loadSystem(s);
   return <SystemPage content={systemContent} />;
 }
-
