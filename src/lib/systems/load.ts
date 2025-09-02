@@ -22,6 +22,7 @@ export async function loadSystem(slug: SystemSlug): Promise<SystemContent> {
         strengths: data.strengths,
         weaknesses: data.weaknesses,
         keyFeatures: data.keyFeatures,
+        useCases: data.useCases,
         components: {
             HowItWorks: hw.HowItWorks ?? hw.default,
             Ballot: bal.Ballot ?? bal.default,

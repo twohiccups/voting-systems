@@ -1,3 +1,5 @@
+//src/lib/countries/data.ts
+
 export const countries = [
     {
         "name": "Afghanistan",

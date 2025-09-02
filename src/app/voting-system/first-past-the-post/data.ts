@@ -1,5 +1,5 @@
 // app/voting-system/fptp/data.ts
-import { ProsCons } from "@/app/types";
+import { ProsCons, UseCase } from "@/app/types";
 import {
     BallotErrorHandling, BallotType, CountingRule, FeatureChoices, FeatureId,
     MajorityGuarantee, Proportionality, RepresentationStyle, SeatType,
@@ -68,3 +68,51 @@ export const keyFeatures: FeatureChoices = {
     [FeatureId.StrategicPressure]: StrategicPressure.High,
     [FeatureId.RepresentationStyle]: RepresentationStyle.Majoritarian,
 };
+
+
+export const useCases: UseCase[] = [
+
+    {
+        country: "United Kingdom",
+        bodies: ["House of Commons (general elections)"],
+    },
+    {
+        country: "United States of America",
+        bodies: [
+            "U.S. House of Representatives (most states use single-member districts)",
+            "Most state legislatures",
+        ],
+    },
+    {
+        country: "Canada",
+        bodies: ["House of Commons (federal)", "Most provincial legislatures"],
+    },
+    {
+        country: "India",
+        bodies: ["Lok Sabha (lower house of Parliament)", "Most State Assemblies"],
+    },
+    {
+        country: "Bangladesh",
+        bodies: ["Jatiya Sangsad (National Parliament)"],
+    },
+    {
+        country: "Nigeria",
+        bodies: ["House of Representatives", "Senate"],
+    },
+    {
+        country: "Pakistan",
+        bodies: ["National Assembly", "Provincial Assemblies"],
+    },
+    {
+        country: "Malaysia",
+        bodies: ["Dewan Rakyat (House of Representatives)"],
+    },
+    {
+        country: "Nepal",
+        bodies: ["House of Representatives (165 of 275 seats via FPTP)"],
+    },
+    {
+        country: "Jamaica",
+        bodies: ["House of Representatives"],
+    },
+];

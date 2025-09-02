@@ -36,3 +36,8 @@ export type ProsCons = {
 }
 
 
+export type UseCase = {
+    country: string;
+    bodies: string[];
+    notes?: string;
+};

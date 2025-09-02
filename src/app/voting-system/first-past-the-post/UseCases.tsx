@@ -1,145 +1,68 @@
-'use client';
+"use client";
 
 import * as React from "react";
-// global import of flag-icons CSS should be in layout.tsx, not here
+import { countries } from "@/lib/countries/data";
+import { UseCase } from "@/app/types";
 
-export type FPTPApplication = {
-    country:
-    | "United Kingdom"
-    | "United States of America"
-    | "Canada"
-    | "India"
-    | "Bangladesh"
-    | "Nigeria"
-    | "Pakistan"
-    | "Malaysia"
-    | "Nepal"
-    | "Jamaica";
-    code: "gb" | "us" | "ca" | "in" | "bd" | "ng" | "pk" | "my" | "np" | "jm";
-    bodies: string[];
-    notes?: string;
-};
 
-const DATA: FPTPApplication[] = [
-    {
-        country: "United Kingdom",
-        code: "gb",
-        bodies: ["House of Commons (general elections)"],
-        notes: "Single-member constituencies; plurality wins.",
-    },
-    {
-        country: "United States of America",
-        code: "us",
-        bodies: [
-            "U.S. House of Representatives (most states use single-member districts)",
-            "Most state legislatures",
-            "Many local & mayoral races",
-        ],
-        notes: "Plurality (most votes) wins in single-member districts.",
-    },
-    {
-        country: "Canada",
-        code: "ca",
-        bodies: ["House of Commons (federal)", "Most provincial legislatures"],
-        notes: "Also called single-member plurality (SMP).",
-    },
-    {
-        country: "India",
-        code: "in",
-        bodies: ["Lok Sabha (lower house of Parliament)", "Most State Assemblies"],
-        notes: "Plurality in single-member constituencies.",
-    },
-    {
-        country: "Bangladesh",
-        code: "bd",
-        bodies: ["Jatiya Sangsad (National Parliament)"],
-        notes: "Single-member constituencies; plurality wins.",
-    },
-    {
-        country: "Nigeria",
-        code: "ng",
-        bodies: ["House of Representatives", "Senate"],
-        notes:
-            "Senators elected from single-member senatorial districts; plurality wins.",
-    },
-    {
-        country: "Pakistan",
-        code: "pk",
-        bodies: ["National Assembly", "Provincial Assemblies"],
-        notes: "Single-member constituencies; plurality wins.",
-    },
-    {
-        country: "Malaysia",
-        code: "my",
-        bodies: ["Dewan Rakyat (House of Representatives)"],
-        notes: "Single-member constituencies; plurality wins.",
-    },
-    {
-        country: "Nepal",
-        code: "np",
-        bodies: ["House of Representatives (165 of 275 seats via FPTP)"],
-        notes: "Mixed: FPTP + proportional representation.",
-    },
-    {
-        country: "Jamaica",
-        code: "jm",
-        bodies: ["House of Representatives"],
-        notes: "Single-member constituencies; plurality wins.",
-    },
-];
+// ---- Small helpers ----
+function cx(...classes: Array<string | boolean | undefined>) {
+    return classes.filter(Boolean).join(" ");
+}
 
-function Flag({
-    code,
-    className = "",
-}: {
-    code: FPTPApplication["code"];
-    className?: string;
-}) {
+function Flag({ country, className = "" }: { country: string; className?: string }) {
+    const code = countries.find((c) => c.name === country)?.code;
+    if (!code) return null;
     return (
         <span
-            className={`fi fi-${code} text-4xl ${className}`} // bigger with text-4xl
+            className={cx(`fi fi-${code} text-5xl`, className)}
             aria-hidden
+            title={country}
         />
     );
 }
 
 
-
-export default function UseCases() {
+function CountryTile({ item }: { item: UseCase }) {
     return (
-        <>
+        <div className="group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 shadow-sm transition-shadow hover:shadow-md">
+            <div className="relative flex items-start gap-3 min-h-[56px]">
+                <Flag country={item.country} className="h-10 w-14 flex-shrink-0" />
 
-            <p className="mb-4 text-sm text-[var(--muted-foreground)]">
-                Countries that use FPTP and the bodies elected by it.
+                {/* Default text flow (country name) */}
+                <h4 className="font-semibold text-[var(--card-foreground)] group-hover:opacity-0 transition-opacity">
+                    {item.country}
+                </h4>
+
+                {/* Hover layer pinned to the right of the flag */}
+                <div className="pointer-events-none absolute inset-y-0 left-[calc(56px+0.75rem)] right-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <ul className="pointer-events-auto ml-4 list-disc space-y-1 text-sm text-[var(--card-foreground)] marker:text-[var(--muted-foreground)]">
+                        {item.bodies.map((b, i) => (
+                            <li key={i}>{b}</li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+interface UseCasesProps {
+    useCases: UseCase[]
+}
+export default function UseCases({ useCases }: UseCasesProps) {
+    return (
+        <div>
+            <p className="mb-3 text-sm text-[var(--muted-foreground)]">
+                Hover a card to see which bodies are elected and any notes.
             </p>
 
-            <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
-                {DATA.map((item) => (
-                    <li
-                        key={item.code}
-                        className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-3 shadow-sm sm:p-4"
-                    >
-                        <div className="mb-2 flex items-center gap-3">
-                            <Flag code={item.code} className="h-8 w-12" />
-                            <h4 className="font-semibold text-[var(--card-foreground)]">
-                                {item.country}
-                            </h4>
-                        </div>
-                        <ul className="ml-5 list-disc space-y-1 text-sm">
-                            {item.bodies.map((b, i) => (
-                                <li key={i} className="text-[var(--card-foreground)]">
-                                    {b}
-                                </li>
-                            ))}
-                        </ul>
-                        {item.notes ? (
-                            <p className="mt-2 text-xs text-[var(--muted-foreground)]">
-                                {item.notes}
-                            </p>
-                        ) : null}
-                    </li>
-                ))}
-            </ul>
-        </>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {useCases.map((item) => (
+                    <CountryTile key={item.country} item={item} />)
+                )}
+            </div>
+        </div>
     );
 }

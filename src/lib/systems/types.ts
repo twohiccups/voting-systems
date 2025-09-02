@@ -1,6 +1,6 @@
 // lib/systems/types.ts
 import type { ComponentType } from "react";
-import type { ProsCons } from "@/app/types";
+import type { ProsCons, UseCase } from "@/app/types";
 import type {
     FeatureChoices,
 } from "@/lib/features/types";
@@ -13,6 +13,7 @@ export interface SystemContent {
     strengths: ProsCons[];
     weaknesses: ProsCons[];
     keyFeatures: FeatureChoices;  // your fptpRatings
+    useCases: UseCase[];
     components: {
         Ballot: ComponentType;           // bespoke per system
         HowItWorks: ComponentType;

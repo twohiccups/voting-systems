@@ -8,6 +8,7 @@ import { ProsConsListSection } from './ProCons';
 import KeyFeatures from './KeyFeatures';
 
 import type { SystemContent } from '@/lib/systems/types';
+import UseCases from '../first-past-the-post/UseCases';
 
 export default function SystemPage({ content }: { content: SystemContent }) {
     const {
@@ -16,7 +17,8 @@ export default function SystemPage({ content }: { content: SystemContent }) {
         introParagraph,
         keyFeatures,
         strengths,
-        weaknesses
+        weaknesses,
+        useCases,
     } = content;
 
     // ✅ Safely access components with a fallback
@@ -24,7 +26,6 @@ export default function SystemPage({ content }: { content: SystemContent }) {
         HowItWorks: HowItWorksCmp,
         Ballot: BallotCmp,
         Walkthrough,
-        UseCases,
     } = content.components ?? {};
 
     return (
@@ -77,12 +78,11 @@ export default function SystemPage({ content }: { content: SystemContent }) {
                         <ProsConsListSection id="weaknesses" title="Weaknesses" items={weaknesses} tone="con" />
                     </Section>
 
-                    {UseCases && (
-                        <Section>
-                            <SectionHeading title="Real Applications" />
-                            <UseCases />
-                        </Section>
-                    )}
+
+                    <Section>
+                        <SectionHeading title="Real Applications" />
+                        <UseCases useCases={useCases} />
+                    </Section>
                 </div>
             </main>
         </div>
