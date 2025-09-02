@@ -1,4 +1,5 @@
-import * as React from "react";
+'use client'
+
 import WinnerCard from "../components/WinnerCard";
 import VotingBreakdown from "../components/VotingBreakdown";
 import { Badge, StepCircle } from "@/app/components/primitives";

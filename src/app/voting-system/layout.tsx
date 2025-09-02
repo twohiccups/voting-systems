@@ -1,8 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
-import HeroHeader from '../components/HeroHeader';
 
 /**
  * Common layout for Voting System pages (TailwindCSS + Next.js App Router)

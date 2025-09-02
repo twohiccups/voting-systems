@@ -6,13 +6,13 @@ import type {
 } from "@/lib/features/types";
 
 export interface SystemContent {
-    slug: string;
     name: string;
     aka?: string[];
+    slug: string;
     introParagraph: string;                     // your introParagraph
     strengths: ProsCons[];
     weaknesses: ProsCons[];
-    keyFeatures: Partial<FeatureChoices>;  // your fptpRatings
+    keyFeatures: FeatureChoices;  // your fptpRatings
     components: {
         Ballot: ComponentType;           // bespoke per system
         HowItWorks: ComponentType;
@@ -21,3 +21,4 @@ export interface SystemContent {
         UseCases?: ComponentType;
     };
 }
+

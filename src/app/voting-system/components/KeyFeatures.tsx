@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { FeatureChoices, SystemFeature } from "@/lib/features/types";
+import { systemFeatures } from "@/app/features/features";
 
 
 
@@ -20,22 +21,19 @@ const electionQuotes: { quote: string; author: string }[] = [
     { quote: "The Ballot or the Bullet.", author: "Malcolm X" },
 ];
 
-type KeyFactsProps = {
+type KeyFeaturesProps = {
     /** Human-readable system name shown in the header row (e.g., “First-Past-the-Post”). */
     systemName: string;
 
     /**
      * Partial mapping of feature ratings for the system.
-     * Only the features present here will be rendered.
      */
-    ratings: Partial<FeatureChoices>;
+    featureChoices: FeatureChoices;
 
     /**
      * Full feature catalog (the same array you previously imported as `systemFeatures`).
      * The component will filter this down to whatever exists in `ratings`.
      */
-    features: SystemFeature[];
-
     /**
      * Optional anchor base for feature links. Defaults to "/features".
      * Links will be `${linkBase}#${feature.id}`.
@@ -51,11 +49,10 @@ type KeyFactsProps = {
 
 export default function KeyFeatures({
     systemName,
-    ratings,
-    features,
+    featureChoices,
     linkBase = "/features",
     showQuote = false,
-}: KeyFactsProps) {
+}: KeyFeaturesProps) {
     // Pick a random quote once per render
     const randomQuote = React.useMemo(
         () => electionQuotes[Math.floor(Math.random() * electionQuotes.length)],
@@ -65,11 +62,11 @@ export default function KeyFeatures({
     // Only include features that have a rating provided
     const ratedFeatures: SystemFeature[] = React.useMemo(
         () =>
-            features.filter(
+            systemFeatures.filter(
                 (f): f is SystemFeature =>
-                    f.id in ratings && ratings[f.id as keyof FeatureChoices] !== undefined
+                    f.id in featureChoices && featureChoices[f.id as keyof FeatureChoices] !== undefined
             ),
-        [features, ratings]
+        [featureChoices]
     );
 
     return (
@@ -105,7 +102,7 @@ export default function KeyFeatures({
             {/* Feature rows */}
             <div className="px-3 py-1.5">
                 {ratedFeatures.map((section, i) => {
-                    const value = ratings[section.id as keyof FeatureChoices]!;
+                    const value = featureChoices[section.id as keyof FeatureChoices]!;
                     const isLast = i === ratedFeatures.length - 1;
 
                     return (
