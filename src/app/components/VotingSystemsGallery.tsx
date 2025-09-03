@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import type { TaxonomySystem, VotingSystem } from "../types";
 import VotingSystemCard from "./VotingSystemCard";
 import { Chip, ViewToggle } from "./primitives";
 import VotingSystemsTable from "./VotingSystemsTable";
+import { VotingSystem, TaxonomySystem } from "../voting-system/layout";
 
 function useCanUseTable(breakpoint: string = "(min-width: 768px)") {
     const [canUse, setCanUse] = React.useState<boolean>(false);

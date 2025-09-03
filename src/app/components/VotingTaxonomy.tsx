@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import TaxonomyCard from "./TaxonomyCard";
-import { TaxonomySystems } from "../content/TaxonomySystemsData";
+import { TaxonomySystems } from "../../lib/taxonomy/data";
 import type { TaxonomySystem } from "../types";
 import { Dot, NextIcon, PrevIcon } from "./primitives";
 import SectionHeading from "./SectionHeading";

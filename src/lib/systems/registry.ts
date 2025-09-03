@@ -1,7 +1,9 @@
 // lib/systems/registry.ts
-export const allSystemSlugs = [
-    "first-past-the-post",
-    // "instant-runoff-voting",
-    // ...
-] as const;
-export type SystemSlug = typeof allSystemSlugs[number];
+
+import { VotingSystems } from "../taxonomy/data";
+import { VotingSystemSlug } from "../taxonomy/types";
+
+export const allSystemSlugs =
+    VotingSystems.map(s => s.slug) as readonly VotingSystemSlug[];
+
+export type SystemSlug = VotingSystemSlug;

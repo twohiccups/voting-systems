@@ -4,7 +4,7 @@ import HeroHeader from "@/app/components/HeroHeader";
 import IntroSection from "@/app/components/IntroSection";
 import VotingTaxonomy from "@/app/components/VotingTaxonomy";
 import VotingSystemsGallery from "@/app/components/VotingSystemsGallery";
-import { TaxonomySystems, VotingSystems } from "@/app/content/TaxonomySystemsData";
+import { TaxonomySystems, VotingSystems } from "@/lib/taxonomy/data";
 import { QuoteBlock } from "@/app/components/QuoteBlock";
 
 import { Container } from "@/app/components/Container";
