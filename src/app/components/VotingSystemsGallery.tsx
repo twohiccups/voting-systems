@@ -24,13 +24,9 @@ function useCanUseTable(breakpoint: string = "(min-width: 768px)") {
 export default function VotingSystemsGallery({
     systems,
     taxonomy,
-    heading,
-    intro,
 }: {
     systems: VotingSystem[];
     taxonomy: TaxonomySystem[];
-    heading: string;
-    intro: string;
 }) {
     const ALL = "All" as const;
     type FilterKey = typeof ALL | TaxonomySystem["id"];
@@ -61,15 +57,6 @@ export default function VotingSystemsGallery({
 
     return (
         <div>
-            {/* Header */}
-            <div className="mb-6 md:mb-8">
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight">
-                    {heading}
-                </h2>
-                <p className="mt-2 sm:mt-3 text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl">
-                    {intro}
-                </p>
-            </div>
 
             {/* Bubble filters */}
             <div className="mb-6">

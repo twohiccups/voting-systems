@@ -3,11 +3,11 @@
 
 import * as React from "react";
 import { TaxonomySystem } from "../types";
-import { Card } from "./Card";
+import { SystemCard } from "./SystemCard";
 
 export default function TaxonomyCard({ system }: { system: TaxonomySystem }) {
     return (
-        <Card
+        <SystemCard
             title={system.name}
             description={system.shortDescription}
             className="h-full"

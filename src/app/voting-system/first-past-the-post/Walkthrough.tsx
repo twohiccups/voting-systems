@@ -1,48 +1,61 @@
-'use client'
+"use client";
 
 import WinnerCard from "../components/WinnerCard";
 import VotingBreakdown from "../components/VotingBreakdown";
-import { Badge, StepCircle } from "@/app/components/primitives";
+import { Badge, StepCard } from "@/app/components/primitives";
 import { Candidate } from "@/app/types"; // adjust path as needed
 
-function Walkthrough() {
+export default function Walkthrough() {
+    const REGISTERED_VOTERS = 12000;
+
+    // Adjusted so totals = 10,000
     const candidates: Candidate[] = [
-        { id: "c1", label: "Alice Johnson", sublabel: "Green", total: 3856, color: "green" },
-        { id: "c2", label: "Brian Smith", sublabel: "Conservative", total: 4200, color: "blue" },
-        { id: "c3", label: "Carla Nguyen", sublabel: "Liberal", total: 3944, color: "red" },
+        { id: "c1", label: "Alice Johnson", sublabel: "Green", total: 2000, color: "green" },
+        { id: "c2", label: "Brian Smith", sublabel: "Conservative", total: 3750, color: "blue" },
+        { id: "c3", label: "Carla Nguyen", sublabel: "Liberal", total: 4250, color: "red" },
     ];
 
-    const totalVotes = candidates.reduce((sum, c) => sum + (c.total ?? 0), 0);
-    const winner = candidates.reduce(
-        (max, c) => ((c.total ?? 0) > (max.total ?? 0) ? c : max),
-        candidates[0]
-    );
+    const totalVotes = candidates.reduce((sum, c) => sum + (c.total ?? 0), 0); // 10,000
+    const winner = candidates.reduce((max, c) => ((c.total ?? 0) > (max.total ?? 0) ? c : max), candidates[0]);
+    const turnout = Math.min(totalVotes / REGISTERED_VOTERS, 1); // 83.3%
 
-    const handleRowClick = (candidate: Candidate) => {
-        console.log(`Clicked ${candidate.label}`);
+    const byVotes = [...candidates].sort((a, b) => (b.total ?? 0) - (a.total ?? 0));
+    const runnerUp = byVotes[1];
+    const marginVotes = (winner.total ?? 0) - (runnerUp.total ?? 0);
+    const marginPct = REGISTERED_VOTERS > 0 ? (marginVotes / REGISTERED_VOTERS) : 0;
+
+    const colorDot = (color?: string) => {
+        const map: Record<string, string> = {
+            red: "bg-red-500",
+            blue: "bg-blue-500",
+            green: "bg-green-500",
+            yellow: "bg-yellow-500",
+            purple: "bg-purple-500",
+            gray: "bg-gray-500",
+        };
+        return map[color ?? "gray"] ?? map.gray;
     };
 
     return (
-        <div className="not-prose">
-            {/* Timeline container */}
-            <ol
-                className="
-          relative ml-6
-          before:absolute before:left-0 before:top-0 before:h-full before:w-px
-          before:bg-gray-200
-        "
-            >
-                {/* Step 1 */}
-                <li className="relative pl-8">
-                    <div className="absolute -left-6 top-0">
-                        <StepCircle num={1} />
-                    </div>
-                    <div className="pb-6 border-b border-gray-200 last:border-none">
-                        <p className="mb-2">Three candidates run for mayor:</p>
-                        <ul className="pl-0 text-sm flex flex-col divide-y divide-gray-200 rounded-lg bg-white/50">
+        <div className="not-prose relative isolate overflow-hidden">
+            <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(40rem_30rem_at_20%_10%,rgba(34,197,94,0.14),transparent_60%),radial-gradient(40rem_30rem_at_80%_20%,rgba(59,130,246,0.14),transparent_60%)]" />
+
+            <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+                <div className="space-y-6">
+                    <StepCard index={1} title="Candidates">
+                        <p className="mb-3 text-gray-700">Three candidates run for mayor:</p>
+                        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             {candidates.map((c) => (
-                                <li key={c.id} className="flex items-center gap-2 py-2 px-2">
-                                    <span className="font-medium">{c.label}</span>
+                                <li
+                                    key={c.id}
+                                    className="rounded-2xl border border-gray-200/80 bg-white/80 backdrop-blur p-4 shadow-sm flex items-start justify-between gap-3 transition-shadow hover:shadow-md"
+                                >
+                                    <div className="flex items-start gap-3 min-w-0 flex-1">
+                                        <span className={`inline-block h-2.5 w-2.5 rounded-full ${colorDot(c.color)}`} />
+                                        <span className="font-medium leading-tight whitespace-normal break-words">
+                                            {c.label}
+                                        </span>
+                                    </div>
                                     {c.sublabel && (
                                         <Badge color={c.color} className="shrink-0">
                                             {c.sublabel}
@@ -51,62 +64,64 @@ function Walkthrough() {
                                 </li>
                             ))}
                         </ul>
-                    </div>
-                </li>
+                    </StepCard>
 
-                {/* Step 2 */}
-                <li className="relative pl-8">
-                    <div className="absolute -left-6 top-0">
-                        <StepCircle num={2} />
-                    </div>
-                    <div className="pb-6 border-b border-gray-200 last:border-none">
-                        <p>
-                            There are 12,000 voters in the city. Each voter chooses one
-                            candidate on their ballot.
+                    <StepCard index={2} title="Ballots & turnout">
+                        <p className="text-gray-700">
+                            Each eligible voter marks one candidate on their ballot. Turnout is the share
+                            of registered voters who cast a ballot.
                         </p>
-                    </div>
-                </li>
-
-                {/* Step 3 */}
-                <li className="relative pl-8">
-                    <div className="absolute -left-6 top-0">
-                        <StepCircle num={3} />
-                    </div>
-                    <div className="pb-6 border-b border-gray-200 last:border-none">
-                        <p className="mb-2">After ballots are counted, the totals are:</p>
-                        <div className="mt-2">
-                            <VotingBreakdown
-                                candidates={candidates}
-                                onRowClick={(row) => {
-                                    const candidate = candidates.find(
-                                        (c) =>
-                                            `${c.label} ${c.sublabel ? `(${c.sublabel})` : ""}` ===
-                                            row.label
-                                    );
-                                    if (candidate) handleRowClick(candidate);
-                                }}
-                            />
+                        <dl className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div className="rounded-xl bg-gray-50 p-3">
+                                <dt className="text-gray-500 text-sm">Registered voters</dt>
+                                <dd className="mt-1 font-semibold text-gray-900">
+                                    {REGISTERED_VOTERS.toLocaleString()}
+                                </dd>
+                            </div>
+                            <div className="rounded-xl bg-gray-50 p-3">
+                                <dt className="text-gray-500 text-sm">Ballots counted</dt>
+                                <dd className="mt-1 font-semibold text-gray-900">
+                                    {totalVotes.toLocaleString()}
+                                </dd>
+                            </div>
+                            <div className="rounded-xl bg-gray-50 p-3">
+                                <dt className="text-gray-500 text-sm">Turnout</dt>
+                                <dd className="mt-1 font-semibold text-gray-900">
+                                    {(turnout * 100).toFixed(1)}%
+                                </dd>
+                            </div>
+                        </dl>
+                        <div className="mt-3">
+                            <div className="flex items-center justify-between text-xs text-gray-500">
+                                <span>Turnout</span>
+                                <span className="tabular-nums font-medium text-gray-700">
+                                    {(turnout * 100).toFixed(1)}%
+                                </span>
+                            </div>
+                            <div className="mt-2 h-2.5 rounded-full bg-gray-100">
+                                <div
+                                    className="h-2.5 rounded-full bg-gray-900 transition-[width] duration-500"
+                                    style={{ width: `${Math.min(100, Math.max(0, turnout * 100))}%` }}
+                                />
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </StepCard>
 
-                {/* Step 4 */}
-                <li className="relative pl-8">
-                    <div className="absolute -left-6 top-0">
-                        <StepCircle num={4} />
-                    </div>
-                    <div className="pb-0">
-                        <p className="mb-2">
-                            The candidate with the most votes is declared the winner:
+                    <StepCard index={3} title="Count the votes">
+                        <p className="mb-3 text-gray-700">After polls close, ballots are tallied. The totals are:</p>
+                        <VotingBreakdown candidates={candidates} />
+                    </StepCard>
+
+                    <StepCard index={4} title="Declare the winner">
+                        <p className="text-gray-700 mb-2">The candidate with the most votes is declared the winner:</p>
+                        <WinnerCard candidate={winner} totalVotes={totalVotes} />
+                        <p className="mt-3 text-sm text-gray-600">
+                            Margin over next candidate: <span className="font-medium">{marginVotes.toLocaleString()} votes</span>{" "}
+                            (<span className="font-medium">{(marginPct * 100).toFixed(1)}%</span> of registered voters).
                         </p>
-                        <div className="mt-2">
-                            <WinnerCard candidate={winner} totalVotes={totalVotes} />
-                        </div>
-                    </div>
-                </li>
-            </ol>
+                    </StepCard>
+                </div>
+            </div>
         </div>
     );
 }
-
-export default Walkthrough;

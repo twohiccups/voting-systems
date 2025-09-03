@@ -1,6 +1,7 @@
 // WinnerCard.tsx
 import * as React from "react";
 import type { Candidate } from "@/app/types"; // adjust import path to where your interface lives
+import { Badge } from "@/app/components/primitives";
 
 export type WinnerCardProps = {
     /** The winning candidate */
@@ -53,9 +54,7 @@ export default function WinnerCard({
                             <div className="flex items-center gap-2">
                                 <p className="text-lg font-semibold leading-tight">{candidate.label}</p>
                                 {candidate.sublabel && (
-                                    <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
-                                        {candidate.sublabel}
-                                    </span>
+                                    <Badge color={candidate.color}>{candidate.sublabel}</Badge>
                                 )}
                             </div>
                         </div>

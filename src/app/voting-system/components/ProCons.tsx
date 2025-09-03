@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckIcon, StepCard, XIcon } from "@/app/components/primitives";
+import { Card, CheckIcon, StepCard, XIcon } from "@/app/components/primitives";
 import Section from "@/app/components/Section";
 import SectionHeading from "@/app/components/SectionHeading";
 import { ProsCons } from "@/app/types";
@@ -21,7 +21,7 @@ function ProConCard({ item, tone }: { item: ProsCons, tone: 'pro' | 'con' }) {
         );
 
     return (
-        <StepCard className="w-full max-w-none">
+        <Card title={""} >
             <div className="flex items-start gap-3">
                 <span className="mt-0.5 inline-flex h-8 w-8 items-center justify-center rounded-full bg-[var(--muted)] text-foreground/70">
                     {toneIcon}
@@ -50,7 +50,7 @@ function ProConCard({ item, tone }: { item: ProsCons, tone: 'pro' | 'con' }) {
                     </div>
                 </details>
             ) : null}
-        </StepCard>
+        </Card>
     );
 }
 

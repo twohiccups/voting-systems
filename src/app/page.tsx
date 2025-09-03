@@ -10,6 +10,7 @@ import { QuoteBlock } from "@/app/components/QuoteBlock";
 import { Container } from "@/app/components/Container";
 import { FullBleed } from "@/app/components/FullBleed";
 import Section from "@/app/components/Section";
+import SectionHeading from "./components/SectionHeading";
 
 export default function Home() {
   return (
@@ -47,11 +48,10 @@ export default function Home() {
 
         {/* Give the Section the anchor/id directly (avoid nesting a <section> inside) */}
         <Section>
+          <SectionHeading title="Explore Voting Systems" />
           <VotingSystemsGallery
             systems={VotingSystems}
             taxonomy={TaxonomySystems}
-            heading="Explore Voting Systems"
-            intro="Here are some concrete examples, organized by the six core taxonomy types."
           />
         </Section>
 

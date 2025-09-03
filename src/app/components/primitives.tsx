@@ -173,20 +173,30 @@ export const StepList: React.FC<StepListProps> = ({
 );
 
 // ---------- Layout wrapper: StepCard ----------
-export const StepCard: React.FC<StepCardProps> = ({ title, children, className, titleClassName }) => (
-    <div
-        className={[
-            "theme-transition rounded-2xl border p-3 sm:p-4 md:p-6 lg:p-8 shadow-sm",
-            "bg-[var(--card)] text-[var(--card-foreground)] border-[var(--border)]",
-            className,
-        ].filter(Boolean).join(" ")}
-    >
-        {title ? (
-            <h3 className={["text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-5 md:mb-6", titleClassName].filter(Boolean).join(" ")}>{title}</h3>
-        ) : null}
-        {children}
-    </div>
-);
+
+
+export function Card({ title, children }: { title: string; children: React.ReactNode }) {
+    return (
+        <section className="rounded-3xl border border-gray-200/80 bg-white/80 backdrop-blur px-5 py-4 shadow-sm transition-shadow hover:shadow-md">
+            <div className="flex items-center gap-3">
+                <h3 className="text-base font-semibold tracking-tight">{title}</h3>
+            </div>
+            <div className="mt-3">{children}</div>
+        </section>
+    );
+}
+
+export function StepCard({ index, title, children }: { index: number; title: string; children: React.ReactNode }) {
+    return (
+        <section className="rounded-3xl border border-gray-200/80 bg-white/80 backdrop-blur px-5 py-4 shadow-sm transition-shadow hover:shadow-md">
+            <div className="flex items-center gap-3">
+                <StepCircle num={index} />
+                <h3 className="text-base font-semibold tracking-tight">{title}</h3>
+            </div>
+            <div className="mt-3">{children}</div>
+        </section>
+    );
+}
 
 
 export function Chip({
@@ -217,33 +227,53 @@ export function Chip({
     );
 }
 
+export type PartyColor = "green" | "blue" | "red" | "gray" | "purple" | "orange";
+
+export const PARTY_PALETTE: Record<
+    PartyColor,
+    {
+        // ui tokens for reuse
+        bg50: string;     // light background chip/card
+        bg100: string;     // light background chip/card
+        bg200: string;     // light background chip/card
+        text700: string;   // text on light bg
+        dot: string;       // small dots
+        bar700: string;    // solid bar
+        gradFrom600: string; // gradient start
+        gradTo700: string;   // gradient end
+    }
+> = {
+    green: { bg50: "bg-green-50", bg100: "bg-green-100", bg200: "bg-green-200", text700: "text-green-700", dot: "bg-green-600", bar700: "bg-green-700", gradFrom600: "from-green-600", gradTo700: "to-green-700" },
+    blue: { bg50: "bg-blue-50", bg100: "bg-blue-100", bg200: "bg-blue-200", text700: "text-blue-700", dot: "bg-blue-600", bar700: "bg-blue-700", gradFrom600: "from-blue-600", gradTo700: "to-blue-700" },
+    red: { bg50: "bg-red-50", bg100: "bg-red-100", bg200: "bg-red-200", text700: "text-red-700", dot: "bg-red-600", bar700: "bg-red-700", gradFrom600: "from-red-600", gradTo700: "to-red-700" },
+    gray: { bg50: "bg-gray-50", bg100: "bg-gray-100", bg200: "bg-gray-200", text700: "text-gray-700", dot: "bg-gray-600", bar700: "bg-gray-700", gradFrom600: "from-gray-600", gradTo700: "to-gray-700" },
+    purple: { bg50: "bg-purple-50", bg100: "bg-purple-100", bg200: "bg-purple-200", text700: "text-purple-700", dot: "bg-purple-600", bar700: "bg-purple-700", gradFrom600: "from-purple-600", gradTo700: "to-purple-700" },
+    orange: { bg50: "bg-orange-50", bg100: "bg-orange-100", bg200: "bg-orange-200", text700: "text-orange-700", dot: "bg-orange-600", bar700: "bg-orange-700", gradFrom600: "from-orange-600", gradTo700: "to-orange-700" },
+};
+
+
+
+// ---- Badge tweaks to use the palette ----
 export type BadgeProps = {
     children: React.ReactNode;
     /** Accepts known palette colors, but also any string */
-    color?: "green" | "blue" | "red" | "gray" | (string & {});
+    color?: PartyColor | (string & {});
     className?: string;
 };
 
-const colorClasses: Record<"green" | "blue" | "red" | "gray", { bg: string; text: string }> = {
-    green: { bg: "bg-green-100", text: "text-green-700" },
-    blue: { bg: "bg-blue-100", text: "text-blue-700" },
-    red: { bg: "bg-red-100", text: "text-red-700" },
-    gray: { bg: "bg-gray-100", text: "text-gray-700" },
-};
-
-function resolveColor(color?: string) {
-    return (color && color in colorClasses ? color : "gray") as keyof typeof colorClasses;
+function resolveColor(color?: string): PartyColor {
+    return (color && (color as PartyColor) in PARTY_PALETTE ? (color as PartyColor) : "gray");
 }
 
 export function Badge({ children, color, className = "" }: BadgeProps) {
     const resolved = resolveColor(color);
-    const c = colorClasses[resolved];
+    const p = PARTY_PALETTE[resolved];
     return (
         <span
             className={[
                 "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium",
-                c.bg,
-                c.text,
+                p.bg200,
+                p.text700,
                 className,
             ].join(" ")}
         >

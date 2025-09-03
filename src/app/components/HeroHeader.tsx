@@ -21,10 +21,11 @@ export default function HeroHeader({
     fullHeight = false,
 }: HeroHeaderProps) {
 
-    bgImage = 'https://www.nps.gov/common/uploads/cropped_image/primary/F0CEDDA8-CDA3-A365-792FF3B0EB0FCFF8.jpg'
+    bgImage = 'https://images.unsplash.com/photo-1643228995868-bf698f67d053?w=1400&auto=format&fit=crop&q=100&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwcm9maWxlLXBhZ2V8NXx8fGVufDB8fHx8fA%3D%3D'
+    //    https://unsplash.com/@nattgw
     return (
         <header
-            className={`relative w-full ${fullHeight ? "h-screen" : "h-[60vh]"
+            className={`relative w-full ${fullHeight ? "h-screen" : "h-[70vh]"
                 } flex items-center justify-center text-center text-white`}
             role="banner"
             aria-label="Hero header"
@@ -40,7 +41,7 @@ export default function HeroHeader({
                     sizes="100vw"
                 />
                 {/* Dark Overlay */}
-                <div className="absolute inset-0 bg-black/50" />
+                <div className="absolute inset-0 bg-black/10" />
             </div>
 
             {/* Content */}

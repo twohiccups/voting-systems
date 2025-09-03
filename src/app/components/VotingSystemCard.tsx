@@ -2,7 +2,7 @@
 "use client";
 import * as React from "react";
 import { Chip } from "./primitives";
-import { Card } from "./Card";
+import { SystemCard } from "./SystemCard";
 import { VotingSystem } from "../types";
 
 export type VotingSystemCardProps = {
@@ -17,7 +17,7 @@ export default function VotingSystemCard({
     const { name, shortDescription, taxonomyId, slug } = system;
 
     return (
-        <Card
+        <SystemCard
             href={`/voting-system/${slug}`}
             title={name}
             description={shortDescription}

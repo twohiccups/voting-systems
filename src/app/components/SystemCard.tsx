@@ -12,7 +12,7 @@ type CardProps = {
     children?: React.ReactNode;
 };
 
-export function Card({
+export function SystemCard({
     href,
     title,
     description,
