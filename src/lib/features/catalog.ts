@@ -1,5 +1,22 @@
-import { FeatureChoices, FeatureId, SystemFeature } from "./types";
+// lib/features/catalog.ts
 
+import {
+    FeatureChoices,
+    FeatureId,
+    SystemFeature,
+    // Item enums
+    SeatType,
+    BallotType,
+    MajorityGuarantee,
+    CountingRule,
+    Proportionality,
+    VoterComplexity,
+    TallyingComplexity,
+    BallotErrorHandling,
+    SpoilerRisk,
+    StrategicPressure,
+    RepresentationStyle,
+} from "./types";
 
 /**
  * Canonical feature catalog (single source of truth).
@@ -9,89 +26,240 @@ export const featureCatalog: SystemFeature[] = [
     {
         id: FeatureId.Seats,
         title: "Seats",
-        description: "Single- or multi-winner districts.",
+        description:
+            "Whether the election selects a single officeholder or fills multiple seats in a council or legislature.",
         items: [
-            { label: "Single-winner" },
-            { label: "Multi-winner" },
+            {
+                label: SeatType.SingleWinner,
+                detail:
+                    "Produces one winner, such as a president, mayor, or district representative.",
+            },
+            {
+                label: SeatType.MultiWinner,
+                detail:
+                    "Produces several winners, as in parliaments, councils, or corporate boards.",
+            },
         ],
     },
     {
         id: FeatureId.BallotType,
         title: "Ballot type",
-        description: "How voters express preferences.",
+        description: "The way voters are asked to express their preferences on the ballot.",
         items: [
-            { label: "Single-choice" },
-            { label: "Multi-choice" },
-            { label: "Ranked" },
-            { label: "Scored" },
-            { label: "Approval" },
-            { label: "List" },
+            {
+                label: BallotType.SingleChoice,
+                detail: "Voters mark only one candidate or party.",
+            },
+            {
+                label: BallotType.MultiChoice,
+                detail:
+                    "Voters may select more than one option, as in block voting or approval systems.",
+            },
+            {
+                label: BallotType.Ranked,
+                detail:
+                    "Voters list candidates in order of preference: first, second, third, and so on.",
+            },
+            {
+                label: BallotType.Scored,
+                detail:
+                    "Voters assign numerical ratings, such as from 0 to 5 or 0 to 10.",
+            },
+            {
+                label: BallotType.Approval,
+                detail:
+                    "Voters mark every candidate they find acceptable; all approvals count equally.",
+            },
+            {
+                label: BallotType.List,
+                detail:
+                    "Voters choose a party list, or sometimes both a party and a preferred candidate within that list.",
+            },
         ],
     },
     {
         id: FeatureId.MajorityGuarantee,
         title: "Majority guarantee",
-        description: "Winner always has a majority of support.",
-        items: [{ label: "Yes" }, { label: "No" }],
+        description:
+            "Whether the rules ensure the winner commands support from more than half the voters.",
+        items: [
+            {
+                label: MajorityGuarantee.Yes,
+                detail:
+                    "The winner must secure over 50% of votes or effective support, as in two-round or ranked-choice elections.",
+            },
+            {
+                label: MajorityGuarantee.No,
+                detail:
+                    "A candidate may win with less than half the vote, as in first-past-the-post, approval voting, or proportional lists.",
+            },
+        ],
     },
     {
         id: FeatureId.Counting,
-        title: "Counting",
-        description: "How votes are tallied.",
+        title: "Counting rule",
+        description:
+            "The algorithm that translates ballots into winners or seat allocations.",
         items: [
-            { label: "Plurality" },
-            { label: "Majority runoff" },
-            { label: "Transferable" },
-            { label: "Proportional formula" },
-            { label: "Pairwise comparisons" },
+            {
+                label: CountingRule.Plurality,
+                detail:
+                    "The candidate with the most votes wins, even if they lack a majority.",
+            },
+            {
+                label: CountingRule.MajorityRunoff,
+                detail:
+                    "A winner is chosen by requiring over 50%, either through a second round or through instant runoffs.",
+            },
+            {
+                label: CountingRule.Transferable,
+                detail:
+                    "Votes are transferred from eliminated or surplus candidates, as in ranked-choice or single transferable vote.",
+            },
+            {
+                label: CountingRule.ProportionalFormula,
+                detail:
+                    "Seats are distributed in proportion to vote share, using formulas such as D’Hondt, Sainte-Laguë, or the Hare quota.",
+            },
+            {
+                label: CountingRule.PairwiseComparisons,
+                detail:
+                    "Candidates are compared head-to-head, as in Condorcet methods or Ranked Pairs.",
+            },
+            {
+                label: CountingRule.Scoring,
+                detail: "Candidates with the highest total score wins.",
+            },
         ],
     },
     {
         id: FeatureId.Proportionality,
         title: "Proportionality",
-        description: "Degree to which seats reflect vote shares.",
-        items: [{ label: "Low" }, { label: "Medium" }, { label: "High" }],
+        description:
+            "How closely the final seat distribution reflects the overall share of votes.",
+        items: [
+            {
+                label: Proportionality.Low,
+                detail:
+                    "Seat shares can be heavily distorted—for example, 40% of votes may yield 60% of seats under first-past-the-post.",
+            },
+            {
+                label: Proportionality.Medium,
+                detail:
+                    "Results adjust somewhat toward fairness, but are not fully proportional, as in limited vote or parallel systems.",
+            },
+            {
+                label: Proportionality.High,
+                detail:
+                    "Seat shares mirror vote shares closely, as in single transferable vote or party-list proportional representation.",
+            },
+        ],
     },
     {
         id: FeatureId.VoterComplexity,
         title: "Voter complexity",
-        description: "How hard it is to vote correctly.",
+        description:
+            "The level of effort required from voters to express their preferences accurately.",
         items: [
-            { label: "Very low" },
-            { label: "Low" },
-            { label: "Moderate" },
-            { label: "High" },
+            {
+                label: VoterComplexity.VeryLow,
+                detail: "Marking a single ‘X’ on the ballot, as in first-past-the-post.",
+            },
+            {
+                label: VoterComplexity.Low,
+                detail:
+                    "Selecting several options or marking approvals and disapprovals.",
+            },
+            {
+                label: VoterComplexity.Moderate,
+                detail:
+                    "Ranking or scoring requires more thought about candidate order or numerical values.",
+            },
+            {
+                label: VoterComplexity.High,
+                detail:
+                    "Detailed rankings or scores for many candidates, such as in large multi-seat ranked-choice elections.",
+            },
         ],
     },
     {
         id: FeatureId.TallyingComplexity,
         title: "Tallying complexity",
-        description: "How hard it is to count results.",
-        items: [{ label: "Simple" }, { label: "Moderate" }, { label: "Complex" }],
+        description:
+            "The administrative difficulty of counting votes and verifying results.",
+        items: [
+            {
+                label: TallyingComplexity.Simple,
+                detail:
+                    "Counting straightforward marks and declaring the highest total as winner.",
+            },
+            {
+                label: TallyingComplexity.Moderate,
+                detail:
+                    "Requires formulas or multiple rounds, as in approval, cumulative, or two-round elections.",
+            },
+            {
+                label: TallyingComplexity.Complex,
+                detail:
+                    "Involves iterative transfers, quotas, or head-to-head matrices, as in ranked-choice, Condorcet, or dual member proportional systems.",
+            },
+        ],
     },
     {
         id: FeatureId.BallotErrorHandling,
         title: "Ballot error handling",
-        description: "How tolerant the system is of ballot mistakes.",
-        items: [{ label: "Strict" }, { label: "Moderate" }, { label: "High tolerance" }],
+        description:
+            "How the system treats ballots with mistakes, ambiguities, or incomplete preferences.",
+        items: [
+            {
+                label: BallotErrorHandling.Strict,
+                detail:
+                    "A ballot is spoiled by overvotes or invalid marks, as in first-past-the-post, block voting, or two-round elections.",
+            },
+            {
+                label: BallotErrorHandling.Moderate,
+                detail:
+                    "Some errors are tolerated, but ballots may truncate or exhaust early, as in ranked-choice or single transferable vote.",
+            },
+            {
+                label: BallotErrorHandling.HighTolerance,
+                detail:
+                    "Most partial or ambiguous ballots still count, as in approval, score, Condorcet, or party-list systems.",
+            },
+        ],
     },
     {
         id: FeatureId.SpoilerRisk,
         title: "Spoiler risk",
-        description: "Likelihood that similar candidates split votes.",
-        items: [{ label: "High" }, { label: "Medium" }, { label: "Low" }],
+        description:
+            "The chance that similar candidates split the vote and change the outcome.",
+        items: [
+            { label: SpoilerRisk.High, detail: "Frequent under first-past-the-post or block voting." },
+            { label: SpoilerRisk.Medium, detail: "Reduced but still possible in systems like two-round or ranked-choice." },
+            { label: SpoilerRisk.Low, detail: "Largely eliminated in approval, score, or proportional systems." },
+        ],
     },
     {
         id: FeatureId.StrategicPressure,
-        title: "Strategic pressure",
-        description: "Incentive to vote strategically vs. sincerely.",
-        items: [{ label: "High" }, { label: "Medium" }, { label: "Low" }],
+        title: "Strategic voting pressure",
+        description:
+            "How strongly voters feel pushed to vote insincerely to avoid worse outcomes.",
+        items: [
+            { label: StrategicPressure.High, detail: "Common, as in lesser-evil voting under first-past-the-post." },
+            { label: StrategicPressure.Medium, detail: "Sometimes advantageous in two-round or ranked-choice systems." },
+            { label: StrategicPressure.Low, detail: "Voters can usually vote sincerely in approval, score, or proportional systems." },
+        ],
     },
     {
         id: FeatureId.RepresentationStyle,
         title: "Representation style",
-        description: "How representation is conceptualized.",
-        items: [{ label: "Majoritarian" }, { label: "Proportional" }, { label: "Mixed" }],
+        description:
+            "The overall philosophy of governance implied by the rule.",
+        items: [
+            { label: RepresentationStyle.Majoritarian, detail: "Aims to produce a single clear winner or majority government." },
+            { label: RepresentationStyle.Proportional, detail: "Seeks to reflect the diversity of preferences across parties and candidates." },
+            { label: RepresentationStyle.Mixed, detail: "Combines both approaches, as in mixed-member proportional or parallel systems." },
+        ],
     },
 ];
 

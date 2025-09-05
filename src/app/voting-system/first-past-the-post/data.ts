@@ -7,7 +7,6 @@ import {
 } from "@/lib/features/types";
 
 
-export const slug = 'first-past-the-post';
 export const name = "First-Past-the-Post";
 export const aka = ["Plurality"];
 

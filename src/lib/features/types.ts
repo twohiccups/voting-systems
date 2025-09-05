@@ -39,6 +39,7 @@ export enum CountingRule {
     Transferable = "Transferable",
     ProportionalFormula = "Proportional formula",
     PairwiseComparisons = "Pairwise comparisons",
+    Scoring = "Scoring",
 }
 
 export enum Proportionality {

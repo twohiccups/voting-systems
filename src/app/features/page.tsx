@@ -2,8 +2,8 @@
 
 import React, { useMemo, useState } from "react";
 import { BulletList, Td, Th, ViewToggle } from "../components/primitives";
-import { systemFeatures } from "./features";
 import SectionHeading from "../components/SectionHeading";
+import { featureCatalog } from "@/lib/features/catalog";
 
 // === Types ===
 export type FeatureItem = { label: string; detail?: string };
@@ -23,9 +23,9 @@ export default function FeaturesPage() {
     const [q, setQ] = useState("");
 
     const visible = useMemo(() => {
-        if (!q.trim()) return systemFeatures;
+        if (!q.trim()) return featureCatalog;
         const needle = q.toLowerCase();
-        return systemFeatures.filter((s) =>
+        return featureCatalog.filter((s) =>
             s.title.toLowerCase().includes(needle) ||
             (s.description ?? "").toLowerCase().includes(needle) ||
             s.items.some((it) =>
