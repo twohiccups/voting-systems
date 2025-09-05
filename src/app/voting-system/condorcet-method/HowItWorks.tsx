@@ -12,5 +12,6 @@ export default function HowItWorks() {
         { text: <>If tied, a tiebreak procedure applies.</> },
         { text: <>Results are certified officially.</> },
     ];
+
     return <FlowSteps steps={steps} />;
 }

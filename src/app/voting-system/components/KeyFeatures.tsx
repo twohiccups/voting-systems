@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { FeatureChoices, SystemFeature } from "@/lib/features/types";
-import { systemFeatures } from "@/app/features/features";
+import { featureCatalog } from "@/lib/features/catalog";
 
 
 
@@ -62,7 +62,7 @@ export default function KeyFeatures({
     // Only include features that have a rating provided
     const ratedFeatures: SystemFeature[] = React.useMemo(
         () =>
-            systemFeatures.filter(
+            featureCatalog.filter(
                 (f): f is SystemFeature =>
                     f.id in featureChoices && featureChoices[f.id as keyof FeatureChoices] !== undefined
             ),

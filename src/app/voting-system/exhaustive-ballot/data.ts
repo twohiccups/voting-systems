@@ -109,7 +109,7 @@ export const keyFeatures: FeatureChoices = {
     [FeatureId.VoterComplexity]: VoterComplexity.Moderate,
     [FeatureId.TallyingComplexity]: TallyingComplexity.Moderate,
     [FeatureId.BallotErrorHandling]: BallotErrorHandling.Strict,
-    [FeatureId.SpoilerRisk]: SpoilerRisk.Medium,
+    [FeatureId.SpoilerRisk]: SpoilerRisk.Moderate,
     [FeatureId.StrategicPressure]: StrategicPressure.High,
     [FeatureId.RepresentationStyle]: RepresentationStyle.Majoritarian,
 };

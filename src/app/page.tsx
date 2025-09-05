@@ -15,7 +15,7 @@ import SectionHeading from "./components/SectionHeading";
 export default function Home() {
   return (
     <div>
-      {/* Full-width (bleeds edge-to-edge) */}
+      {/* Hero stays the same (image background handled inside component) */}
       <FullBleed>
         <HeroHeader
           title="How Leaders Are Chosen"
@@ -26,7 +26,7 @@ export default function Home() {
         />
       </FullBleed>
 
-      {/* Constrained content with between-section spacing */}
+      {/* Contained on white */}
       <Container>
         <Section>
           <QuoteBlock>
@@ -37,25 +37,38 @@ export default function Home() {
             power itself.
           </QuoteBlock>
         </Section>
+      </Container>
 
-        <Section>
-          <IntroSection />
-        </Section>
+      {/* Full-bleed subtle blue gradient */}
+      <FullBleed className="bg-gradient-to-r from-blue-100 via-cyan-50 to-blue-200">
+        <Container>
+          <Section>
+            <IntroSection />
+          </Section>
+        </Container>
+      </FullBleed>
 
+      {/* Contained on white */}
+      <Container>
         <Section>
           <VotingTaxonomy />
         </Section>
-
-        {/* Give the Section the anchor/id directly (avoid nesting a <section> inside) */}
-        <Section>
-          <SectionHeading title="Explore Voting Systems" />
-          <VotingSystemsGallery
-            systems={VotingSystems}
-            taxonomy={TaxonomySystems}
-          />
-        </Section>
-
       </Container>
+
+      {/* Full-bleed subtle blue gradient */}
+      <FullBleed
+        className="bg-gradient-to-r from-blue-100 via-cyan-50 to-blue-200"
+      >
+        <Container>
+          <Section>
+            <SectionHeading title="Explore Voting Systems" />
+            <VotingSystemsGallery
+              systems={VotingSystems}
+              taxonomy={TaxonomySystems}
+            />
+          </Section>
+        </Container>
+      </FullBleed>
     </div>
   );
 }

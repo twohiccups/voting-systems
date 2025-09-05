@@ -144,7 +144,7 @@ export const featureCatalog: SystemFeature[] = [
                     "Seat shares can be heavily distorted—for example, 40% of votes may yield 60% of seats under first-past-the-post.",
             },
             {
-                label: Proportionality.Medium,
+                label: Proportionality.Moderate,
                 detail:
                     "Results adjust somewhat toward fairness, but are not fully proportional, as in limited vote or parallel systems.",
             },
@@ -235,7 +235,7 @@ export const featureCatalog: SystemFeature[] = [
             "The chance that similar candidates split the vote and change the outcome.",
         items: [
             { label: SpoilerRisk.High, detail: "Frequent under first-past-the-post or block voting." },
-            { label: SpoilerRisk.Medium, detail: "Reduced but still possible in systems like two-round or ranked-choice." },
+            { label: SpoilerRisk.Moderate, detail: "Reduced but still possible in systems like two-round or ranked-choice." },
             { label: SpoilerRisk.Low, detail: "Largely eliminated in approval, score, or proportional systems." },
         ],
     },
@@ -246,7 +246,7 @@ export const featureCatalog: SystemFeature[] = [
             "How strongly voters feel pushed to vote insincerely to avoid worse outcomes.",
         items: [
             { label: StrategicPressure.High, detail: "Common, as in lesser-evil voting under first-past-the-post." },
-            { label: StrategicPressure.Medium, detail: "Sometimes advantageous in two-round or ranked-choice systems." },
+            { label: StrategicPressure.Moderate, detail: "Sometimes advantageous in two-round or ranked-choice systems." },
             { label: StrategicPressure.Low, detail: "Voters can usually vote sincerely in approval, score, or proportional systems." },
         ],
     },

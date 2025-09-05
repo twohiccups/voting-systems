@@ -2,8 +2,8 @@
 "use client";
 
 import * as React from "react";
-import { TaxonomySystem } from "../types";
 import { SystemCard } from "./SystemCard";
+import { TaxonomySystem } from "@/lib/taxonomy/types";
 
 export default function TaxonomyCard({ system }: { system: TaxonomySystem }) {
     return (

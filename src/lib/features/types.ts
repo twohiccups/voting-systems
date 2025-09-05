@@ -40,11 +40,14 @@ export enum CountingRule {
     ProportionalFormula = "Proportional formula",
     PairwiseComparisons = "Pairwise comparisons",
     Scoring = "Scoring",
+    Approval = "Approval",
+    Parallel = "Parallel",
+    Runoff = "Runoff",
 }
 
 export enum Proportionality {
     Low = "Low",
-    Medium = "Medium",
+    Moderate = "Moderate",
     High = "High",
 }
 
@@ -69,13 +72,13 @@ export enum BallotErrorHandling {
 
 export enum SpoilerRisk {
     High = "High",
-    Medium = "Medium",
+    Moderate = "Moderate",
     Low = "Low",
 }
 
 export enum StrategicPressure {
     High = "High",
-    Medium = "Medium",
+    Moderate = "Moderate",
     Low = "Low",
 }
 
