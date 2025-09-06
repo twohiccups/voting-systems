@@ -1,14 +1,10 @@
 // app/voting-system/block-vote/data.ts
 import { ProsCons, UseCase } from "@/app/types";
 import {
-    BallotErrorHandling,
     BallotType,
-    CountingRule,
     FeatureChoices,
     FeatureId,
     MajorityGuarantee,
-    Proportionality,
-    RepresentationStyle,
     SeatType,
     SpoilerRisk,
     StrategicPressure,
@@ -22,8 +18,8 @@ export const aka = ["Plurality-at-Large", "Block Plurality", "Multiple-Member Pl
 
 export const introParagraph: string = `
   Block Voting elects multiple winners at once in a single district.
-  Each voter can support up to as many candidates as there are seats (for example, mark up to 3 names for 3 seats),
-  and the candidates with the most votes fill the seats. It’s essentially plurality extended to multi-member contests:
+  Each voter can support up to as many candidates as there are seats, (for example, mark up to 3 names for 3 seats.
+  The candidates with the most votes fill the seats. It’s essentially plurality extended to multi-member contests:
   simple to administer and quick to count. However, because cohesive majorities can often sweep every seat,
   minorities and dispersed blocs can be significantly under-represented compared to their share of the vote.
 `;
@@ -70,19 +66,15 @@ export const weaknesses: ProsCons[] = [
     },
 ];
 
-export const keyFeatures: FeatureChoices = {
-    [FeatureId.Seats]: SeatType.MultiWinner,
-    // If your codebase uses a different enum for multi-mark ballots (e.g., KOfN), adjust this next line accordingly.
-    [FeatureId.BallotType]: BallotType.MultiChoice,
-    [FeatureId.MajorityGuarantee]: MajorityGuarantee.No,
-    [FeatureId.Counting]: CountingRule.Plurality,
-    [FeatureId.Proportionality]: Proportionality.Low,
-    [FeatureId.VoterComplexity]: VoterComplexity.Low,
-    [FeatureId.TallyingComplexity]: TallyingComplexity.Simple,
-    [FeatureId.BallotErrorHandling]: BallotErrorHandling.Strict,
-    [FeatureId.SpoilerRisk]: SpoilerRisk.High,
-    [FeatureId.StrategicPressure]: StrategicPressure.High,
-    [FeatureId.RepresentationStyle]: RepresentationStyle.Majoritarian,
+
+export const keyFeatures: Partial<FeatureChoices> = {
+    [FeatureId.Seats]: SeatType.MultiWinner, // Elects multiple seats
+    [FeatureId.BallotType]: BallotType.MultiChoice, // Voter can pick up to k candidates
+    [FeatureId.MajorityGuarantee]: MajorityGuarantee.Yes, // Cohesive majority can sweep all seats
+    [FeatureId.VoterComplexity]: VoterComplexity.Low, // Just ticking k names
+    [FeatureId.TallyingComplexity]: TallyingComplexity.Simple, // Count votes, top k win
+    [FeatureId.SpoilerRisk]: SpoilerRisk.High, // Vote-splitting within groups
+    [FeatureId.StrategicPressure]: StrategicPressure.High, // Bullet voting & slate discipline
 };
 
 export const useCases: UseCase[] = [

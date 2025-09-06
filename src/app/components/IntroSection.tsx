@@ -2,7 +2,6 @@
 
 import React from "react";
 import { StepCircle, StepItemData } from "./primitives";
-import SectionHeading from "./SectionHeading";
 import { motion, useReducedMotion } from "framer-motion";
 import type { Variants } from "framer-motion";
 
@@ -28,17 +27,12 @@ export default function IntroSection() {
 
     const prefersReduced = useReducedMotion();
 
-    // Always return a Variants object so TS is happy; when reduced,
-    // the "hidden" and "show" states are identical (no motion).
     const container: Variants = prefersReduced
         ? { hidden: {}, show: {} }
         : {
             hidden: {},
             show: {
-                transition: {
-                    staggerChildren: 0.2, // slower
-                    delayChildren: 0.15, // starts a bit later
-                },
+                transition: { staggerChildren: 0.2, delayChildren: 0.15 },
             },
         };
 
@@ -49,12 +43,7 @@ export default function IntroSection() {
             show: {
                 opacity: 1,
                 y: 0,
-                transition: {
-                    type: "spring",
-                    stiffness: 240, // lower stiffness = slower
-                    damping: 30,
-                    mass: 1,
-                },
+                transition: { type: "spring", stiffness: 240, damping: 30 },
             },
         };
 
@@ -70,37 +59,46 @@ export default function IntroSection() {
         };
 
     return (
-        <div className="theme-transition rounded-2xl border border-border bg-card text-card-foreground shadow-sm p-6 sm:p-8 lg:p-10">
-            <SectionHeading title="At their core, voting systems are designed to answer questions like:" />
-
-            <motion.ul
-                className="space-y-4 sm:space-y-5 lg:space-y-6 mt-6"
-                variants={container}
-                initial={prefersReduced ? false : "hidden"}
-                whileInView={prefersReduced ? undefined : "show"}
-                viewport={{ once: true, amount: 0.7 }} // trigger later (more of the section must be visible)
+        <div className="perspective-[1200px]">
+            <motion.div
+                className="theme-transition rounded-2xl border-border bg-card text-card-foreground shadow-xl p-6 sm:p-8 lg:p-10 bg-gradient-to-r from-blue-100 via-cyan-50 to-blue-200"
+                whileHover={{
+                    rotateX: -1,
+                    rotateY: 1,
+                    scale: 1.05,
+                    boxShadow:
+                        "0 20px 40px rgba(0,0,0,0.25), 0 10px 15px rgba(0,0,0,0.1)",
+                }}
+                transition={{ type: "spring", stiffness: 200, damping: 15 }}
             >
-                {items.map((itemData, i) => (
-                    <motion.li
-                        key={i}
-                        className="flex items-start gap-3 sm:gap-4"
-                        variants={item}
-                    >
-                        <motion.div variants={circle}>
-                            <StepCircle num={i + 1} />
-                        </motion.div>
-
-                        <div>
-                            <p className="font-semibold text-base sm:text-lg">
-                                {itemData.question}
-                            </p>
-                            <p className="text-muted-foreground text-base sm:text-lg">
-                                {itemData.detail}
-                            </p>
-                        </div>
-                    </motion.li>
-                ))}
-            </motion.ul>
+                <motion.ul
+                    className="space-y-4 sm:space-y-5 lg:space-y-6 mt-6"
+                    variants={container}
+                    initial={prefersReduced ? false : "hidden"}
+                    whileInView={prefersReduced ? undefined : "show"}
+                    viewport={{ once: true, amount: 0.7 }}
+                >
+                    {items.map((itemData, i) => (
+                        <motion.li
+                            key={i}
+                            className="flex items-start gap-3 sm:gap-4"
+                            variants={item}
+                        >
+                            <motion.div variants={circle}>
+                                <StepCircle num={i + 1} />
+                            </motion.div>
+                            <div>
+                                <p className="font-semibold text-base sm:text-xl">
+                                    {itemData.question}
+                                </p>
+                                <p className="text-muted-foreground text-base sm:text-xl">
+                                    {itemData.detail}
+                                </p>
+                            </div>
+                        </motion.li>
+                    ))}
+                </motion.ul>
+            </motion.div>
         </div>
     );
 }

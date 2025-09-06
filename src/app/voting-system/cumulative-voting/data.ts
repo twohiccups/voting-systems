@@ -1,8 +1,8 @@
 // app/voting-system/cumulative-voting/data.ts
 import { ProsCons, UseCase } from "@/app/types";
 import {
-    BallotErrorHandling, BallotType, CountingRule, FeatureChoices, FeatureId,
-    MajorityGuarantee, Proportionality, RepresentationStyle, SeatType,
+    BallotType, FeatureChoices, FeatureId,
+    MajorityGuarantee, SeatType,
     SpoilerRisk, StrategicPressure, TallyingComplexity, VoterComplexity
 } from "@/lib/features/types";
 
@@ -55,19 +55,16 @@ export const weaknesses: ProsCons[] = [
     },
 ];
 
-export const keyFeatures: FeatureChoices = {
-    [FeatureId.Seats]: SeatType.MultiWinner,
-    [FeatureId.BallotType]: BallotType.MultiChoice,
-    [FeatureId.MajorityGuarantee]: MajorityGuarantee.No,
-    [FeatureId.Counting]: CountingRule.Plurality, // totals only
-    [FeatureId.Proportionality]: Proportionality.Moderate,
-    [FeatureId.VoterComplexity]: VoterComplexity.Low,
-    [FeatureId.TallyingComplexity]: TallyingComplexity.Simple,
-    [FeatureId.BallotErrorHandling]: BallotErrorHandling.Lenient,
-    [FeatureId.SpoilerRisk]: SpoilerRisk.Moderate,
-    [FeatureId.StrategicPressure]: StrategicPressure.Moderate,
-    [FeatureId.RepresentationStyle]: RepresentationStyle.Proportional,
+export const keyFeatures: Partial<FeatureChoices> = {
+    [FeatureId.Seats]: SeatType.MultiWinner, // Used for multi-seat bodies
+    [FeatureId.BallotType]: BallotType.Scored, // Voters distribute points among candidates
+    [FeatureId.MajorityGuarantee]: MajorityGuarantee.No, // Majority may not take all seats if they split votes
+    [FeatureId.VoterComplexity]: VoterComplexity.Moderate, // Requires allocating scores strategically
+    [FeatureId.TallyingComplexity]: TallyingComplexity.Simple, // Just sum scores
+    [FeatureId.SpoilerRisk]: SpoilerRisk.Moderate, // Split allocations can weaken blocs
+    [FeatureId.StrategicPressure]: StrategicPressure.High, // Strong incentive to concentrate votes
 };
+
 
 export const useCases: UseCase[] = [
     {

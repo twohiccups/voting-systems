@@ -4,7 +4,7 @@ import * as React from "react";
 import VotingSystemCard from "./VotingSystemCard";
 import { Chip, ViewToggle } from "./primitives";
 import VotingSystemsTable from "./VotingSystemsTable";
-import { VotingSystem, TaxonomySystem } from "../voting-system/layout";
+import { VotingSystem, TaxonomySystem } from "@/lib/taxonomy/types";
 
 function useCanUseTable(breakpoint: string = "(min-width: 768px)") {
     const [canUse, setCanUse] = React.useState<boolean>(false);

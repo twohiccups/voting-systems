@@ -1,13 +1,9 @@
 import { ProsCons, UseCase } from "@/app/types";
 import {
-    BallotErrorHandling,
     BallotType,
-    CountingRule,
     FeatureChoices,
     FeatureId,
     MajorityGuarantee,
-    Proportionality,
-    RepresentationStyle,
     SeatType,
     SpoilerRisk,
     StrategicPressure,
@@ -100,18 +96,14 @@ export const weaknesses: ProsCons[] = [
     },
 ];
 
-export const keyFeatures: FeatureChoices = {
-    [FeatureId.Seats]: SeatType.SingleWinner,
-    [FeatureId.BallotType]: BallotType.SingleChoice,
-    [FeatureId.MajorityGuarantee]: MajorityGuarantee.Yes,
-    [FeatureId.Counting]: CountingRule.MajorityRunoff,
-    [FeatureId.Proportionality]: Proportionality.Low,
-    [FeatureId.VoterComplexity]: VoterComplexity.Moderate,
-    [FeatureId.TallyingComplexity]: TallyingComplexity.Moderate,
-    [FeatureId.BallotErrorHandling]: BallotErrorHandling.Strict,
-    [FeatureId.SpoilerRisk]: SpoilerRisk.Moderate,
-    [FeatureId.StrategicPressure]: StrategicPressure.High,
-    [FeatureId.RepresentationStyle]: RepresentationStyle.Majoritarian,
+export const keyFeatures: Partial<FeatureChoices> = {
+  [FeatureId.Seats]: SeatType.SingleWinner,
+  [FeatureId.BallotType]: BallotType.SingleChoice, // One vote per round
+  [FeatureId.MajorityGuarantee]: MajorityGuarantee.Yes, // Process continues until someone has majority
+  [FeatureId.VoterComplexity]: VoterComplexity.Moderate, // Multiple rounds, evolving preferences
+  [FeatureId.TallyingComplexity]: TallyingComplexity.Moderate, // Repeat elimination rounds
+  [FeatureId.SpoilerRisk]: SpoilerRisk.Moderate, // Elimination sequencing matters
+  [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // Incentives for coordination across rounds
 };
 
 export const useCases: UseCase[] = [

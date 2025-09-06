@@ -1,5 +1,5 @@
 import { ProsCons, UseCase } from "@/app/types";
-import { FeatureChoices, FeatureId, SeatType, BallotType, MajorityGuarantee, CountingRule, Proportionality, VoterComplexity, TallyingComplexity, BallotErrorHandling, SpoilerRisk, StrategicPressure, RepresentationStyle } from "@/lib/features/types";
+import { FeatureChoices, FeatureId, SeatType, BallotType, MajorityGuarantee, VoterComplexity, TallyingComplexity, SpoilerRisk, StrategicPressure } from "@/lib/features/types";
 
 /**
  * Data for approval voting.
@@ -15,13 +15,14 @@ export const name = "Approval Voting";
 export const aka: string[] = [];
 
 export const introParagraph: string = `
-  Approval voting is a simple yet powerful single-winner method. Instead of
-  marking just one name, voters place a mark beside every candidate they
-  approve of. After all ballots are counted, the candidate with the most
-  approvals wins. By letting electors support multiple candidates, approval
-  voting reduces the spoiler effect, encourages broad appeal and retains
-  simple ballots and tallying.
+  Approval voting is a simple yet powerful method, most commonly used for
+  single-winner elections. Instead of marking just one name, voters place a
+  mark beside each candidate they approve of. After all ballots are counted,
+  the candidate with the most approvals wins. By letting electors support
+  multiple candidates, approval voting helps reduce the spoiler effect,
+  encourages broad appeal, and retains simple ballots and tallying.
 `;
+
 
 export const strengths: ProsCons[] = [
   {
@@ -89,18 +90,15 @@ export const weaknesses: ProsCons[] = [
   },
 ];
 
-export const keyFeatures: FeatureChoices = {
-  [FeatureId.Seats]: SeatType.Both,
-  [FeatureId.BallotType]: BallotType.Approval,
-  [FeatureId.MajorityGuarantee]: MajorityGuarantee.No,
-  [FeatureId.Counting]: CountingRule.Approval,
-  [FeatureId.Proportionality]: Proportionality.Low,
-  [FeatureId.VoterComplexity]: VoterComplexity.VeryLow,
-  [FeatureId.TallyingComplexity]: TallyingComplexity.Simple,
-  [FeatureId.BallotErrorHandling]: BallotErrorHandling.Strict,
-  [FeatureId.SpoilerRisk]: SpoilerRisk.Low,
-  [FeatureId.StrategicPressure]: StrategicPressure.Moderate,
-  [FeatureId.RepresentationStyle]: RepresentationStyle.Majoritarian,
+
+export const keyFeatures: Partial<FeatureChoices> = {
+  [FeatureId.Seats]: SeatType.SingleWinner, // Usually used for one office
+  [FeatureId.BallotType]: BallotType.Approval, // Approve any number of candidates
+  [FeatureId.MajorityGuarantee]: MajorityGuarantee.No, // Majority-approved candidate can still lose
+  [FeatureId.VoterComplexity]: VoterComplexity.Low, // Simple yes/no marks
+  [FeatureId.TallyingComplexity]: TallyingComplexity.Simple, // Just sum approvals
+  [FeatureId.SpoilerRisk]: SpoilerRisk.Low, // Reduces classic vote-splitting
+  [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // Bullet vs. threshold strategies
 };
 
 export const useCases: UseCase[] = [

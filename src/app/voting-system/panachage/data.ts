@@ -1,8 +1,8 @@
 // app/voting-system/fptp/data.ts
 import { ProsCons, UseCase } from "@/app/types";
 import {
-    BallotErrorHandling, BallotType, CountingRule, FeatureChoices, FeatureId,
-    MajorityGuarantee, Proportionality, RepresentationStyle, SeatType,
+    BallotType, FeatureChoices, FeatureId,
+    MajorityGuarantee, SeatType,
     SpoilerRisk, StrategicPressure, TallyingComplexity, VoterComplexity
 } from "@/lib/features/types";
 
@@ -54,19 +54,16 @@ export const weaknesses: ProsCons[] = [
     },
 ];
 
-export const keyFeatures: FeatureChoices = {
-    [FeatureId.Seats]: SeatType.SingleWinner,
-    [FeatureId.BallotType]: BallotType.SingleChoice,
-    [FeatureId.MajorityGuarantee]: MajorityGuarantee.No,
-    [FeatureId.Counting]: CountingRule.Plurality,
-    [FeatureId.Proportionality]: Proportionality.Low,
-    [FeatureId.VoterComplexity]: VoterComplexity.VeryLow,
-    [FeatureId.TallyingComplexity]: TallyingComplexity.Simple,
-    [FeatureId.BallotErrorHandling]: BallotErrorHandling.Strict,
-    [FeatureId.SpoilerRisk]: SpoilerRisk.High,
-    [FeatureId.StrategicPressure]: StrategicPressure.High,
-    [FeatureId.RepresentationStyle]: RepresentationStyle.Majoritarian,
+export const keyFeatures: Partial<FeatureChoices> = {
+    [FeatureId.Seats]: SeatType.MultiWinner,
+    [FeatureId.BallotType]: BallotType.List, // Voters may reorder or mix candidates across lists
+    [FeatureId.MajorityGuarantee]: MajorityGuarantee.No, // No guaranteed majority
+    [FeatureId.VoterComplexity]: VoterComplexity.High, // Very flexible, requires careful candidate-level marking
+    [FeatureId.TallyingComplexity]: TallyingComplexity.Complex, // Transfer and reallocation within/between lists
+    [FeatureId.SpoilerRisk]: SpoilerRisk.Low, // Proportional systems dampen spoilers
+    [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // Incentives for splitting, reordering
 };
+
 
 
 export const useCases: UseCase[] = [

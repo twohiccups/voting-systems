@@ -1,8 +1,8 @@
 // app/voting-system/fptp/data.ts
 import { ProsCons, UseCase } from "@/app/types";
 import {
-    BallotErrorHandling, BallotType, CountingRule, FeatureChoices, FeatureId,
-    MajorityGuarantee, Proportionality, RepresentationStyle, SeatType,
+    BallotType, FeatureChoices, FeatureId,
+    MajorityGuarantee, SeatType,
     SpoilerRisk, StrategicPressure, TallyingComplexity, VoterComplexity
 } from "@/lib/features/types";
 
@@ -57,18 +57,14 @@ export const weaknesses: ProsCons[] = [
     },
 ];
 
-export const keyFeatures: FeatureChoices = {
-    [FeatureId.Seats]: SeatType.SingleWinner,
-    [FeatureId.BallotType]: BallotType.SingleChoice,
-    [FeatureId.MajorityGuarantee]: MajorityGuarantee.No,
-    [FeatureId.Counting]: CountingRule.Plurality,
-    [FeatureId.Proportionality]: Proportionality.Low,
-    [FeatureId.VoterComplexity]: VoterComplexity.VeryLow,
-    [FeatureId.TallyingComplexity]: TallyingComplexity.Simple,
-    [FeatureId.BallotErrorHandling]: BallotErrorHandling.Strict,
-    [FeatureId.SpoilerRisk]: SpoilerRisk.High,
-    [FeatureId.StrategicPressure]: StrategicPressure.High,
-    [FeatureId.RepresentationStyle]: RepresentationStyle.Majoritarian,
+export const keyFeatures: Partial<FeatureChoices> = {
+  [FeatureId.Seats]: SeatType.SingleWinner,
+  [FeatureId.BallotType]: BallotType.SingleChoice,
+  [FeatureId.MajorityGuarantee]: MajorityGuarantee.No, // Candidate can win with <50%
+  [FeatureId.VoterComplexity]: VoterComplexity.Low, // Very simple ballot
+  [FeatureId.TallyingComplexity]: TallyingComplexity.Simple, // Count and compare
+  [FeatureId.SpoilerRisk]: SpoilerRisk.High, // Classic vote-splitting problem
+  [FeatureId.StrategicPressure]: StrategicPressure.High, // Strong Duverger-style tactical voting
 };
 
 

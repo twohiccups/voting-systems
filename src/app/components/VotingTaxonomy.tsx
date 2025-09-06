@@ -2,10 +2,10 @@
 
 import * as React from "react";
 import TaxonomyCard from "./TaxonomyCard";
-import { TaxonomySystems } from "../../lib/taxonomy/data";
-import type { TaxonomySystem } from "../types";
+import { TaxonomySystems } from "../../lib/taxonomy/catalog";
 import { Dot, NextIcon, PrevIcon } from "./primitives";
 import SectionHeading from "./SectionHeading";
+import { TaxonomySystem } from "@/lib/taxonomy/types";
 
 const intro = `Voting systems vary widely — some reward simplicity, others aim for fairness or consensus. To navigate this variety, we’ve grouped the world’s voting systems into six core types, each grounded in a distinct logic of design.`;
 

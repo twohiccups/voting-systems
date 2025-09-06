@@ -1,6 +1,6 @@
 // lib/systems/registry.ts
 
-import { VotingSystems } from "../taxonomy/data";
+import { VotingSystems } from "../taxonomy/catalog";
 import { VotingSystemSlug } from "../taxonomy/types";
 
 export const allSystemSlugs =

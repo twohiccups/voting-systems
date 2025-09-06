@@ -1,13 +1,9 @@
 import { ProsCons, UseCase } from "@/app/types";
 import {
-    BallotErrorHandling,
     BallotType,
-    CountingRule,
     FeatureChoices,
     FeatureId,
     MajorityGuarantee,
-    Proportionality,
-    RepresentationStyle,
     SeatType,
     SpoilerRisk,
     StrategicPressure,
@@ -99,19 +95,17 @@ use. Lower familiarity can create learning and trust hurdles at rollout.
     },
 ];
 
-export const keyFeatures: FeatureChoices = {
+// ranked-pairs (a Condorcet completion)
+export const keyFeatures: Partial<FeatureChoices> = {
     [FeatureId.Seats]: SeatType.SingleWinner,
-    [FeatureId.BallotType]: BallotType.Ranked,
-    [FeatureId.MajorityGuarantee]: MajorityGuarantee.Yes, // A majority top-choice candidate will win.
-    [FeatureId.Counting]: CountingRule.PairwiseComparisons,
-    [FeatureId.Proportionality]: Proportionality.Low,
-    [FeatureId.VoterComplexity]: VoterComplexity.Moderate,
-    [FeatureId.TallyingComplexity]: TallyingComplexity.Moderate,
-    [FeatureId.BallotErrorHandling]: BallotErrorHandling.Strict,
-    [FeatureId.SpoilerRisk]: SpoilerRisk.Low,
-    [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // Some vulnerability (e.g., burial) exists in edge cases.
-    [FeatureId.RepresentationStyle]: RepresentationStyle.Majoritarian,
+    [FeatureId.BallotType]: BallotType.Ranked, // Rankings produce pairwise graph
+    [FeatureId.MajorityGuarantee]: MajorityGuarantee.Yes, // Elects Condorcet winner when one exists
+    [FeatureId.VoterComplexity]: VoterComplexity.Moderate, // Ranking required
+    [FeatureId.TallyingComplexity]: TallyingComplexity.Complex, // Sort/lock pairs by margin without cycles
+    [FeatureId.SpoilerRisk]: SpoilerRisk.Low, // Pairwise basis reduces classic spoilers
+    [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // Burying/cycle play still possible
 };
+
 
 export const useCases: UseCase[] = [
     {

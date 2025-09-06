@@ -1,13 +1,9 @@
 import { ProsCons, UseCase } from "@/app/types";
 import {
-    BallotErrorHandling,
     BallotType,
-    CountingRule,
     FeatureChoices,
     FeatureId,
     MajorityGuarantee,
-    Proportionality,
-    RepresentationStyle,
     SeatType,
     SpoilerRisk,
     StrategicPressure,
@@ -95,19 +91,16 @@ and societies, so voters and officials may be less familiar with it.
     },
 ];
 
-export const keyFeatures: FeatureChoices = {
+export const keyFeatures: Partial<FeatureChoices> = {
     [FeatureId.Seats]: SeatType.SingleWinner,
     [FeatureId.BallotType]: BallotType.Ranked,
-    [FeatureId.MajorityGuarantee]: MajorityGuarantee.Yes, // Condorcet winner (if any) will win.
-    [FeatureId.Counting]: CountingRule.PairwiseComparisons,
-    [FeatureId.Proportionality]: Proportionality.Low,
+    [FeatureId.MajorityGuarantee]: MajorityGuarantee.Yes, // Condorcet winner always wins
     [FeatureId.VoterComplexity]: VoterComplexity.Moderate,
-    [FeatureId.TallyingComplexity]: TallyingComplexity.Moderate,
-    [FeatureId.BallotErrorHandling]: BallotErrorHandling.Strict,
-    [FeatureId.SpoilerRisk]: SpoilerRisk.Low,
-    [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // Some susceptibility to burial/topping.
-    [FeatureId.RepresentationStyle]: RepresentationStyle.Majoritarian,
+    [FeatureId.TallyingComplexity]: TallyingComplexity.Complex, // Compute pairwise, assign win/loss points
+    [FeatureId.SpoilerRisk]: SpoilerRisk.Low, // Pairwise logic mitigates spoilers
+    [FeatureId.StrategicPressure]: StrategicPressure.Moderate,
 };
+
 
 export const useCases: UseCase[] = [
     {

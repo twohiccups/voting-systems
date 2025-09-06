@@ -1,4 +1,4 @@
-import { VotingSystems } from "./data";
+import { VotingSystems } from "./catalog";
 
 
 export interface TaxonomySystem {

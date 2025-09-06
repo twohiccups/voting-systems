@@ -92,9 +92,6 @@ export default function KeyFeatures({
             <div className="px-3">
                 <div className="flex items-baseline justify-between py-1">
                     <span className="text-xl font-extrabold">Impact</span>
-                    <span className="text-[11px] uppercase tracking-wide text-black/70">
-                        % Value*
-                    </span>
                 </div>
                 <div className="border-b-4 border-black" />
             </div>

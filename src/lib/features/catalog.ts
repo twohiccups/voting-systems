@@ -166,14 +166,11 @@ export const featureCatalog: SystemFeature[] = [
         description:
             "The level of effort required from voters to express their preferences accurately.",
         items: [
-            {
-                label: VoterComplexity.VeryLow,
-                detail: "Marking a single ‘X’ on the ballot, as in first-past-the-post.",
-            },
+
             {
                 label: VoterComplexity.Low,
                 detail:
-                    "Selecting several options or marking approvals and disapprovals.",
+                    "Marking a single or muliple ‘X’s on the ballot or marking approvals and disapprovals.",
             },
             {
                 label: VoterComplexity.Moderate,

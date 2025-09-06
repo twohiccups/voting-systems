@@ -1,13 +1,9 @@
 import { ProsCons, UseCase } from "@/app/types";
 import {
-    BallotErrorHandling,
     BallotType,
-    CountingRule,
     FeatureChoices,
     FeatureId,
     MajorityGuarantee,
-    Proportionality,
-    RepresentationStyle,
     SeatType,
     SpoilerRisk,
     StrategicPressure,
@@ -98,19 +94,16 @@ be publicly acceptable and could undermine perceived legitimacy.
     },
 ];
 
-export const keyFeatures: FeatureChoices = {
-    [FeatureId.Seats]: SeatType.MultiWinner, // Panels/juries typically have multiple members.
-    [FeatureId.BallotType]: BallotType.SingleChoice, // No real ballot; using the closest schema fit.
-    [FeatureId.MajorityGuarantee]: MajorityGuarantee.No,
-    [FeatureId.Counting]: CountingRule.Other, // Random selection, not vote counting.
-    [FeatureId.Proportionality]: Proportionality.High, // High representativeness when sampling is done well.
-    [FeatureId.VoterComplexity]: VoterComplexity.VeryLow, // Public does not fill out a ballot.
-    [FeatureId.TallyingComplexity]: TallyingComplexity.Simple, // Simple random draw / stratified sampling.
-    [FeatureId.BallotErrorHandling]: BallotErrorHandling.Strict,
-    [FeatureId.SpoilerRisk]: SpoilerRisk.Low, // No candidates; spoiler dynamics largely irrelevant.
-    [FeatureId.StrategicPressure]: StrategicPressure.Low, // Minimal campaign pressure by design.
-    [FeatureId.RepresentationStyle]: RepresentationStyle.Other,
+export const keyFeatures: Partial<FeatureChoices> = {
+    [FeatureId.Seats]: SeatType.Both, // Can fill single or multiple seats
+    [FeatureId.BallotType]: BallotType.SingleChoice, // Placeholder: effectively no ballot in practice
+    [FeatureId.MajorityGuarantee]: MajorityGuarantee.No, // Outcomes are random, not majority-driven
+    [FeatureId.VoterComplexity]: VoterComplexity.Low, // No voter action required
+    [FeatureId.TallyingComplexity]: TallyingComplexity.Simple, // Random draw
+    [FeatureId.SpoilerRisk]: SpoilerRisk.Low, // No vote-splitting
+    [FeatureId.StrategicPressure]: StrategicPressure.Low, // No strategic voting
 };
+
 
 export const useCases: UseCase[] = [
     {

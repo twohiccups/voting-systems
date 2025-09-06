@@ -1,18 +1,14 @@
 import { ProsCons, UseCase } from "@/app/types";
 import {
-    BallotErrorHandling,
-    BallotType,
-    CountingRule,
-    FeatureChoices,
-    FeatureId,
-    MajorityGuarantee,
-    Proportionality,
-    RepresentationStyle,
-    SeatType,
-    SpoilerRisk,
-    StrategicPressure,
-    TallyingComplexity,
-    VoterComplexity,
+  BallotType,
+  FeatureChoices,
+  FeatureId,
+  MajorityGuarantee,
+  SeatType,
+  SpoilerRisk,
+  StrategicPressure,
+  TallyingComplexity,
+  VoterComplexity,
 } from "@/lib/features/types";
 
 /**
@@ -43,86 +39,84 @@ export const introParagraph: string = `
 `;
 
 export const strengths: ProsCons[] = [
-    {
-        title: "Proportional and balanced representation",
-        summary: "Seats reflect the spectrum of voter preferences.",
-        details: `STV provides mixed and balanced representation: parties or
+  {
+    title: "Proportional and balanced representation",
+    summary: "Seats reflect the spectrum of voter preferences.",
+    details: `STV provides mixed and balanced representation: parties or
       groups win seats roughly in proportion to their share of the vote,
       and no single party can easily monopolise representation. Most
       voters elect someone they support, meaning few votes are wasted.`,
-    },
-    {
-        title: "Voters can cross party lines",
-        summary: "Preferences within and across parties are honoured.",
-        details: `STV allows voters to rank individual candidates from the same
+  },
+  {
+    title: "Voters can cross party lines",
+    summary: "Preferences within and across parties are honoured.",
+    details: `STV allows voters to rank individual candidates from the same
       party or different parties. Supporters can promote diversity
       (gender, ethnicity, ideology) without splitting the vote or
       requiring separate parties.`,
-    },
-    {
-        title: "Prevents landslides and extremes",
-        summary: "Elimination and transfer discourage polarisation.",
-        details: `By redistributing votes from surplus and least-popular candidates,
+  },
+  {
+    title: "Prevents landslides and extremes",
+    summary: "Elimination and transfer discourage polarisation.",
+    details: `By redistributing votes from surplus and least-popular candidates,
       STV prevents a single faction from sweeping all seats and reduces the
       chances that extreme or fringe candidates will prevail.`,
-    },
+  },
 ];
 
 export const weaknesses: ProsCons[] = [
-    {
-        title: "Proportionality depends on district magnitude",
-        summary: "Small districts can yield less proportional results.",
-        details: `The degree of proportionality achieved by STV depends on how many
+  {
+    title: "Proportionality depends on district magnitude",
+    summary: "Small districts can yield less proportional results.",
+    details: `The degree of proportionality achieved by STV depends on how many
       seats are in each district. Smaller districts with only a few seats may
       still produce disproportionate outcomes.`,
-    },
-    {
-        title: "Complex counting and transfers",
-        summary: "Fractional transfers require precise calculations.",
-        details: `Counting STV ballots involves calculating a quota and transferring
+  },
+  {
+    title: "Complex counting and transfers",
+    summary: "Fractional transfers require precise calculations.",
+    details: `Counting STV ballots involves calculating a quota and transferring
       surplus votes in fractional amounts. This often requires computer
       assistance and meticulous record-keeping, making the tallying process
       more complicated than single-round systems.`,
-    },
-    {
-        title: "Intra-party competition and weakened party control",
-        summary: "Candidates from the same party must compete against each other.",
-        details: `Because voters rank individuals, multiple candidates from the same
+  },
+  {
+    title: "Intra-party competition and weakened party control",
+    summary: "Candidates from the same party must compete against each other.",
+    details: `Because voters rank individuals, multiple candidates from the same
       party may vie for the same supporters. This reduces the role of political
       parties in determining who gets elected and can lead to intra-party
       competition.`,
-    },
+  },
 ];
 
-export const keyFeatures: FeatureChoices = {
-    [FeatureId.Seats]: SeatType.MultiWinner,
-    [FeatureId.BallotType]: BallotType.Ranked,
-    [FeatureId.MajorityGuarantee]: MajorityGuarantee.No,
-    [FeatureId.Counting]: CountingRule.Transferable,
-    [FeatureId.Proportionality]: Proportionality.High,
-    [FeatureId.VoterComplexity]: VoterComplexity.Moderate, // was Medium
-    [FeatureId.TallyingComplexity]: TallyingComplexity.Complex,
-    [FeatureId.BallotErrorHandling]: BallotErrorHandling.Strict,
-    [FeatureId.SpoilerRisk]: SpoilerRisk.Low,
-    [FeatureId.StrategicPressure]: StrategicPressure.Low,
-    [FeatureId.RepresentationStyle]: RepresentationStyle.Proportional,
+// single-transferable-vote (STV)
+export const keyFeatures: Partial<FeatureChoices> = {
+  [FeatureId.Seats]: SeatType.MultiWinner,
+  [FeatureId.BallotType]: BallotType.Ranked, // Rank candidates; transfers via quota
+  [FeatureId.MajorityGuarantee]: MajorityGuarantee.No, // No guaranteed majority control
+  [FeatureId.VoterComplexity]: VoterComplexity.High, // Full rankings & transfer logic
+  [FeatureId.TallyingComplexity]: TallyingComplexity.Complex, // Quotas, surplus transfers, eliminations
+  [FeatureId.SpoilerRisk]: SpoilerRisk.Low, // Proportional/transfer mechanics dampen spoilers
+  [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // Some tactics (e.g., ranking order), less severe
 };
 
+
 export const useCases: UseCase[] = [
-    {
-        country: "Ireland",
-        bodies: ["Dáil Éireann (Lower House), local elections"],
-    },
-    {
-        country: "Malta",
-        bodies: ["Parliament of Malta"],
-    },
-    {
-        country: "Australia",
-        bodies: ["Australian Senate and some state/territory legislatures"],
-    },
-    {
-        country: "New Zealand",
-        bodies: ["Local body elections and health boards"],
-    },
+  {
+    country: "Ireland",
+    bodies: ["Dáil Éireann (Lower House), local elections"],
+  },
+  {
+    country: "Malta",
+    bodies: ["Parliament of Malta"],
+  },
+  {
+    country: "Australia",
+    bodies: ["Australian Senate and some state/territory legislatures"],
+  },
+  {
+    country: "New Zealand",
+    bodies: ["Local body elections and health boards"],
+  },
 ];

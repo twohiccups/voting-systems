@@ -4,13 +4,14 @@ import HeroHeader from "@/app/components/HeroHeader";
 import IntroSection from "@/app/components/IntroSection";
 import VotingTaxonomy from "@/app/components/VotingTaxonomy";
 import VotingSystemsGallery from "@/app/components/VotingSystemsGallery";
-import { TaxonomySystems, VotingSystems } from "@/lib/taxonomy/data";
+import { TaxonomySystems, VotingSystems } from "@/lib/taxonomy/catalog";
 import { QuoteBlock } from "@/app/components/QuoteBlock";
 
 import { Container } from "@/app/components/Container";
 import { FullBleed } from "@/app/components/FullBleed";
 import Section from "@/app/components/Section";
 import SectionHeading from "./components/SectionHeading";
+import GeometricBleed from "./components/GeometricBleed";
 
 export default function Home() {
   return (
@@ -21,8 +22,10 @@ export default function Home() {
           title="How Leaders Are Chosen"
           subtitle="An interactive guide to voting systems worldwide"
           ctaText="Explore Systems"
-          ctaLink="#systems"
-          bgImage="/images/voting-bg.jpg"
+          ctaLink="#voting-systems"
+          bgImage="https://images.unsplash.com/photo-1643228995868-bf698f67d053?w=1400&auto=format&fit=crop&q=100&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwcm9maWxlLXBhZ2V8NXx8fGVufDB8fHx8fA%3D%3D"
+          imageCredit="Image by Natt"
+          imageCreditLink="https://unsplash.com/@nattgw"
         />
       </FullBleed>
 
@@ -39,14 +42,14 @@ export default function Home() {
         </Section>
       </Container>
 
+
       {/* Full-bleed subtle blue gradient */}
-      <FullBleed className="bg-gradient-to-r from-blue-100 via-cyan-50 to-blue-200">
-        <Container>
-          <Section>
-            <IntroSection />
-          </Section>
-        </Container>
-      </FullBleed>
+      <Container>
+        <Section>
+          <SectionHeading title="At their core, voting systems are designed to answer questions like:" />
+          <IntroSection />
+        </Section>
+      </Container>
 
       {/* Contained on white */}
       <Container>
@@ -55,20 +58,20 @@ export default function Home() {
         </Section>
       </Container>
 
-      {/* Full-bleed subtle blue gradient */}
-      <FullBleed
-        className="bg-gradient-to-r from-blue-100 via-cyan-50 to-blue-200"
-      >
+      {/* Full-bleed geometric background */}
+
+      <GeometricBleed variant="grid" className="bg-white">
         <Container>
-          <Section>
-            <SectionHeading title="Explore Voting Systems" />
+          <Section className="min-h-screen">
+            <SectionHeading id="voting-systems" title="Explore Voting Systems" />
             <VotingSystemsGallery
               systems={VotingSystems}
               taxonomy={TaxonomySystems}
             />
           </Section>
         </Container>
-      </FullBleed>
+      </GeometricBleed>
+
     </div>
   );
 }

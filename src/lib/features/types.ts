@@ -47,13 +47,13 @@ export enum CountingRule {
 }
 
 export enum Proportionality {
+    NA = "N/A",
     Low = "Low",
     Moderate = "Moderate",
     High = "High",
 }
 
 export enum VoterComplexity {
-    VeryLow = "Very low",
     Low = "Low",
     Moderate = "Moderate",
     High = "High",
@@ -108,13 +108,10 @@ export type SystemFeature = {
 export type FeatureChoices = {
     [FeatureId.Seats]: SeatType;
     [FeatureId.BallotType]: BallotType;
+    [FeatureId.RepresentationStyle]: RepresentationStyle;
     [FeatureId.MajorityGuarantee]: MajorityGuarantee;
-    [FeatureId.Counting]: CountingRule;
-    [FeatureId.Proportionality]: Proportionality;
     [FeatureId.VoterComplexity]: VoterComplexity;
     [FeatureId.TallyingComplexity]: TallyingComplexity;
-    [FeatureId.BallotErrorHandling]: BallotErrorHandling;
     [FeatureId.SpoilerRisk]: SpoilerRisk;
     [FeatureId.StrategicPressure]: StrategicPressure;
-    [FeatureId.RepresentationStyle]: RepresentationStyle;
 };

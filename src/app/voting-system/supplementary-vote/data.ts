@@ -1,14 +1,10 @@
 // app/voting-system/supplementary-vote/data.ts
 import { ProsCons, UseCase } from "@/app/types";
 import {
-  BallotErrorHandling,
   BallotType,
-  CountingRule,
   FeatureChoices,
   FeatureId,
   MajorityGuarantee,
-  Proportionality,
-  RepresentationStyle,
   SeatType,
   SpoilerRisk,
   StrategicPressure,
@@ -68,18 +64,15 @@ export const weaknesses: ProsCons[] = [
   },
 ];
 
-export const keyFeatures: FeatureChoices = {
+// supplementary-vote (top-two with limited preferences)
+export const keyFeatures: Partial<FeatureChoices> = {
   [FeatureId.Seats]: SeatType.SingleWinner,
-  [FeatureId.BallotType]: BallotType.Ranked, // first and optional second preference
-  [FeatureId.MajorityGuarantee]: MajorityGuarantee.Yes,
-  [FeatureId.Counting]: CountingRule.Runoff, // contingent (top-two-in-one) runoff
-  [FeatureId.Proportionality]: Proportionality.Low,
-  [FeatureId.VoterComplexity]: VoterComplexity.Low, // simpler than full IRV
-  [FeatureId.TallyingComplexity]: TallyingComplexity.Moderate,
-  [FeatureId.BallotErrorHandling]: BallotErrorHandling.Lenient, // accept valid partial rankings
-  [FeatureId.SpoilerRisk]: SpoilerRisk.Moderate, // reduced vs plurality, but top-two cutoff matters
-  [FeatureId.StrategicPressure]: StrategicPressure.Moderate,
-  [FeatureId.RepresentationStyle]: RepresentationStyle.Majoritarian,
+  [FeatureId.BallotType]: BallotType.Ranked, // First + (optional) second preference
+  [FeatureId.MajorityGuarantee]: MajorityGuarantee.Yes, // Winner after transfers has majority of valid votes
+  [FeatureId.VoterComplexity]: VoterComplexity.Low, // Mark 1st and (optionally) 2nd
+  [FeatureId.TallyingComplexity]: TallyingComplexity.Moderate, // Eliminate to top two, then transfer seconds
+  [FeatureId.SpoilerRisk]: SpoilerRisk.Moderate, // Reduced vs. plurality; not as robust as full IRV
+  [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // Some insincere ranking incentives
 };
 
 export const useCases: UseCase[] = [

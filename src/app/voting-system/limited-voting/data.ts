@@ -1,14 +1,10 @@
 // app/voting-system/limited-voting/data.ts
 import { ProsCons, UseCase } from "@/app/types";
 import {
-    BallotErrorHandling,
     BallotType,
-    CountingRule,
     FeatureChoices,
     FeatureId,
     MajorityGuarantee,
-    Proportionality,
-    RepresentationStyle,
     SeatType,
     SpoilerRisk,
     StrategicPressure,
@@ -69,18 +65,14 @@ export const weaknesses: ProsCons[] = [
     },
 ];
 
-export const keyFeatures: FeatureChoices = {
+export const keyFeatures: Partial<FeatureChoices> = {
     [FeatureId.Seats]: SeatType.MultiWinner,
-    [FeatureId.BallotType]: BallotType.MultiChoice, // voters have fewer votes than seats
-    [FeatureId.MajorityGuarantee]: MajorityGuarantee.No,
-    [FeatureId.Counting]: CountingRule.Plurality, // highest vote-getters win
-    [FeatureId.Proportionality]: Proportionality.Moderate, // semi-proportional
+    [FeatureId.BallotType]: BallotType.MultiChoice, // Fewer votes than seats
+    [FeatureId.MajorityGuarantee]: MajorityGuarantee.No, // Majority cannot guarantee sweeping all seats
     [FeatureId.VoterComplexity]: VoterComplexity.Low,
     [FeatureId.TallyingComplexity]: TallyingComplexity.Simple,
-    [FeatureId.BallotErrorHandling]: BallotErrorHandling.Strict, // overvoting is a common issue to guard against
-    [FeatureId.SpoilerRisk]: SpoilerRisk.Moderate,
-    [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // bullet-voting incentives
-    [FeatureId.RepresentationStyle]: RepresentationStyle.SemiProportional,
+    [FeatureId.SpoilerRisk]: SpoilerRisk.Moderate, // Splitting still possible, but less than block vote
+    [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // Coordination matters
 };
 
 export const useCases: UseCase[] = [

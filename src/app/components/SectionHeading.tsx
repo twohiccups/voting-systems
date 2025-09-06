@@ -10,7 +10,7 @@ export default function SectionHeading({ id, title, className }: SectionHeadingP
         <h2
             id={id}
             className={
-                'scroll-mt-28 text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight text-center ' +
+                'scroll-mt-28 text-xl sm:text-2xl md:text-4xl font-semibold tracking-tight text-center ' +
                 (className ?? '')
             }
         >

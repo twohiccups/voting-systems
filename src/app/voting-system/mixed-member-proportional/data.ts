@@ -1,13 +1,9 @@
 import { ProsCons, UseCase } from "@/app/types";
 import {
-    BallotErrorHandling,
     BallotType,
-    CountingRule,
     FeatureChoices,
     FeatureId,
     MajorityGuarantee,
-    Proportionality,
-    RepresentationStyle,
     SeatType,
     SpoilerRisk,
     StrategicPressure,
@@ -97,20 +93,14 @@ export const weaknesses: ProsCons[] = [
     },
 ];
 
-export const keyFeatures: FeatureChoices = {
-    [FeatureId.Seats]: SeatType.MultiWinner,
-    // If your BallotType models “two votes” (e.g., Dual/TwoColumn), prefer that here.
-    [FeatureId.BallotType]: BallotType.SingleChoice,
-    [FeatureId.MajorityGuarantee]: MajorityGuarantee.No,
-    // Compensatory list allocation uses an apportionment formula.
-    [FeatureId.Counting]: CountingRule.ProportionalFormula,
-    [FeatureId.Proportionality]: Proportionality.High,
-    [FeatureId.VoterComplexity]: VoterComplexity.Moderate,
-    [FeatureId.TallyingComplexity]: TallyingComplexity.Complex,
-    [FeatureId.BallotErrorHandling]: BallotErrorHandling.Strict,
-    [FeatureId.SpoilerRisk]: SpoilerRisk.Low,
-    [FeatureId.StrategicPressure]: StrategicPressure.Moderate,
-    [FeatureId.RepresentationStyle]: RepresentationStyle.Mixed,
+export const keyFeatures: Partial<FeatureChoices> = {
+  [FeatureId.Seats]: SeatType.MultiWinner,
+  [FeatureId.BallotType]: BallotType.List, // Usually two votes (district + party list), but party list defines proportionality
+  [FeatureId.MajorityGuarantee]: MajorityGuarantee.No, // Majorities can emerge, but not guaranteed
+  [FeatureId.VoterComplexity]: VoterComplexity.Moderate, // Two votes, mixed rules
+  [FeatureId.TallyingComplexity]: TallyingComplexity.Complex, // Compensatory seat allocation
+  [FeatureId.SpoilerRisk]: SpoilerRisk.Low, // Proportional correction reduces spoilers
+  [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // Split-ticket strategies
 };
 
 export const useCases: UseCase[] = [

@@ -1,14 +1,10 @@
 // app/voting-system/two-round-system/data.ts
 import { ProsCons, UseCase } from "@/app/types";
 import {
-  BallotErrorHandling,
   BallotType,
-  CountingRule,
   FeatureChoices,
   FeatureId,
   MajorityGuarantee,
-  Proportionality,
-  RepresentationStyle,
   SeatType,
   SpoilerRisk,
   StrategicPressure,
@@ -69,19 +65,17 @@ export const weaknesses: ProsCons[] = [
   },
 ];
 
-export const keyFeatures: FeatureChoices = {
+// two-round-system (runoff)
+export const keyFeatures: Partial<FeatureChoices> = {
   [FeatureId.Seats]: SeatType.SingleWinner,
-  [FeatureId.BallotType]: BallotType.SingleChoice, // simple mark in each round
-  [FeatureId.MajorityGuarantee]: MajorityGuarantee.Yes,
-  [FeatureId.Counting]: CountingRule.Runoff, // separate first round + runoff
-  [FeatureId.Proportionality]: Proportionality.Low,
-  [FeatureId.VoterComplexity]: VoterComplexity.Low, // conceptually simple, but two trips
-  [FeatureId.TallyingComplexity]: TallyingComplexity.Moderate, // two elections/logistics
-  [FeatureId.BallotErrorHandling]: BallotErrorHandling.Strict,
-  [FeatureId.SpoilerRisk]: SpoilerRisk.Moderate, // reduced vs. plurality, but top-two cutoff matters
-  [FeatureId.StrategicPressure]: StrategicPressure.Moderate,
-  [FeatureId.RepresentationStyle]: RepresentationStyle.Majoritarian,
+  [FeatureId.BallotType]: BallotType.SingleChoice, // Fresh ballot in each round
+  [FeatureId.MajorityGuarantee]: MajorityGuarantee.Yes, // Final round produces a majority winner
+  [FeatureId.VoterComplexity]: VoterComplexity.Moderate, // Multiple trips / decisions
+  [FeatureId.TallyingComplexity]: TallyingComplexity.Moderate, // Two separate tallies/rounds
+  [FeatureId.SpoilerRisk]: SpoilerRisk.Moderate, // First-round fragmentation can matter
+  [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // Coordination/alliances between rounds
 };
+
 
 export const useCases: UseCase[] = [
   {

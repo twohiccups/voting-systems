@@ -1,14 +1,10 @@
 // app/voting-system/single-non-transferable-vote/data.ts
 import { ProsCons, UseCase } from "@/app/types";
 import {
-  BallotErrorHandling,
   BallotType,
-  CountingRule,
   FeatureChoices,
   FeatureId,
   MajorityGuarantee,
-  Proportionality,
-  RepresentationStyle,
   SeatType,
   SpoilerRisk,
   StrategicPressure,
@@ -70,19 +66,17 @@ export const weaknesses: ProsCons[] = [
   },
 ];
 
-export const keyFeatures: FeatureChoices = {
+// single-non-transferable-vote (SNTV)
+export const keyFeatures: Partial<FeatureChoices> = {
   [FeatureId.Seats]: SeatType.MultiWinner,
-  [FeatureId.BallotType]: BallotType.SingleChoice,
-  [FeatureId.MajorityGuarantee]: MajorityGuarantee.No,
-  [FeatureId.Counting]: CountingRule.Plurality, // top vote-getters win
-  [FeatureId.Proportionality]: Proportionality.Moderate, // semi-proportional
-  [FeatureId.VoterComplexity]: VoterComplexity.Low,
-  [FeatureId.TallyingComplexity]: TallyingComplexity.Simple,
-  [FeatureId.BallotErrorHandling]: BallotErrorHandling.Strict,
-  [FeatureId.SpoilerRisk]: SpoilerRisk.Moderate,
-  [FeatureId.StrategicPressure]: StrategicPressure.High, // parties must coordinate
-  [FeatureId.RepresentationStyle]: RepresentationStyle.SemiProportional,
+  [FeatureId.BallotType]: BallotType.SingleChoice, // One vote in a multi-seat contest
+  [FeatureId.MajorityGuarantee]: MajorityGuarantee.No, // Majority cannot safely sweep all seats
+  [FeatureId.VoterComplexity]: VoterComplexity.Low, // One tick
+  [FeatureId.TallyingComplexity]: TallyingComplexity.Simple, // Top N win
+  [FeatureId.SpoilerRisk]: SpoilerRisk.High, // Intense vote-splitting within blocs
+  [FeatureId.StrategicPressure]: StrategicPressure.High, // Requires tight vote management
 };
+
 
 export const useCases: UseCase[] = [
   {
