@@ -220,8 +220,8 @@ const slugs = [
     "ranked-pairs",
     "score-voting",
     "single-non-transferable-vote",
-    "sortition",
     "single-transferable-vote",
+    "sortition",
     "supplementary-vote",
     "two-round-system"
 ]

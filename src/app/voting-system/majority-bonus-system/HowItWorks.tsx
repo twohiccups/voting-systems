@@ -1,17 +1,18 @@
 "use client";
 
 import React from "react";
-import FlowSteps, { FlowStep } from "../components/HowItWorksTemplate";
+import HowItWorksTemplate from "../components/HowItWorksTemplate";
+import { FlowStep } from "@/app/types";
 
 export default function HowItWorks() {
     const steps: FlowStep[] = [
-        { text: <>Several candidates run for the seat.</> },
-        { text: <>Each voter selects <strong>one candidate</strong> on the ballot.</> },
-        { text: <>Count the ballots: each marked candidate counts as <strong>one vote</strong>.</> },
-        { text: <>The candidate with the <strong>most votes</strong> wins.</> },
-        { text: <>If tied, a tiebreak procedure applies.</> },
+        { text: <>Voters cast ballots for <strong>parties</strong> or coalitions.</> },
+        { text: <>Seats are allocated <strong>proportionally</strong> at first, based on vote share.</> },
+        { text: <>The party (or coalition) with the <strong>largest vote share</strong> receives an extra “majority bonus.”</> },
+        { text: <>This bonus grants them <strong>additional seats</strong> to ensure a stable governing majority.</> },
+        { text: <>Remaining seats are distributed proportionally among other parties.</> },
         { text: <>Results are certified officially.</> },
     ];
 
-    return <FlowSteps steps={steps} />;
+    return <HowItWorksTemplate steps={steps} />;
 }

@@ -85,6 +85,7 @@ export enum StrategicPressure {
 
 export enum RepresentationStyle {
     Majoritarian = "Majoritarian",
+    SemiProportional = "Semi-Proportional",
     Proportional = "Proportional",
     Mixed = "Mixed",
 }

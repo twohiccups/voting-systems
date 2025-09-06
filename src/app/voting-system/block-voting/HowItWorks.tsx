@@ -3,6 +3,7 @@
 import React from "react";
 import FlowSteps from "../components/HowItWorksTemplate";
 import { FlowStep } from "@/app/types";
+import HowItWorksTemplate from "../components/HowItWorksTemplate";
 
 export default function HowItWorks() {
     const steps: FlowStep[] = [
@@ -15,5 +16,5 @@ export default function HowItWorks() {
         { text: <>Results are certified officially.</> },
     ];
 
-    return <FlowSteps steps={steps} />;
+    return <HowItWorksTemplate steps={steps} />;
 }

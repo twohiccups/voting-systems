@@ -1,117 +1,105 @@
-// app/voting-system/fptp/data.ts
+// app/voting-system/limited-voting/data.ts
 import { ProsCons, UseCase } from "@/app/types";
 import {
-    BallotErrorHandling, BallotType, CountingRule, FeatureChoices, FeatureId,
-    MajorityGuarantee, Proportionality, RepresentationStyle, SeatType,
-    SpoilerRisk, StrategicPressure, TallyingComplexity, VoterComplexity
+    BallotErrorHandling,
+    BallotType,
+    CountingRule,
+    FeatureChoices,
+    FeatureId,
+    MajorityGuarantee,
+    Proportionality,
+    RepresentationStyle,
+    SeatType,
+    SpoilerRisk,
+    StrategicPressure,
+    TallyingComplexity,
+    VoterComplexity,
 } from "@/lib/features/types";
 
-
-export const name = "First-Past-the-Post";
-export const aka = ["Plurality"];
+export const name = "Limited Voting";
+export const aka = ["Limited Vote", "Semi-Proportional Plurality"];
 
 export const introParagraph: string = `
-  First Past the Post is one of the simplest ways to run an election.
-  Each voter chooses one candidate, and the candidate with the most votes wins.
-  Its appeal lies in its speed and straightforwardness: results are easy to count and quick to announce.
-  However, FPTP can also produce outcomes where a candidate wins without securing a majority of votes,
-  raising questions about how well it reflects the overall preferences of voters.
+  Limited Voting is a multi-winner system where voters receive fewer votes than the
+  number of seats to be filled (e.g., 2 votes for 3 seats). Candidates with the most
+  votes win. By restricting each voter’s total votes, cohesive minority groups can
+  concentrate support and win at least one seat, producing semi-proportional outcomes
+  while keeping ballots and counting simple.
 `;
 
 export const strengths: ProsCons[] = [
     {
-        title: "Very simple ballots and counting; easy to explain.",
-        summary: "Voters mark one name and you add up the marks—fewer steps, fewer mistakes.",
-        details: "Poll workers need minimal training, audit trails are straightforward, and error rates tend to stay low because there are fewer places to go wrong.",
+        title: "Improves minority representation versus block voting.",
+        summary: "Fewer votes per voter let cohesive groups secure a seat.",
+        details:
+            "Because majority voters can’t fill every seat on the slate, disciplined minorities can focus on one or two candidates and break winner-take-all sweeps.",
     },
     {
-        title: "Fast results and low administrative cost.",
-        summary: "Single-mark tallies produce quick preliminaries and uncomplicated recounts.",
-        details: "Even in large jurisdictions, preliminary results can be reported quickly and recounts are comparatively simple, keeping election-night logistics and budgets lean.",
+        title: "Simple ballots and tabulation.",
+        summary: "Voters mark up to a small number of names; tally is add-up-the-votes.",
+        details:
+            "No ranking or transfers. Counting can be conducted quickly using standard plurality totals across candidates.",
     },
     {
-        title: "Clear single representative per district (with single-member districts).",
-        summary: "Accountability is direct—constituents know exactly who represents them.",
-        details: "Each area elects a single winner who is easy to identify and contact. If voters are unhappy, there’s a clear person to hold to account in the next election.",
+        title: "Flexible design knob.",
+        summary: "Administrators can tune the votes-per-voter ratio to target fairness goals.",
+        details:
+            "Choosing how many votes each voter gets (relative to seats) adjusts the balance between majority control and minority access.",
     },
 ];
 
 export const weaknesses: ProsCons[] = [
     {
-        title: "Winners may have <50% support in multi-candidate races.",
-        summary: "Plurality winners can take office without majority backing in crowded fields.",
-        details: "When three or more credible candidates split the vote, the winner may be opposed by most voters, which can feel counter-majoritarian—especially when margins are tight.",
+        title: "Strategic 'bullet voting' is common.",
+        summary: "Voters may cast fewer than their allowed votes to help a favorite.",
+        details:
+            "Casting a single vote for a preferred candidate can be rational if splitting votes risks aiding rivals, reducing the method’s intended expressiveness.",
     },
     {
-        title: "Encourages strategic voting; minor-party ‘spoiler’ effects.",
-        summary: "Voters may pick a viable second choice to avoid ‘wasting’ their vote.",
-        details: "Smaller parties can split ideologically similar blocs and unintentionally help an opponent win. This dynamic can also discourage sincere voting and depress minor-party growth.",
+        title: "Not fully proportional.",
+        summary: "Large groups can still dominate most seats.",
+        details:
+            "While minorities can gain access, outcomes need not track overall vote shares closely—especially if the majority coordinates well.",
     },
     {
-        title: "Often disproportional seat outcomes vs. vote share.",
-        summary: "Seat totals can amplify regional strongholds and under-represent dispersed voters.",
-        details: "A party can secure a majority of seats without a majority of votes if its support is efficiently distributed across districts, producing mismatches between votes and seats.",
+        title: "Design sensitivity.",
+        summary: "Small parameter changes can swing representation.",
+        details:
+            "Altering the number of votes per voter (or district magnitude) can meaningfully change who wins, so rule choices must be justified and stable.",
     },
 ];
 
 export const keyFeatures: FeatureChoices = {
-    [FeatureId.Seats]: SeatType.SingleWinner,
-    [FeatureId.BallotType]: BallotType.SingleChoice,
+    [FeatureId.Seats]: SeatType.MultiWinner,
+    [FeatureId.BallotType]: BallotType.MultiChoice, // voters have fewer votes than seats
     [FeatureId.MajorityGuarantee]: MajorityGuarantee.No,
-    [FeatureId.Counting]: CountingRule.Plurality,
-    [FeatureId.Proportionality]: Proportionality.Low,
-    [FeatureId.VoterComplexity]: VoterComplexity.VeryLow,
+    [FeatureId.Counting]: CountingRule.Plurality, // highest vote-getters win
+    [FeatureId.Proportionality]: Proportionality.Moderate, // semi-proportional
+    [FeatureId.VoterComplexity]: VoterComplexity.Low,
     [FeatureId.TallyingComplexity]: TallyingComplexity.Simple,
-    [FeatureId.BallotErrorHandling]: BallotErrorHandling.Strict,
-    [FeatureId.SpoilerRisk]: SpoilerRisk.High,
-    [FeatureId.StrategicPressure]: StrategicPressure.High,
-    [FeatureId.RepresentationStyle]: RepresentationStyle.Majoritarian,
+    [FeatureId.BallotErrorHandling]: BallotErrorHandling.Strict, // overvoting is a common issue to guard against
+    [FeatureId.SpoilerRisk]: SpoilerRisk.Moderate,
+    [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // bullet-voting incentives
+    [FeatureId.RepresentationStyle]: RepresentationStyle.SemiProportional,
 };
 
-
 export const useCases: UseCase[] = [
-
     {
-        country: "United Kingdom",
-        bodies: ["House of Commons (general elections)"],
+        country: "Spain",
+        bodies: [
+            "Senate (voters typically have up to 3 votes in 4-seat provincial constituencies)",
+        ],
+    },
+    {
+        country: "United Kingdom (historical)",
+        bodies: [
+            "19th-century multi-member constituencies (Limited Vote used in some periods)",
+        ],
     },
     {
         country: "United States of America",
         bodies: [
-            "U.S. House of Representatives (most states use single-member districts)",
-            "Most state legislatures",
+            "Various local jurisdictions (school boards, city councils) using limited voting under voting-rights settlements or local charters",
         ],
-    },
-    {
-        country: "Canada",
-        bodies: ["House of Commons (federal)", "Most provincial legislatures"],
-    },
-    {
-        country: "India",
-        bodies: ["Lok Sabha (lower house of Parliament)", "Most State Assemblies"],
-    },
-    {
-        country: "Bangladesh",
-        bodies: ["Jatiya Sangsad (National Parliament)"],
-    },
-    {
-        country: "Nigeria",
-        bodies: ["House of Representatives", "Senate"],
-    },
-    {
-        country: "Pakistan",
-        bodies: ["National Assembly", "Provincial Assemblies"],
-    },
-    {
-        country: "Malaysia",
-        bodies: ["Dewan Rakyat (House of Representatives)"],
-    },
-    {
-        country: "Nepal",
-        bodies: ["House of Representatives (165 of 275 seats via FPTP)"],
-    },
-    {
-        country: "Jamaica",
-        bodies: ["House of Representatives"],
     },
 ];

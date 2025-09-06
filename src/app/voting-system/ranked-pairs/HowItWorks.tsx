@@ -1,17 +1,18 @@
 "use client";
 
 import React from "react";
-import FlowSteps, { FlowStep } from "../components/HowItWorksTemplate";
+import HowItWorksTemplate from "../components/HowItWorksTemplate";
+import { FlowStep } from "@/app/types";
 
 export default function HowItWorks() {
     const steps: FlowStep[] = [
-        { text: <>Several candidates run for the seat.</> },
-        { text: <>Each voter selects <strong>one candidate</strong> on the ballot.</> },
-        { text: <>Count the ballots: each marked candidate counts as <strong>one vote</strong>.</> },
-        { text: <>The candidate with the <strong>most votes</strong> wins.</> },
-        { text: <>If tied, a tiebreak procedure applies.</> },
-        { text: <>Results are certified officially.</> },
+        { text: <>Voters <strong>rank candidates</strong> in order of preference.</> },
+        { text: <>Compute all <strong>pairwise head-to-head</strong> results between candidates.</> },
+        { text: <>Order those pairwise victories by <strong>strength of victory</strong> (e.g., margin).</> },
+        { text: <>“Lock in” the strongest victories one by one, <strong>skipping any that would create a cycle</strong>.</> },
+        { text: <>The candidate who is at the top of the final locked graph (no defeats) is the <strong>winner</strong>.</> },
+        { text: <>If an unresolved tie remains in ordering or locking, a tiebreak procedure applies.</> },
     ];
 
-    return <FlowSteps steps={steps} />;
+    return <HowItWorksTemplate steps={steps} />;
 }
