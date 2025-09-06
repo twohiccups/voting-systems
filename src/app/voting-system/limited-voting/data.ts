@@ -18,9 +18,6 @@ export const introParagraph: string = `
   raising questions about how well it reflects the overall preferences of voters.
 `;
 
-
-
-
 export const strengths: ProsCons[] = [
     {
         title: "Very simple ballots and counting; easy to explain.",

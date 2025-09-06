@@ -27,7 +27,8 @@ export function SystemCard({
             href={href as string}
             className={[
                 "group relative inline-block max-w-full rounded-xl border p-3 sm:p-4 shadow-sm transition",
-                "bg-[var(--card)] text-[var(--card-foreground)] border-[var(--border)]",
+                // ↓ add opacity
+                "bg-[var(--card)]/80 text-[var(--card-foreground)] border-[var(--border)]",
                 "hover:shadow-md active:scale-[0.998]",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ring)]",
                 className,

@@ -1,17 +1,17 @@
 "use client";
 
 import React from "react";
-import FlowSteps, { FlowStep } from "../components/FlowStep";
+import HowItWorksTemplate from "../components/HowItWorksTemplate";
+import { FlowStep } from "@/app/types";
 
 export default function HowItWorks() {
     const steps: FlowStep[] = [
-        { text: <>Several candidates run for the seat.</> },
-        { text: <>Each voter selects <strong>one candidate</strong> on the ballot.</> },
-        { text: <>Count the ballots: each marked candidate counts as <strong>one vote</strong>.</> },
-        { text: <>The candidate with the <strong>most votes</strong> wins.</> },
-        { text: <>If tied, a tiebreak procedure applies.</> },
-        { text: <>Results are certified officially.</> },
+        { text: <>Voters <strong>rank all candidates</strong> in order of preference.</> },
+        { text: <>The system compares every pair of candidates head-to-head: on each ballot, whichever of the two is ranked higher earns that voter’s support in the matchup.</> },
+        { text: <>For each matchup, the candidate preferred by more voters wins that pairing.</> },
+        { text: <>If a candidate wins against <strong>all others</strong> one-on-one, they are the Condorcet winner.</> },
+        { text: <>If no Condorcet winner exists, a tiebreak method (like Ranked Pairs or Schulze) is applied.</> },
     ];
 
-    return <FlowSteps steps={steps} />;
+    return <HowItWorksTemplate steps={steps} />;
 }

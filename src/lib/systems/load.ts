@@ -61,38 +61,57 @@ function comingSoonContent(slug: SystemSlug): SystemContent {
 }
 
 export async function loadSystem(slug: SystemSlug): Promise<SystemContent> {
+    // 1) Load data first; if that fails, fall back to a minimal placeholder.
+    let data: unknown = {};
     try {
-        const data = await import(`@/app/voting-system/${slug}/data`);
-        const hwMod: unknown = await import(`@/app/voting-system/${slug}/HowItWorks`);
-        const balMod: unknown = await import(`@/app/voting-system/${slug}/Ballot`);
-        const walkMod: unknown | null = await import(`@/app/voting-system/${slug}/Walkthrough`).catch(() => null);
-        const useMod: unknown | null = await import(`@/app/voting-system/${slug}/UseCases`).catch(() => null);
-
-        const HowItWorks = pickExport<HowItWorksModule>(hwMod, "HowItWorks") ?? ComingSoon;
-        const Ballot = pickExport<BallotModule>(balMod, "Ballot") ?? ComingSoon;
-        const Walkthrough = walkMod ? pickExport<WalkthroughModule>(walkMod, "Walkthrough") : undefined;
-        const UseCases = useMod ? pickExport<UseCasesModule>(useMod, "UseCases") : undefined;
-
-        return {
-            slug,
-            name: (data as { name?: string }).name ?? titleFromSlug(slug),
-            aka: (data as { aka?: string[] }).aka ?? [],
-            introParagraph: (data as { introParagraph?: string }).introParagraph ?? "coming soon",
-            strengths: (data as { strengths?: SystemContent["strengths"] }).strengths ?? ([] as SystemContent["strengths"]),
-            weaknesses: (data as { weaknesses?: SystemContent["weaknesses"] }).weaknesses ?? ([] as SystemContent["weaknesses"]),
-            keyFeatures:
-                (data as { keyFeatures?: SystemContent["keyFeatures"] }).keyFeatures ??
-                ({} as SystemContent["keyFeatures"]),
-            useCases: (data as { useCases?: SystemContent["useCases"] }).useCases ?? ([] as SystemContent["useCases"]),
-            components: {
-                HowItWorks,
-                Ballot,
-                Walkthrough,
-                UseCases,
-            },
-        } satisfies SystemContent;
+        data = await import(`@/app/voting-system/${slug}/data`);
     } catch {
-        // No unused var, no-explicit-any safe
         return comingSoonContent(slug);
     }
+
+    // 2) Try each component import independently; never let a component failure
+    //    cause the whole system to fall back. Each failed import → undefined.
+    const HowItWorks = await import(`@/app/voting-system/${slug}/HowItWorks`)
+        .then((mod: unknown) => pickExport<HowItWorksModule>(mod, "HowItWorks"))
+        .catch(() => undefined);
+
+    const Ballot = await import(`@/app/voting-system/${slug}/Ballot`)
+        .then((mod: unknown) => pickExport<BallotModule>(mod, "Ballot"))
+        .catch(() => undefined);
+
+    const Walkthrough = await import(`@/app/voting-system/${slug}/Walkthrough`)
+        .then((mod: unknown) => pickExport<WalkthroughModule>(mod, "Walkthrough"))
+        .catch(() => undefined);
+
+    const UseCases = await import(`@/app/voting-system/${slug}/UseCases`)
+        .then((mod: unknown) => pickExport<UseCasesModule>(mod, "UseCases"))
+        .catch(() => undefined);
+
+    // 3) Build the content from data, with components optional.
+    const d = data as {
+        name?: string;
+        aka?: string[];
+        introParagraph?: string;
+        strengths?: SystemContent["strengths"];
+        weaknesses?: SystemContent["weaknesses"];
+        keyFeatures?: SystemContent["keyFeatures"];
+        useCases?: SystemContent["useCases"];
+    };
+
+    return {
+        slug,
+        name: d.name ?? titleFromSlug(slug),
+        aka: d.aka ?? [],
+        introParagraph: d.introParagraph ?? "coming soon",
+        strengths: d.strengths ?? ([] as SystemContent["strengths"]),
+        weaknesses: d.weaknesses ?? ([] as SystemContent["weaknesses"]),
+        keyFeatures: d.keyFeatures ?? ({} as SystemContent["keyFeatures"]),
+        useCases: d.useCases ?? ([] as SystemContent["useCases"]),
+        components: {
+            HowItWorks,  // may be undefined
+            Ballot,      // may be undefined
+            Walkthrough, // may be undefined
+            UseCases,    // may be undefined
+        },
+    } satisfies SystemContent;
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import FlowSteps, { FlowStep } from "../components/FlowStep";
+import { FlowStep } from "@/app/types";
+import HowItWorksTemplate from "../components/HowItWorksTemplate";
 
 export default function HowItWorks() {
     const steps: FlowStep[] = [
@@ -12,5 +13,5 @@ export default function HowItWorks() {
         { text: <>If tied, a tiebreak procedure applies.</> },
         { text: <>Results are certified officially.</> },
     ];
-    return <FlowSteps steps={steps} />;
+    return <HowItWorksTemplate steps={steps} />;
 }

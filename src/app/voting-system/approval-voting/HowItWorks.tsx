@@ -1,17 +1,17 @@
 "use client";
 
 import React from "react";
-import FlowSteps, { FlowStep } from "../components/FlowStep";
+import HowItWorksTemplate from "../components/HowItWorksTemplate";
+import { FlowStep } from "@/app/types";
 
 export default function HowItWorks() {
     const steps: FlowStep[] = [
-        { text: <>Several candidates run for the seat.</> },
-        { text: <>Each voter selects <strong>one candidate</strong> on the ballot.</> },
-        { text: <>Count the ballots: each marked candidate counts as <strong>one vote</strong>.</> },
-        { text: <>The candidate with the <strong>most votes</strong> wins.</> },
-        { text: <>If tied, a tiebreak procedure applies.</> },
-        { text: <>Results are certified officially.</> },
+        { text: <>Voters may <strong>approve of as many candidates</strong> as they like.</> },
+        { text: <>Each approved candidate receives <strong>one vote</strong> from that voter.</> },
+        { text: <>All votes are tallied across the electorate.</> },
+        { text: <>The candidate with the <strong>most approvals</strong> wins.</> },
+        { text: <>If electing multiple seats, the top N candidates are selected.</> },
     ];
 
-    return <FlowSteps steps={steps} />;
+    return <HowItWorksTemplate steps={steps} />;
 }

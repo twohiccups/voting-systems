@@ -8,7 +8,7 @@ import { ProsConsListSection } from './ProCons';
 import KeyFeatures from './KeyFeatures';
 
 import type { SystemContent } from '@/lib/systems/types';
-import UseCases from '../first-past-the-post/UseCases';
+import UseCases from './UseCases';
 
 export default function SystemPage({ content }: { content: SystemContent }) {
     const {

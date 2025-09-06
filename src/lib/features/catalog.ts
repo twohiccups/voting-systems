@@ -39,6 +39,11 @@ export const featureCatalog: SystemFeature[] = [
                 detail:
                     "Produces several winners, as in parliaments, councils, or corporate boards.",
             },
+            {
+                label: SeatType.Both,
+                detail:
+                    "The method can be used for either a single winner or multiple seats, depending on the context.",
+            },
         ],
     },
     {
@@ -222,7 +227,7 @@ export const featureCatalog: SystemFeature[] = [
                     "Some errors are tolerated, but ballots may truncate or exhaust early, as in ranked-choice or single transferable vote.",
             },
             {
-                label: BallotErrorHandling.HighTolerance,
+                label: BallotErrorHandling.Lenient,
                 detail:
                     "Most partial or ambiguous ballots still count, as in approval, score, Condorcet, or party-list systems.",
             },

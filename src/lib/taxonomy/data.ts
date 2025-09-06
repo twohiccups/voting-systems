@@ -33,14 +33,14 @@ export const TaxonomySystems: TaxonomySystem[] = [
     }
 ]
 
+// Sorted by slug
 export const VotingSystems: VotingSystem[] = [
-    // 🟨 Plurality / Bloc systems
     {
-        id: "fptp",
-        name: "First-Past-the-Post",
-        shortDescription: "Candidate with the most votes wins, even without a majority",
-        taxonomyId: "Plurality",
-        slug: "first-past-the-post"
+        id: "approval",
+        name: "Approval Voting",
+        shortDescription: "Voters approve of as many candidates as they like; most approvals win",
+        taxonomyId: "Majority",
+        slug: "approval-voting"
     },
     {
         id: "block",
@@ -50,57 +50,6 @@ export const VotingSystems: VotingSystem[] = [
         slug: "block-voting"
     },
     {
-        id: "sntv",
-        name: "Single Non-Transferable Vote",
-        shortDescription: "Each voter casts one vote in a multi-winner race; top candidates win",
-        taxonomyId: "Plurality",
-        slug: "single-non-transferable-vote"
-    },
-    {
-        id: "limited",
-        name: "Limited Voting",
-        shortDescription: "Voters have fewer votes than seats available; increases minority representation",
-        taxonomyId: "Plurality",
-        slug: "limited-voting"
-    },
-    {
-        id: "cumulative",
-        name: "Cumulative Voting",
-        shortDescription: "Voters can give multiple votes to one or more candidates",
-        taxonomyId: "Plurality",
-        slug: "cumulative-voting"
-    },
-
-    // 🟨 Majority systems
-    {
-        id: "two-round",
-        name: "Two-Round System",
-        shortDescription: "If no one gets 50%, top two face off in a runoff",
-        taxonomyId: "Majority",
-        slug: "two-round-system"
-    },
-    {
-        id: "irv",
-        name: "Instant-Runoff Voting",
-        shortDescription: "Voters rank candidates; lowest eliminated until majority is reached",
-        taxonomyId: "Majority",
-        slug: "instant-runoff-voting"
-    },
-    {
-        id: "supplementary",
-        name: "Supplementary Vote",
-        shortDescription: "Voters rank top two choices; if no majority, second choices added to top two",
-        taxonomyId: "Majority",
-        slug: "supplementary-vote"
-    },
-    {
-        id: "exhaustive",
-        name: "Exhaustive Ballot",
-        shortDescription: "One-round-at-a-time elimination until a majority is reached",
-        taxonomyId: "Majority",
-        slug: "exhaustive-ballot"
-    },
-    {
         id: "borda",
         name: "Borda Count",
         shortDescription: "Voters rank candidates; points awarded by ranking position",
@@ -108,57 +57,25 @@ export const VotingSystems: VotingSystem[] = [
         slug: "borda-count"
     },
     {
-        id: "approval",
-        name: "Approval Voting",
-        shortDescription: "Voters approve of as many candidates as they like; most approvals win",
-        taxonomyId: "Majority",
-        slug: "approval-voting"
+        id: "condorcet",
+        name: "Condorcet Method",
+        shortDescription: "Winner beats every other candidate in direct head-to-head matchups",
+        taxonomyId: "Condorcet",
+        slug: "condorcet-method"
     },
     {
-        id: "score",
-        name: "Score Voting",
-        shortDescription: "Voters score candidates (e.g., 0–5); highest average wins",
-        taxonomyId: "Majority",
-        slug: "score-voting"
-    },
-
-    // 🟩 Proportional Representation
-    {
-        id: "party-list",
-        name: "Party-List PR",
-        shortDescription: "Parties win seats based on vote share; candidates taken from lists",
-        taxonomyId: "Proportional",
-        slug: "party-list-pr"
+        id: "copeland",
+        name: "Copeland’s Method",
+        shortDescription: "Each candidate gets points for every head-to-head win",
+        taxonomyId: "Condorcet",
+        slug: "copelands-method"
     },
     {
-        id: "stv",
-        name: "Single Transferable Vote",
-        shortDescription: "Voters rank candidates in multi-member districts; votes transfer for proportionality",
-        taxonomyId: "Proportional",
-        slug: "single-transferable-vote"
-    },
-    {
-        id: "panachage",
-        name: "Panachage",
-        shortDescription: "Voters can mix candidates across different party lists",
-        taxonomyId: "Proportional",
-        slug: "panachage"
-    },
-
-    // 🟧 Mixed Systems
-    {
-        id: "mmp",
-        name: "Mixed-Member Proportional",
-        shortDescription: "Combines district winners with proportional party lists",
-        taxonomyId: "Mixed",
-        slug: "mixed-member-proportional"
-    },
-    {
-        id: "parallel",
-        name: "Parallel Voting",
-        shortDescription: "FPTP and proportional run side-by-side, but independently",
-        taxonomyId: "Mixed",
-        slug: "parallel-voting"
+        id: "cumulative",
+        name: "Cumulative Voting",
+        shortDescription: "Voters can give multiple votes to one or more candidates",
+        taxonomyId: "Plurality",
+        slug: "cumulative-voting"
     },
     {
         id: "dmp",
@@ -168,20 +85,67 @@ export const VotingSystems: VotingSystem[] = [
         slug: "dual-member-proportional"
     },
     {
+        id: "exhaustive",
+        name: "Exhaustive Ballot",
+        shortDescription: "One-round-at-a-time elimination until a majority is reached",
+        taxonomyId: "Majority",
+        slug: "exhaustive-ballot"
+    },
+    {
+        id: "fptp",
+        name: "First-Past-the-Post",
+        shortDescription: "Candidate with the most votes wins, even without a majority",
+        taxonomyId: "Plurality",
+        slug: "first-past-the-post"
+    },
+    {
+        id: "irv",
+        name: "Instant-Runoff Voting",
+        shortDescription: "Voters rank candidates; lowest eliminated until majority is reached",
+        taxonomyId: "Majority",
+        slug: "instant-runoff-voting"
+    },
+    {
+        id: "limited",
+        name: "Limited Voting",
+        shortDescription: "Voters have fewer votes than seats available; increases minority representation",
+        taxonomyId: "Plurality",
+        slug: "limited-voting"
+    },
+    {
         id: "majority-bonus",
         name: "Majority Bonus System",
         shortDescription: "Extra seats awarded to leading party to ensure majority",
         taxonomyId: "Mixed",
         slug: "majority-bonus-system"
     },
-
-    // 🟪 Condorcet & Ranked-Pair Systems
     {
-        id: "condorcet",
-        name: "Condorcet Method",
-        shortDescription: "Winner beats every other candidate in direct head-to-head matchups",
-        taxonomyId: "Condorcet",
-        slug: "condorcet-method"
+        id: "mmp",
+        name: "Mixed-Member Proportional",
+        shortDescription: "Combines district winners with proportional party lists",
+        taxonomyId: "Mixed",
+        slug: "mixed-member-proportional"
+    },
+    {
+        id: "panachage",
+        name: "Panachage",
+        shortDescription: "Voters can mix candidates across different party lists",
+        taxonomyId: "Proportional",
+        slug: "panachage"
+    },
+    {
+        id: "parallel",
+        name: "Parallel Voting",
+        shortDescription: "FPTP and proportional run side-by-side, but independently",
+        taxonomyId: "Mixed",
+        slug: "parallel-voting"
+    },
+    {
+        id: "party-list",
+        name: "Party-List PR",
+        shortDescription: "Parties win seats based on vote share; candidates taken from lists",
+        taxonomyId: "Proportional",
+        slug: "party-list-pr"
     },
     {
         id: "ranked-pairs",
@@ -191,14 +155,19 @@ export const VotingSystems: VotingSystem[] = [
         slug: "ranked-pairs"
     },
     {
-        id: "copeland",
-        name: "Copeland’s Method",
-        shortDescription: "Each candidate gets points for every head-to-head win",
-        taxonomyId: "Condorcet",
-        slug: "copelands-method"
+        id: "score",
+        name: "Score Voting",
+        shortDescription: "Voters score candidates (e.g., 0–5); highest average wins",
+        taxonomyId: "Majority",
+        slug: "score-voting"
     },
-
-    // 🟥 Other / Special Systems
+    {
+        id: "sntv",
+        name: "Single Non-Transferable Vote",
+        shortDescription: "Each voter casts one vote in a multi-winner race; top candidates win",
+        taxonomyId: "Plurality",
+        slug: "single-non-transferable-vote"
+    },
     {
         id: "sortition",
         name: "Sortition",
@@ -207,11 +176,52 @@ export const VotingSystems: VotingSystem[] = [
         slug: "sortition"
     },
     {
-        id: "exhaustive-papal",
-        name: "Exhaustive Ballot (Papal Style)",
-        shortDescription: "Repeated secret ballots until one candidate gains consensus",
-        taxonomyId: "Other",
-        slug: "exhaustive-ballot-papal-style"
+        id: "stv",
+        name: "Single Transferable Vote",
+        shortDescription: "Voters rank candidates in multi-member districts; votes transfer for proportionality",
+        taxonomyId: "Proportional",
+        slug: "single-transferable-vote"
+    },
+    {
+        id: "supplementary",
+        name: "Supplementary Vote",
+        shortDescription: "Voters rank top two choices; if no majority, second choices added to top two",
+        taxonomyId: "Majority",
+        slug: "supplementary-vote"
+    },
+    {
+        id: "two-round",
+        name: "Two-Round System",
+        shortDescription: "If no one gets 50%, top two face off in a runoff",
+        taxonomyId: "Majority",
+        slug: "two-round-system"
     }
-];
+]
 
+
+
+
+const slugs = [
+    "approval-voting",
+    "block-voting",
+    "borda-count",
+    "condorcet-method",
+    "copelands-method",
+    "cumulative-voting",
+    "dual-member-proportional",
+    "exhaustive-ballot",
+    "first-past-the-post",
+    "limited-voting",
+    "majority-bonus-system",
+    "mixed-member-proportional",
+    "panachage",
+    "parallel-voting",
+    "party-list-pr",
+    "ranked-pairs",
+    "score-voting",
+    "single-non-transferable-vote",
+    "sortition",
+    "single-transferable-vote",
+    "supplementary-vote",
+    "two-round-system"
+]

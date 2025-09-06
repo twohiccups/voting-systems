@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import FlowSteps, { FlowStep } from "../components/FlowStep";
+import FlowSteps, { FlowStep } from "../components/HowItWorksTemplate";
 
 export default function HowItWorks() {
     const steps: FlowStep[] = [

@@ -17,6 +17,7 @@ export enum FeatureId {
 export enum SeatType {
     SingleWinner = "Single-winner",
     MultiWinner = "Multi-winner",
+    Both = "Both",
 }
 
 export enum BallotType {
@@ -67,7 +68,7 @@ export enum TallyingComplexity {
 export enum BallotErrorHandling {
     Strict = "Strict",
     Moderate = "Moderate",
-    HighTolerance = "High tolerance",
+    Lenient = "Lenient",
 }
 
 export enum SpoilerRisk {

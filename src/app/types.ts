@@ -24,3 +24,9 @@ export type UseCase = {
     bodies: string[];
     notes?: string;
 };
+
+
+export type FlowStep = {
+    num?: number;
+    text: React.ReactNode;
+};

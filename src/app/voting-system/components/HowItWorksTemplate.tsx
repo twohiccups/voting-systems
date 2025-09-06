@@ -3,16 +3,11 @@
 import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion, useInView, type SpringOptions } from "framer-motion";
 import { StepCircle } from "@/app/components/primitives";
+import { FlowStep } from "@/app/types";
 
 // ==========================
 // Types
 // ==========================
-export type FlowStep = {
-    /** Displayed number in the circle (optional; will default to index+1) */
-    num?: number;
-    /** Step text/description */
-    text: React.ReactNode;
-};
 
 export type FlowStepsProps = {
     steps: FlowStep[];
@@ -34,7 +29,7 @@ export type FlowStepsProps = {
 // ==========================
 // Component
 // ==========================
-export default function FlowSteps({ steps, className, layout }: FlowStepsProps) {
+export default function HowItWorksTemplate({ steps, className, layout }: FlowStepsProps) {
     // Defaults mirror the original HowItWorks component
     const MIN_SLOTS = layout?.minSlots ?? 3;
     const EXTRA_GAP = layout?.extraGap ?? 28;
@@ -256,7 +251,6 @@ function StepItem({
     xDuration,
     ySpring,
     viewportAmount,
-    viewportMargin,
     prefersReducedMotion,
     children,
 }: StepItemProps) {
@@ -306,7 +300,7 @@ function StepItem({
                 y: prefersReducedMotion ? undefined : { ...ySpring },
                 opacity: { duration: 0.3, ease: "easeOut" },
             }}
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ scale: 1.1 }}
             className="
         absolute left-1/2 top-0 -translate-x-1/2
         w-full max-w-sm sm:w-[20rem]
