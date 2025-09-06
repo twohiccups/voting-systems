@@ -4,21 +4,26 @@ import * as React from 'react';
 // Types
 // ------------------------------------
 
+// common.tsx
 export type FooterActionsProps = {
     summary: React.ReactNode;
-    warning?: React.ReactNode;
+    warning?: React.ReactNode;              // legacy: treated as warningAlways
+    warningAlways?: React.ReactNode;        // NEW: show always
+    warningOnSubmit?: React.ReactNode;      // NEW: show only after submit attempt & invalid
     helper?: React.ReactNode;
 
     onClear?: () => void;
-    onSubmit?: () => void;               // required if you want the “submitted” state
-    submitLabel?: string;                // default "Submit"
+    onSubmit?: () => void;
+    submitLabel?: string;
     isValid?: boolean;
     className?: string;
 };
 
 export function FooterActions({
     summary,
-    warning,
+    warning,                // legacy alias
+    warningAlways,
+    warningOnSubmit,
     helper,
     onClear,
     onSubmit,
@@ -26,20 +31,26 @@ export function FooterActions({
     isValid = true,
     className,
 }: FooterActionsProps) {
+    const [attempted, setAttempted] = React.useState(false);
     const [submitted, setSubmitted] = React.useState(false);
 
     const handleClear = () => {
         onClear?.();
+        setAttempted(false);
         setSubmitted(false);
     };
 
     const handleSubmit = () => {
-        onSubmit?.();
-        setSubmitted(true);
+        setAttempted(true);
+        if (isValid) {
+            onSubmit?.();
+            setSubmitted(true);
+        }
     };
 
-    // Announce state change to screen readers
     const submittedMsg = submitted ? 'Submitted' : undefined;
+
+    const always = warningAlways ?? warning; // back-compat
 
     return (
         <div
@@ -51,11 +62,21 @@ export function FooterActions({
             {/* Left: summary + messages */}
             <div className="text-sm leading-relaxed text-[var(--muted-foreground)] space-y-2">
                 <div>{summary}</div>
-                {warning ? (
-                    <div role="alert" className="text-[13px] text-red-600 dark:text-red-400">
-                        {warning}
+
+                {/* ALWAYS-ON warning (e.g., live validation like duplicates) */}
+                {always ? (
+                    <div role="status" className="text-[13px] text-red-600 dark:text-red-400">
+                        {always}
                     </div>
                 ) : null}
+
+                {/* SUBMIT-ONLY warning (e.g., “you must rank all candidates”) */}
+                {attempted && !isValid && warningOnSubmit ? (
+                    <div role="alert" className="text-[13px] text-red-600 dark:text-red-400">
+                        {warningOnSubmit}
+                    </div>
+                ) : null}
+
                 {helper ? <div className="text-[12px] opacity-80">{helper}</div> : null}
                 {submittedMsg ? (
                     <span aria-live="polite" className="sr-only">{submittedMsg}</span>
@@ -77,13 +98,13 @@ export function FooterActions({
                 </button>
 
                 <button
-                    type="button"                  // use callback submit; change if you truly need native form submit
+                    type="button"
                     onClick={handleSubmit}
-                    disabled={!isValid || submitted}
+                    disabled={submitted}
                     className={[
                         'px-4 py-2 theme-transition w-full sm:w-auto',
                         submitted
-                            ? 'rounded-none bg-green-600 text-white hover:opacity-90' // success/green
+                            ? 'rounded-none bg-green-600 text-white hover:opacity-90'
                             : 'rounded-none bg-[var(--accent)] text-[var(--accent-foreground)] hover:opacity-90',
                         'disabled:opacity-50 disabled:pointer-events-none',
                     ].join(' ')}
@@ -94,6 +115,7 @@ export function FooterActions({
         </div>
     );
 }
+
 // ------------------------------------
 // Helpers
 // ------------------------------------

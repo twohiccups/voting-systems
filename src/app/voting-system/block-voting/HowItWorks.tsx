@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import FlowSteps from "../components/HowItWorksTemplate";
 import { FlowStep } from "@/app/types";
 import HowItWorksTemplate from "../components/HowItWorksTemplate";
 

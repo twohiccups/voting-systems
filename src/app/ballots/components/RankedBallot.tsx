@@ -4,10 +4,11 @@ import { BallotCard, BallotOption, BallotDivider } from '@/app/ballots/component
 import * as React from 'react';
 import { hasDuplicateRanks, FooterActions, rankSummary } from './common';
 import { Candidate } from '@/app/types';
+import { useState } from 'react';
 
 export default function RankedBallot({ candidates }: { candidates: Candidate[] }) {
     type RankMap = Record<string, number | null>;
-    const [ranks, setRanks] = React.useState<RankMap>(() =>
+    const [ranks, setRanks] = useState<RankMap>(() =>
         Object.fromEntries(candidates.map((c) => [c.id, null]))
     );
 
@@ -21,7 +22,7 @@ export default function RankedBallot({ candidates }: { candidates: Candidate[] }
     return (
         <BallotCard
             title="Presidential Primary"
-            instructions="Rank candidates by preference. Use 1 for your favorite, 2 for your next choice, and so on. Avoid duplicate ranks. Leave blank candidates you don't like."
+            instructions="Rank candidates by preference. Use 1 for your favorite, 2 for your next choice, and so on. Avoid duplicate ranks. Leave blank candidates you don't like, they will receive minimal points"
             className="mb-8"
         >
             <div className="space-y-2">
