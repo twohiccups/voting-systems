@@ -8,9 +8,13 @@ import { Party } from '@/app/types';
 
 export default function PartyListBallot({
     parties,
+    instructions = "Mark one party. Candidates are seated from the party list based on proportional seat allocation."
 }: {
     parties: Party[];
+    instructions?: string;
 }) {
+
+
     const [selectedPartyId, setSelectedPartyId] = React.useState<string | null>(null);
 
     function toggleParty(id: string, checked: boolean) {
@@ -33,7 +37,7 @@ export default function PartyListBallot({
     return (
         <BallotCard
             title="Legislature — Party List (Closed List)"
-            instructions="Mark one party. Candidates are seated from the party list based on proportional seat allocation."
+            instructions={instructions}
             className="mb-8"
         >
             <div className="space-y-2">

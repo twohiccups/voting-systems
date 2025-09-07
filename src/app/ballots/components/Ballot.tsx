@@ -149,7 +149,7 @@ export type BallotOptionProps = {
     /** id is optional now; no htmlFor used */
     id?: string;
     label: string;
-    sublabel?: string;
+    sublabel?: string | React.ReactNode;
     variant?: BallotOptionVariant;
 
     checked?: boolean;

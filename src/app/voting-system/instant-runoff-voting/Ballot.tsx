@@ -1,39 +1,18 @@
 'use client'
 
-import { BallotCard, BallotOption } from "@/app/ballots/components/Ballot";
-import { useState } from "react";
+import RankedBallot from "@/app/ballots/components/RankedBallot";
+import { fourCandidates } from "@/lib/candidates/data";
 
 // --- Ballot Example (interactive) ---
 export function Ballot() {
-    const [selectedId, setSelectedId] = useState<string | null>(null);
 
-    const candidates = [
-        { id: 'a', label: 'Alice Johnson', sublabel: 'Green Party' },
-        { id: 'b', label: 'Brian Smith', sublabel: 'Conservative Party' },
-        { id: 'c', label: 'Carla Nguyen', sublabel: 'Liberal Party' },
-    ];
-
+    const candidates = fourCandidates;
+    const instructions = `Rank the candidates in order of preference, marking your first choice, second choice, third choice, and so on.
+    You may leave some unranked; those will be treated as your lowest preferences. 
+    Do not assign the same rank to more than one candidate.`
     return (
-        <BallotCard
-            title="Mayor Election"
-            instructions="Vote for ONE candidate only by marking the box next to their name."
-        >
-            <div role="group" aria-label="FPTP choices" className="grid gap-2">
-                {candidates.map((c) => (
-                    <BallotOption
-                        key={c.id}
-                        id={c.id}
-                        label={c.label}
-                        sublabel={c.sublabel}
-                        variant="checkbox"
-                        checked={selectedId === c.id}
-                        onCheckedChange={(isChecked) =>
-                            setSelectedId(isChecked ? c.id : null)
-                        }
-                    />
-                ))}
-            </div>
-        </BallotCard>
+
+        <RankedBallot candidates={candidates} instructions={instructions} />
     );
 }
 

@@ -11,7 +11,6 @@ import PartyListBallot from './components/PartyListBallot';
 import PanachageBallot from './components/PanachageBallot';
 import OpenListBallot from './components/OpenListBallot';
 import ClosedListBallot from './components/CloseListBallot';
-import { candidates, parties, partiesClosed } from './components/CandidatesData';
 import HeroHeader from '../components/HeroHeader';
 import { StepCard, StepList } from '../components/primitives';
 import { QuoteBlock } from '../components/QuoteBlock';
@@ -21,6 +20,12 @@ import SectionHeading from '../components/SectionHeading';
 import { FullBleed } from '@/app/components/FullBleed';
 import Section from '@/app/components/Section';
 import { Container } from '@/app/components/Container';
+import { defaultParties, defaultPartiesClosed, fourCandidates } from '@/lib/candidates/data';
+
+
+const candidates = fourCandidates;
+const parties = defaultParties;
+const partiesClosed = defaultPartiesClosed;
 
 function TableOfContents({ sections }: { sections: { id: string; title: string }[] }) {
     const [activeId, setActiveId] = React.useState<string | null>(null);
@@ -108,6 +113,7 @@ export default function BallotTypesShowcasePage() {
         },
     ];
 
+
     return (
         <>
             <HeroHeader
@@ -127,7 +133,7 @@ export default function BallotTypesShowcasePage() {
                                 issues, where the voter marks their selection.
                             </QuoteBlock>
 
-                            <StepCard title="A ballot usually contains:">
+                            <StepCard title="A ballot usually contains:" index={0}>
                                 <StepList items={ballotItems} />
                             </StepCard>
 

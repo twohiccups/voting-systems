@@ -36,10 +36,10 @@ export const introParagraph: string = `
   candidate with the fewest votes is removed and the electorate votes again.
   This process repeats until a candidate has more than half of the votes.
   Each round gives voters a chance to shift their support, encouraging
-  contenders to appeal to a wide audience and build consensus【312072163993559†L738-L744】.
+  contenders to appeal to a wide audience and build consensus.
   Because it requires multiple rounds of balloting it is rarely used for mass
   elections, but it remains common in parliaments and committees where
-  consensus and legitimacy are paramount【312072163993559†L348-L381】.
+  consensus and legitimacy are paramount.
 `;
 
 export const strengths: ProsCons[] = [
@@ -97,13 +97,13 @@ export const weaknesses: ProsCons[] = [
 ];
 
 export const keyFeatures: Partial<FeatureChoices> = {
-  [FeatureId.Seats]: SeatType.SingleWinner,
-  [FeatureId.BallotType]: BallotType.SingleChoice, // One vote per round
-  [FeatureId.MajorityGuarantee]: MajorityGuarantee.Yes, // Process continues until someone has majority
-  [FeatureId.VoterComplexity]: VoterComplexity.Moderate, // Multiple rounds, evolving preferences
-  [FeatureId.TallyingComplexity]: TallyingComplexity.Moderate, // Repeat elimination rounds
-  [FeatureId.SpoilerRisk]: SpoilerRisk.Moderate, // Elimination sequencing matters
-  [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // Incentives for coordination across rounds
+    [FeatureId.Seats]: SeatType.SingleWinner,
+    [FeatureId.BallotType]: BallotType.SingleChoice, // One vote per round
+    [FeatureId.MajorityGuarantee]: MajorityGuarantee.Yes, // Process continues until someone has majority
+    [FeatureId.VoterComplexity]: VoterComplexity.Moderate, // Multiple rounds, evolving preferences
+    [FeatureId.TallyingComplexity]: TallyingComplexity.Moderate, // Repeat elimination rounds
+    [FeatureId.SpoilerRisk]: SpoilerRisk.Moderate, // Elimination sequencing matters
+    [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // Incentives for coordination across rounds
 };
 
 export const useCases: UseCase[] = [

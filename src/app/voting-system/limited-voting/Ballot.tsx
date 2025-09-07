@@ -1,39 +1,55 @@
-'use client'
+'use client';
 
-import { BallotCard, BallotOption } from "@/app/ballots/components/Ballot";
-import { useState } from "react";
+import { BallotCard, BallotOption } from '@/app/ballots/components/Ballot';
+import * as React from 'react';
+import { fiveCandidates } from '@/lib/candidates/data';
+import { FooterActions } from '@/app/ballots/components/common';
 
-// --- Ballot Example (interactive) ---
-export function Ballot() {
-    const [selectedId, setSelectedId] = useState<string | null>(null);
+const candidates = fiveCandidates;
 
-    const candidates = [
-        { id: 'a', label: 'Alice Johnson', sublabel: 'Green Party' },
-        { id: 'b', label: 'Brian Smith', sublabel: 'Conservative Party' },
-        { id: 'c', label: 'Carla Nguyen', sublabel: 'Liberal Party' },
-    ];
+export default function LimitedVotingBallot() {
+    const [selected, setSelected] = React.useState<Set<string>>(new Set());
+
+    const toggle = (id: string, checked: boolean) => {
+        setSelected((prev) => {
+            const next = new Set(prev);
+            if (checked) {
+                // Enforce maximum selections (2 in this example)
+                if (next.size < 2) next.add(id);
+            } else {
+                next.delete(id);
+            }
+            return next;
+        });
+    };
+
+    const clear = () => setSelected(new Set());
 
     return (
         <BallotCard
-            title="Mayor Election"
-            instructions="Vote for ONE candidate only by marking the box next to their name."
+            title="Community Council Election"
+            instructions="Vote for up to 2 candidates. There will be 3 winners."
         >
-            <div role="group" aria-label="FPTP choices" className="grid gap-2">
-                {candidates.map((c) => (
+            <div className="space-y-2">
+                {fiveCandidates.map((c) => (
                     <BallotOption
                         key={c.id}
-                        id={c.id}
                         label={c.label}
-                        sublabel={c.sublabel}
                         variant="checkbox"
-                        checked={selectedId === c.id}
-                        onCheckedChange={(isChecked) =>
-                            setSelectedId(isChecked ? c.id : null)
-                        }
+                        checked={selected.has(c.id)}
+                        onCheckedChange={(checked) => toggle(c.id, checked)}
                     />
                 ))}
             </div>
+
+            <FooterActions
+                summary={`You have selected ${selected.size} candidate(s).`}
+                warning={selected.size > 2 ? "Too many selections — only 2 allowed." : undefined}
+                onClear={clear}
+                onSubmit={() => console.log('Submitted:', Array.from(selected))}
+                submitLabel="Cast Vote"
+                isValid={selected.size <= 2}
+            />
         </BallotCard>
     );
 }
-

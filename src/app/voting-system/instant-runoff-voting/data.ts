@@ -1,14 +1,10 @@
 // app/voting-system/instant-runoff-voting/data.ts
 import { ProsCons, UseCase } from "@/app/types";
 import {
-    BallotErrorHandling,
     BallotType,
-    CountingRule,
     FeatureChoices,
     FeatureId,
     MajorityGuarantee,
-    Proportionality,
-    RepresentationStyle,
     SeatType,
     SpoilerRisk,
     StrategicPressure,
@@ -69,19 +65,17 @@ export const weaknesses: ProsCons[] = [
     },
 ];
 
+// instant-runoff-voting (IRV / ranked-choice, single-winner)
 export const keyFeatures: Partial<FeatureChoices> = {
-    [FeatureId.Seats]: SeatType.SingleWinner,
-    [FeatureId.BallotType]: BallotType.Ranked,
-    [FeatureId.MajorityGuarantee]: MajorityGuarantee.Yes,
-    // [FeatureId.Counting]: CountingRule.IRV,
-    [FeatureId.Proportionality]: Proportionality.Low,
-    [FeatureId.VoterComplexity]: VoterComplexity.Moderate,
-    [FeatureId.TallyingComplexity]: TallyingComplexity.Moderate,
-    [FeatureId.BallotErrorHandling]: BallotErrorHandling.Lenient,
-    [FeatureId.SpoilerRisk]: SpoilerRisk.Low,
-    [FeatureId.StrategicPressure]: StrategicPressure.Moderate,
-    [FeatureId.RepresentationStyle]: RepresentationStyle.Majoritarian,
+    [FeatureId.Seats]: SeatType.SingleWinner,            // Single-office election
+    [FeatureId.BallotType]: BallotType.Ranked,           // Voters rank candidates
+    [FeatureId.MajorityGuarantee]: MajorityGuarantee.Yes,// Final-round winner has a majority of continuing ballots
+    [FeatureId.VoterComplexity]: VoterComplexity.Moderate,// Ranking multiple options
+    [FeatureId.TallyingComplexity]: TallyingComplexity.Moderate,// Sequential eliminations & transfers
+    [FeatureId.SpoilerRisk]: SpoilerRisk.Moderate,       // Reduced vs. plurality, but not eliminated (center-squeeze, nonmonotonicity)
+    [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // Some incentives remain; less than plurality/Borda
 };
+
 
 export const useCases: UseCase[] = [
     {

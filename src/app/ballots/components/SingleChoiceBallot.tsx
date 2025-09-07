@@ -5,15 +5,19 @@ import * as React from 'react';
 import { FooterActions, labelFor } from './common';
 import { Candidate } from '@/app/types';
 
-export default function SingleChoiceBallot({ candidates }: { candidates: Candidate[] }) {
+export default function SingleChoiceBallot({
+    candidates,
+    title = 'City Mayor Election',
+    instructions = 'Mark exactly one candidate.',
+}: {
+    candidates: Candidate[];
+    title?: string;
+    instructions?: string;
+}) {
     const [singleChoice, setSingleChoice] = React.useState<string | null>(null);
 
     return (
-        <BallotCard
-            title="City Mayor"
-            instructions="Mark exactly one candidate. If you make a mistake, you can change your selection before submitting."
-            className="mb-8"
-        >
+        <BallotCard title={title} instructions={instructions} className="mb-8">
             <div className="space-y-2">
                 {candidates.map((c) => (
                     <BallotOption
@@ -31,7 +35,11 @@ export default function SingleChoiceBallot({ candidates }: { candidates: Candida
             <BallotDivider />
             <FooterActions
                 onClear={() => setSingleChoice(null)}
-                summary={singleChoice ? `You selected: ${labelFor(candidates, singleChoice)}` : 'No selection yet.'}
+                summary={
+                    singleChoice
+                        ? `You selected: ${labelFor(candidates, singleChoice)}`
+                        : 'No selection yet.'
+                }
                 isValid={singleChoice !== null}
             />
         </BallotCard>

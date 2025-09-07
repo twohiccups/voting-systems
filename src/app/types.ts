@@ -3,12 +3,21 @@ export type Candidate = { id: string; label: string; sublabel?: string, total?: 
 
 
 
+
 export type Party = {
     id: string;
     name: string;
     tagline?: string; // short descriptor (e.g., ideology)
     candidates: Candidate[]; // party list (closed list)
 };
+
+
+export interface Ticket {
+    id: string;
+    partyLabel: string;
+    primary: Candidate;
+    secondary?: Candidate;
+}
 
 
 

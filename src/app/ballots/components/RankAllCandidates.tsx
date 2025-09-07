@@ -28,9 +28,6 @@ export default function RankAllCandidatesBallot({ candidates }: { candidates: Ca
 
     // Validation and messaging
 
-    let warning = '';
-    if (!allRanked) warning = 'Every candidate must be ranked (no blanks).';
-    if (rankDuplicates) warning = (warning ? `${warning} ` : '') + 'Duplicate ranks detected. Each rank should be unique.';
 
     return (
         <BallotCard
