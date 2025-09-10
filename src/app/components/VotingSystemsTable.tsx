@@ -76,7 +76,7 @@ export default function VotingSystemsTable({
                                     <Link
                                         href={href}
                                         // remove link styling; rely on row hover instead
-                                        className="no-underline text-[inherit] focus:outline-none"
+                                        className="no-underline text-[inherit] focus:outline-none font-bold"
                                         // avoid double-handling; let row handle navigation
                                         onClick={(e) => e.preventDefault()}
                                     >

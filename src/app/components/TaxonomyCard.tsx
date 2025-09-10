@@ -2,15 +2,10 @@
 "use client";
 
 import * as React from "react";
-import { SystemCard } from "./SystemCard";
 import { TaxonomySystem } from "@/lib/taxonomy/types";
+import { Card } from "./primitives";
 
 export default function TaxonomyCard({ system }: { system: TaxonomySystem }) {
-    return (
-        <SystemCard
-            title={system.name}
-            description={system.shortDescription}
-            className="h-full"
-        />
+    return (<><Card title={system.id} children={undefined}></Card></>
     );
 }

@@ -92,7 +92,7 @@ export const weaknesses: ProsCons[] = [
 
 
 export const keyFeatures: Partial<FeatureChoices> = {
-  [FeatureId.Seats]: SeatType.SingleWinner, // Usually used for one office
+  [FeatureId.Seats]: SeatType.Both, // Usually used for one office
   [FeatureId.BallotType]: BallotType.Approval, // Approve any number of candidates
   [FeatureId.MajorityGuarantee]: MajorityGuarantee.No, // Majority-approved candidate can still lose
   [FeatureId.VoterComplexity]: VoterComplexity.Low, // Simple yes/no marks

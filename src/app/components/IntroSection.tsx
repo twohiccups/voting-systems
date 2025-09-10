@@ -60,8 +60,10 @@ export default function IntroSection() {
 
     return (
         <div className="perspective-[1200px]">
+
             <motion.div
-                className="theme-transition rounded-2xl border-border bg-card text-card-foreground shadow-xl p-6 sm:p-8 lg:p-10 bg-gradient-to-r from-blue-100 via-cyan-50 to-blue-200"
+                className="rounded-2xl  bg-[var(--card)] text-card-foreground shadow-md p-6 sm:p-8 lg:p-10"
+
                 whileHover={{
                     rotateX: -1,
                     rotateY: 1,
@@ -88,10 +90,10 @@ export default function IntroSection() {
                                 <StepCircle num={i + 1} />
                             </motion.div>
                             <div>
-                                <p className="font-semibold text-base sm:text-xl">
+                                <p className="font-semibold text-base sm:text-lg">
                                     {itemData.question}
                                 </p>
-                                <p className="text-muted-foreground text-base sm:text-xl">
+                                <p className="text-muted-foreground text-base sm:text-">
                                     {itemData.detail}
                                 </p>
                             </div>

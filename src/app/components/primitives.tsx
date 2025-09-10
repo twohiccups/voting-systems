@@ -186,12 +186,11 @@ export function Card({ title, children }: { title: string; children: React.React
     );
 }
 
-export function StepCard({ index, title, children }: { index: number; title: string; children: React.ReactNode }) {
+export function StepCard({ title, children }: { index: number; title?: string; children: React.ReactNode }) {
     return (
         <section className="rounded-3xl border border-gray-200/80 bg-white/80 backdrop-blur px-5 py-4 shadow-sm transition-shadow hover:shadow-md">
             <div className="flex items-center gap-3">
-                <StepCircle num={index} />
-                <h3 className="text-base font-semibold tracking-tight">{title}</h3>
+                {title ?? (<h3 className="text-base font-semibold tracking-tight">{title}</h3>)}
             </div>
             <div className="mt-3">{children}</div>
         </section>

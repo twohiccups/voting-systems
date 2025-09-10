@@ -3,11 +3,11 @@
 import * as React from "react";
 import Link from "next/link";
 
-type CardProps = {
-    href?: string;
+type SystemCardProps = {
+    href: string;
     title?: string;
     description?: string;
-    footer?: React.ReactNode; // e.g. taxonomy Chip
+    footer?: React.ReactNode;
     className?: string;
     children?: React.ReactNode;
 };
@@ -19,48 +19,44 @@ export function SystemCard({
     footer,
     className = "",
     children,
-}: CardProps) {
-    const Wrapper = href ? Link : "div";
-
+}: SystemCardProps) {
     return (
-        <Wrapper
-            href={href as string}
-            className={[
-                "group relative inline-block max-w-full rounded-xl border p-3 sm:p-4 shadow-sm transition",
-                // ↓ add opacity
-                "bg-[var(--card)]/80 text-[var(--card-foreground)] border-[var(--border)]",
-                "hover:shadow-md active:scale-[0.998]",
-                "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ring)]",
-                className,
-            ].join(" ")}
-        >
-            {/* Title */}
-            {title && (
-                <h3
-                    className={[
-                        "mb-1.5 sm:mb-2 text-sm sm:text-base md:text-lg font-semibold leading-snug",
-                        "line-clamp-2 md:line-clamp-none lg:line-clamp-2",
-                    ].join(" ")}
-                >
-                    {title}
-                </h3>
-            )}
+        <Link href={href} className="block focus-visible:outline-none">
+            <div
+                className={[
+                    // layout + container
+                    "relative max-w-full rounded-xl border p-3 sm:p-4 overflow-hidden",
+                    // theme tokens
+                    "bg-[var(--card)] text-[var(--card-foreground)] border-[var(--border)]",
+                    // motion/hover
+                    "transition-[transform,box-shadow] duration-150 ease-out hover:shadow-md",
+                    // focus ring (applied on div so corners are respected)
+                    "focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+                    // link reset
+                    "no-underline",
+                    className,
+                ].join(" ")}
+            >
+                {title && (
+                    <h3
+                        className={[
+                            "mb-1.5 sm:mb-2 text-sm sm:text-base md:text-lg font-semibold leading-snug",
+                            "line-clamp-2 md:line-clamp-none lg:line-clamp-2",
+                        ].join(" ")}
+                    >
+                        {title}
+                    </h3>
+                )}
 
-            {/* Description */}
-            {description && (
-                <p className="text-base text-[var(--muted-foreground)] line-clamp-3 md:line-clamp-none lg:line-clamp-3">
-                    {description}
-                </p>
-            )}
+                {description && (
+                    <p className="text-base line-clamp-3 md:line-clamp-none lg:line-clamp-3">
+                        {description}
+                    </p>
+                )}
 
-            {/* Footer / Chip */}
-            {footer && <div className="mt-3">{footer}</div>}
-
-            {/* Custom children (optional extra content) */}
-            {children}
-
-            {/* Subtle hover overlay */}
-            <span className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-transparent group-hover:ring-[var(--ring)]/20" />
-        </Wrapper>
+                {footer && <div className="mt-3">{footer}</div>}
+                {children}
+            </div>
+        </Link>
     );
 }

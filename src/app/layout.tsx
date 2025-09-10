@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import 'flag-icons/css/flag-icons.min.css'; // <-- global import
+import { Footer } from "./components/Footer";
 
 const inter = Noto_Sans({
   subsets: ["latin"],
@@ -28,7 +29,10 @@ export default function RootLayout({
         className={` ${inter.variable}  antialiased space-y-6`}
       >
         {children}
+        <Footer />
       </body>
+
+
     </html>
   );
 }

@@ -4,6 +4,8 @@ import React, { useMemo, useState } from "react";
 import { BulletList, Td, Th, ViewToggle } from "../components/primitives";
 import SectionHeading from "../components/SectionHeading";
 import { featureCatalog } from "@/lib/features/catalog";
+import { Container } from "../components/Container";
+import HeroHeader from "../components/HeroHeader";
 
 // === Types ===
 export type FeatureItem = { label: string; detail?: string };
@@ -36,46 +38,45 @@ export default function FeaturesPage() {
     }, [q]);
 
     return (
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-8 space-y-6">
-            <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <SectionHeading title="Election System Features" />
-                <div className="flex items-center gap-2 sm:gap-3">
+        <>
+            <HeroHeader
+                title={"Election System Features"}
+                bgImage="https://images.unsplash.com/photo-1631540700496-af53025473e8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                imageCredit="kommumikation"
+                imageCreditLink="https://unsplash.com/@kommumikation" />
+
+            <Container>
+                <div className="flex flex-wrap gap-2 items-center">
                     <ViewToggle
                         value={view === "sections" ? "grid" : "table"}
                         onChange={(v) =>
                             setView(v === "grid" ? "sections" : "table")
                         }
                     />
+                    <div className="ml-auto min-w-[200px] max-w-sm">
+                        <input
+                            className="input w-full"
+                            placeholder="Search features, e.g. ‘Condorcet’, ‘lists’, ‘runoff’…"
+                            value={q}
+                            onChange={(e) => setQ(e.target.value)}
+                        />
+                    </div>
                 </div>
-            </header>
 
-            <div className="flex flex-wrap gap-2 items-center">
-                <div className="ml-auto min-w-[200px] max-w-sm">
-                    <input
-                        className="input w-full"
-                        placeholder="Search features, e.g. ‘Condorcet’, ‘lists’, ‘runoff’…"
-                        value={q}
-                        onChange={(e) => setQ(e.target.value)}
-                    />
-                </div>
-            </div>
-
-            {view === "sections" ? (
-                <SectionView sections={visible} />
-            ) : (
-                <TableView sections={visible} />
-            )}
-        </main>
+                {view === "sections" ? (
+                    <SectionView sections={visible} />
+                ) : (
+                    <TableView sections={visible} />
+                )}
+            </Container>
+        </>
     );
 }
-
-
-// ...unchanged imports...
 
 // === Section-based layout (with BulletList) ===
 function SectionView({ sections }: { sections: FeatureSection[] }) {
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 min-h-screen">
             {sections.map((s) => (
                 <section
                     key={s.id}

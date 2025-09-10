@@ -10,7 +10,7 @@ export default function HowItWorks() {
         { text: <>Each approved candidate receives <strong>one vote</strong> from that voter.</> },
         { text: <>All votes are tallied across the electorate.</> },
         { text: <>The candidate with the <strong>most approvals</strong> wins.</> },
-        { text: <>If electing multiple seats, the top N candidates are selected.</> },
+        { text: <>If electing multiple seats, the <strong>top N</strong> candidates are selected.</> },
     ];
 
     return <HowItWorksTemplate steps={steps} />;

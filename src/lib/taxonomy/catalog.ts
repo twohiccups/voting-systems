@@ -198,3 +198,30 @@ export const VotingSystems: VotingSystem[] = [
     }
 ]
 
+
+
+
+export const taxonomySlugs = [
+    "approval-voting",
+    "block-voting",
+    "borda-count",
+    "condorcet-method",
+    "copelands-method",
+    "cumulative-voting",
+    "dual-member-proportional",
+    "exhaustive-ballot",
+    "first-past-the-post",
+    "limited-voting",
+    "majority-bonus-system",
+    "mixed-member-proportional",
+    "panachage",
+    "parallel-voting",
+    "party-list-proportional-representation",
+    "ranked-pairs",
+    "score-voting",
+    "single-non-transferable-vote",
+    "single-transferable-vote",
+    "sortition",
+    "supplementary-vote",
+    "two-round-system"
+]

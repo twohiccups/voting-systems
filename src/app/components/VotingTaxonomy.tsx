@@ -4,10 +4,10 @@ import * as React from "react";
 import TaxonomyCard from "./TaxonomyCard";
 import { TaxonomySystems } from "../../lib/taxonomy/catalog";
 import { Dot, NextIcon, PrevIcon } from "./primitives";
-import SectionHeading from "./SectionHeading";
 import { TaxonomySystem } from "@/lib/taxonomy/types";
 
-const intro = `Voting systems vary widely — some reward simplicity, others aim for fairness or consensus. To navigate this variety, we’ve grouped the world’s voting systems into six core types, each grounded in a distinct logic of design.`;
+
+const intro = `There isn’t a single "natural" map of voting methods. This is one practical way to group them into categories—each emphasizing a different design goal or trade-off.`;
 
 function MobileSlideshow({
     systems,
@@ -32,7 +32,7 @@ function MobileSlideshow({
         <div
             className="md:hidden"
             aria-roledescription="carousel"
-            aria-label="Voting system types"
+            aria-label="Voting system categories"
         >
             <div className="relative" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
                 <div className="overflow-hidden rounded-xl">
@@ -93,13 +93,18 @@ function MobileSlideshow({
 
 export default function VotingTaxonomy({
     systems = TaxonomySystems,
-    heading = "The Six Core Types of Voting Systems",
 }: {
     systems?: TaxonomySystem[];
     heading?: string;
 }) {
+    // Hide "Other" in the UI but keep it available in the exported list for filters, etc.
+    const visibleSystems = React.useMemo(
+        () => (systems || []).filter((s) => s.id !== "Other"),
+        [systems]
+    );
+
     const [index, setIndex] = React.useState(0);
-    const total = systems.length;
+    const total = visibleSystems.length;
 
     React.useEffect(() => {
         if (index >= total) setIndex(0);
@@ -120,10 +125,9 @@ export default function VotingTaxonomy({
     };
 
     return (
-        <div>
+        <div className="sm:min-h-[50vh]">
             {/* Header */}
             <div className="mb-6 sm:mb-8 lg:mb-10">
-                <SectionHeading title={heading} />
                 <p className="mt-2 sm:mt-3 text-base sm:text-base md:text-lg text-muted-foreground">
                     {intro}
                 </p>
@@ -131,7 +135,7 @@ export default function VotingTaxonomy({
 
             {/* Mobile: slideshow */}
             <MobileSlideshow
-                systems={systems}
+                systems={visibleSystems}
                 index={index}
                 setIndex={setIndex}
                 prev={prev}
@@ -142,7 +146,7 @@ export default function VotingTaxonomy({
 
             {/* Tablet/Desktop: Grid */}
             <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
-                {systems.map((system) => (
+                {visibleSystems.map((system) => (
                     <TaxonomyCard key={system.name} system={system} />
                 ))}
             </div>

@@ -116,10 +116,13 @@ export default function BallotTypesShowcasePage() {
 
     return (
         <>
+
             <HeroHeader
                 title={'Ballot Types Showcase'}
                 subtitle="Explore common electoral ballot designs"
-                bgImage={''}
+                bgImage={'https://images.unsplash.com/photo-1597700331582-aab3614b3c0c?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
+                imageCredit='Unseen Histories'
+                imageCreditLink='https://unsplash.com/@unseenhistories'
             />
 
             {/* FullBleed → Section → Container */}
@@ -133,7 +136,8 @@ export default function BallotTypesShowcasePage() {
                                 issues, where the voter marks their selection.
                             </QuoteBlock>
 
-                            <StepCard title="A ballot usually contains:" index={0}>
+                            <SectionHeading title="A ballot usually contains:" />
+                            <StepCard index={0}>
                                 <StepList items={ballotItems} />
                             </StepCard>
 

@@ -1,14 +1,13 @@
 "use client";
 
-import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
-import { motion, useReducedMotion, useInView, type SpringOptions } from "framer-motion";
+import React, { useLayoutEffect, useRef, useState, useEffect } from "react";
+import { motion, useReducedMotion, useInView, useAnimation } from "framer-motion";
 import { StepCircle } from "@/app/components/primitives";
 import { FlowStep } from "@/app/types";
 
 // ==========================
 // Types
 // ==========================
-
 export type FlowStepsProps = {
     steps: FlowStep[];
     className?: string;
@@ -30,7 +29,7 @@ export type FlowStepsProps = {
 // Component
 // ==========================
 export default function HowItWorksTemplate({ steps, className, layout }: FlowStepsProps) {
-    // Defaults mirror the original HowItWorks component
+    // Layout defaults
     const MIN_SLOTS = layout?.minSlots ?? 3;
     const EXTRA_GAP = layout?.extraGap ?? 28;
     const WIDTH_TO_CARD_RATIO = layout?.widthToCardRatio ?? 0.92;
@@ -45,8 +44,7 @@ export default function HowItWorksTemplate({ steps, className, layout }: FlowSte
 
     const [offsets, setOffsets] = useState<Offset[]>([]);
     const [containerHeight, setContainerHeight] = useState<number>(400);
-    const [containerWidth, setContainerWidth] = useState<number>(0);
-    const [cardHeight, setCardHeight] = useState<number>(140);
+    const [cardHeight, setCardHeight] = useState<number>(FALLBACK_CARD.height);
 
     const prefersReducedMotion = useReducedMotion();
 
@@ -55,7 +53,6 @@ export default function HowItWorksTemplate({ steps, className, layout }: FlowSte
         const listEl = listRef.current;
         if (!el || !listEl) return;
 
-        // Map indices into "bouncing" slot positions across available columns
         const bounce = (i: number, slots: number) => {
             const period = Math.max((slots - 1) * 2, 1);
             const t = i % period;
@@ -73,7 +70,6 @@ export default function HowItWorksTemplate({ steps, className, layout }: FlowSte
             const tallest = Math.max(FALLBACK_CARD.height, ...cardRects.map((r) => r.height || 0));
             const sampleW = FALLBACK_CARD.width;
 
-            // Horizontal spread region: +/- usableW/2 from center
             const usableW = Math.max(0, (containerRect.width - sampleW) * SPREAD_FRACTION);
             const slots = Math.max(
                 MIN_SLOTS,
@@ -91,18 +87,16 @@ export default function HowItWorksTemplate({ steps, className, layout }: FlowSte
             });
 
             setOffsets(nextOffsets);
-            setContainerWidth(containerRect.width);
             setCardHeight(tallest);
-
-            const totalHeight = tallest + (n - 1) * stepY + EXTRA_GAP;
-            setContainerHeight(totalHeight);
+            setContainerHeight(tallest + (n - 1) * stepY + EXTRA_GAP);
         };
 
         const ro = new ResizeObserver(compute);
         ro.observe(el);
         ro.observe(listEl);
         liRefs.current.forEach((n) => n && ro.observe(n));
-        compute();
+        // ensure first paint content/ fonts have landed
+        requestAnimationFrame(() => requestAnimationFrame(compute));
 
         return () => ro.disconnect();
     }, [
@@ -115,38 +109,7 @@ export default function HowItWorksTemplate({ steps, className, layout }: FlowSte
         FALLBACK_CARD.width,
     ]);
 
-    const connectors = useMemo(() => {
-        if (!containerWidth || !cardHeight || offsets.length < 2) return [] as string[];
-        const cx = (i: number) => containerWidth / 2 + (offsets[i]?.x ?? 0);
-        const cy = (i: number) => (offsets[i]?.y ?? 0) + cardHeight / 2;
-
-        const paths: string[] = [];
-        for (let i = 0; i < offsets.length - 1; i++) {
-            const x1 = cx(i);
-            const y1 = cy(i);
-            const x2 = cx(i + 1);
-            const y2 = cy(i + 1);
-            const mx = (x1 + x2) / 2;
-            // Simple symmetrical cubic curve between step centers
-            paths.push(`M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`);
-        }
-        return paths;
-    }, [containerWidth, cardHeight, offsets]);
-
-    // ==========================
-    // Animation tuning knobs
-    // ==========================
-    const WIGGLE_PX = 14; // left/right amplitude
-    const LIFT_PX = 16; // slight lift on the way in
-    const STAGGER = 0.06; // seconds between each item’s start
-    const X_DURATION = 0.9; // total wiggle time
-
-    // Typed spring options (fix TS vs ValueTransition)
-    const Y_SPRING: SpringOptions = { stiffness: 260, damping: 22, mass: 0.8 };
-
-    // Trigger later in viewport
-    const VIEWPORT_AMOUNT = 0.75; // 75% visible
-    const VIEWPORT_MARGIN = "-10% 0% -10% 0%"; // shrink top/bottom viewport
+    const VIEWPORT_AMOUNT = 0.75;
 
     return (
         <section className={`not-prose ${className ?? ""}`}>
@@ -155,34 +118,10 @@ export default function HowItWorksTemplate({ steps, className, layout }: FlowSte
                 className="relative rounded-2xl p-4 sm:p-6 overflow-hidden"
                 style={{ minHeight: containerHeight }}
             >
-                <svg
-                    className="pointer-events-none absolute inset-0"
-                    width={containerWidth}
-                    height={containerHeight}
-                    viewBox={`0 0 ${containerWidth} ${containerHeight}`}
-                    aria-hidden="true"
-                >
-                    <defs>
-                        <linearGradient id="flow-stroke" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="var(--muted-foreground)" stopOpacity="0.35" />
-                            <stop offset="100%" stopColor="var(--muted-foreground)" stopOpacity="0.15" />
-                        </linearGradient>
-                        <filter id="flow-glow" x="-50%" y="-50%" width="200%" height="200%">
-                            <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
-                        </filter>
-                    </defs>
-                    {connectors.map((d, idx) => (
-                        <g key={idx}>
-                            <path d={d} stroke="url(#flow-stroke)" strokeWidth={4} fill="none" filter="url(#flow-glow)" />
-                            <path d={d} stroke="url(#flow-stroke)" strokeWidth={2} fill="none" />
-                        </g>
-                    ))}
-                </svg>
-
                 <ol ref={listRef} className="relative grid grid-cols-1">
                     {steps.map((s, i) => {
-                        const targetX = offsets[i]?.x ?? 0;
-                        const targetY = offsets[i]?.y ?? 0;
+                        const slotX = offsets[i]?.x ?? 0;
+                        const y = offsets[i]?.y ?? 0;
                         const isEvenStep = ((s.num ?? i + 1) % 2) === 0;
                         const dir: 1 | -1 = isEvenStep ? -1 : 1;
 
@@ -191,17 +130,12 @@ export default function HowItWorksTemplate({ steps, className, layout }: FlowSte
                                 key={`${(s.num ?? i + 1).toString()}-${i}`}
                                 index={i}
                                 liRefs={liRefs}
-                                targetX={targetX}
-                                targetY={targetY}
+                                slotX={slotX}
+                                y={y}
                                 dir={dir}
-                                wigglePx={WIGGLE_PX}
-                                liftPx={LIFT_PX}
-                                stagger={STAGGER}
-                                xDuration={X_DURATION}
-                                ySpring={Y_SPRING}
                                 viewportAmount={VIEWPORT_AMOUNT}
-                                viewportMargin={VIEWPORT_MARGIN}
-                                prefersReducedMotion={prefersReducedMotion ? true : false}
+                                prefersReducedMotion={!!prefersReducedMotion}
+                                fixedHeight={cardHeight}
                             >
                                 <div className="relative shrink-0">
                                     <StepCircle num={s.num ?? i + 1} />
@@ -219,88 +153,70 @@ export default function HowItWorksTemplate({ steps, className, layout }: FlowSte
 }
 
 /* ------------------------------------------------------------------
-   StepItem: in-view detection + animation that also renders visible
-   on first paint if already in view (page reload fix).
+   StepItem: one-time "untangle" animation on first in-view.
+   - No scroll linkage, so it never reverses.
 -------------------------------------------------------------------*/
 type StepItemProps = {
     index: number;
     liRefs: React.MutableRefObject<(HTMLLIElement | null)[]>;
-    targetX: number;
-    targetY: number;
+    slotX: number;
+    y: number;
     dir: 1 | -1;
-    wigglePx: number;
-    liftPx: number;
-    stagger: number;
-    xDuration: number;
-    ySpring: SpringOptions;
     viewportAmount: number;
-    viewportMargin: string;
     prefersReducedMotion: boolean;
+    fixedHeight: number;
     children: React.ReactNode;
 };
 
 function StepItem({
     index,
     liRefs,
-    targetX,
-    targetY,
+    slotX,
+    y,
     dir,
-    wigglePx,
-    liftPx,
-    stagger,
-    xDuration,
-    ySpring,
     viewportAmount,
     prefersReducedMotion,
+    fixedHeight,
     children,
 }: StepItemProps) {
     const itemRef = useRef<HTMLLIElement | null>(null);
 
-    // Mirror into the measurement array (TS-safe: return void)
-    React.useEffect(() => {
+    useEffect(() => {
         liRefs.current[index] = itemRef.current;
     }, [index, liRefs]);
 
-    const inView = useInView(itemRef, {
-        once: true,
-        amount: viewportAmount,
-    });
+    const inView = useInView(itemRef, { once: true, amount: viewportAmount });
 
-    // If already visible at mount (or reduced motion), don't hide it.
-    const initialX = targetX;
-    const initialY = prefersReducedMotion ? targetY : targetY - liftPx;
-    const initialOpacity = inView || prefersReducedMotion ? 1 : 0;
+    const SIDE_BOOST = 44;
+    const initialX = dir * (Math.abs(slotX) + SIDE_BOOST);
 
-    const xKeyframes = prefersReducedMotion
-        ? [targetX]
-        : [
-            targetX + dir * wigglePx,
-            targetX - dir * wigglePx * 0.7,
-            targetX + dir * wigglePx * 0.45,
-            targetX - dir * wigglePx * 0.2,
-            targetX,
-        ];
+    const controls = useAnimation();
+    const hasAnimated = useRef(false);
 
-    const yKeyframes = prefersReducedMotion ? [targetY] : [targetY - liftPx, targetY];
+    useEffect(() => {
+        if (prefersReducedMotion) {
+            controls.set({ x: 0, opacity: 1 });
+            hasAnimated.current = true;
+            return;
+        }
+        if (inView && !hasAnimated.current) {
+            hasAnimated.current = true;
+            controls.start({
+                x: 0,
+                opacity: 1,
+                transition: { type: "spring", stiffness: 120, damping: 20 },
+            });
+        }
+    }, [inView, prefersReducedMotion, controls]);
 
     return (
         <motion.li
             ref={itemRef}
-            initial={{ x: initialX, y: initialY, opacity: initialOpacity }}
-            animate={
-                inView
-                    ? { x: xKeyframes, y: yKeyframes, opacity: 1 }
-                    : { x: initialX, y: initialY, opacity: initialOpacity }
-            }
-            transition={{
-                delay: index * stagger,
-                x: prefersReducedMotion
-                    ? undefined
-                    : { duration: xDuration, times: [0, 0.33, 0.6, 0.8, 1], ease: "easeOut" },
-                y: prefersReducedMotion ? undefined : { ...ySpring },
-                opacity: { duration: 0.3, ease: "easeOut" },
-            }}
-            whileHover={{ scale: 1.1 }}
+            initial={{ x: initialX, y, opacity: 0 }}
+            animate={controls}
+            // lock height so all cards match; keep overflow hidden to avoid layout jumps
+            style={{ y, height: fixedHeight, maxHeight: fixedHeight, overflow: "hidden" }}
+            whileHover={{ scale: 1.06 }}
             className="
         absolute left-1/2 top-0 -translate-x-1/2
         w-full max-w-sm sm:w-[20rem]
@@ -311,7 +227,10 @@ function StepItem({
         flex gap-3 items-start
       "
         >
-            {children}
+            {/* make inner content fill so visual height is consistent */}
+            <div className="flex items-start gap-3 w-full h-full">
+                {children}
+            </div>
         </motion.li>
     );
 }

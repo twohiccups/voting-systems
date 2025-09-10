@@ -10,6 +10,8 @@ import KeyFeatures from './KeyFeatures';
 import type { SystemContent } from '@/lib/systems/types';
 import UseCases from './UseCases';
 
+
+
 export default function SystemPage({ content }: { content: SystemContent }) {
     const {
         name,
@@ -28,9 +30,44 @@ export default function SystemPage({ content }: { content: SystemContent }) {
         Walkthrough,
     } = content.components ?? {};
 
+    // const bgImage = 
+
+
+    const taxonomySlugs = [
+        "approval-voting",
+        "block-voting",
+        "borda-count",
+        "condorcet-method",
+        "copelands-method",
+        "cumulative-voting",
+        "dual-member-proportional",
+        "exhaustive-ballot",
+        "first-past-the-post",
+        "limited-voting",
+        "majority-bonus-system",
+        "mixed-member-proportional",
+        "panachage",
+        "parallel-voting",
+        "party-list-proportional-representation",
+        "ranked-pairs",
+        "score-voting",
+        "single-non-transferable-vote",
+        "single-transferable-vote",
+        "sortition",
+        "supplementary-vote",
+        "two-round-system"
+    ]
+
+    // --- 3 background options (use your own images/credits here) ---
+
     return (
         <div>
-            <HeroHeader title={name} subtitle={aka?.[0] ?? ''} bgImage="" />
+            <HeroHeader
+                title={name}
+                subtitle={aka?.[0] ?? ''}
+                bgImage="https://images.unsplash.com/photo-1631540697666-8e10f3108722?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                imageCredit="kommumikation"
+                imageCreditLink="https://unsplash.com/@kommumikation" />
             <main className="py-12 sm:py-16 lg:py-24 px-6 sm:px-8 lg:px-12 max-w-screen-xl mx-auto">
                 <div className="space-y-12 sm:space-y-16 lg:space-y-24">
                     <Section>

@@ -19,10 +19,16 @@ export default function VotingSystemCard({
 
     return (
         <motion.div
-            whileHover={{ y: -6, scale: 1.02, boxShadow: "0 10px 24px rgba(0,0,0,0.12)" }}
+            // Keep the subtle lift/scale, drop the shadow (SystemCard already has hover shadow)
+            whileHover={{ y: -4, scale: 1.02 }}
             whileTap={{ scale: 0.995 }}
             transition={{ type: "spring", stiffness: 320, damping: 22, mass: 0.6 }}
-            className={`cursor-pointer will-change-transform ${className}`}
+            // Ensure the wrapper respects rounded corners and clips any inner effects
+            className={[
+                "cursor-pointer will-change-transform h-full",
+                "rounded-xl overflow-hidden",            // <-- important
+                className,
+            ].join(" ")}
         >
             <SystemCard
                 href={`/voting-system/${slug}`}
@@ -30,12 +36,12 @@ export default function VotingSystemCard({
                 description={shortDescription}
                 footer={
                     <span className="pointer-events-none">
-                        {/* Decorative chip inside the link (not focusable/clickable) */}
                         <Chip ariaLabel={taxonomyId}>{taxonomyId}</Chip>
                     </span>
                 }
-                // Keep SystemCard’s own smooth color/focus transitions
-                className="theme-transition hover:bg-[var(--muted)]"
+                // Avoid adding an extra background layer on hover here if you want
+                // the cleanest corners; shadow is enough for hover affordance.
+                className="theme-transition h-full flex flex-col justify-between min-h-[164px] w-full"
             />
         </motion.div>
     );

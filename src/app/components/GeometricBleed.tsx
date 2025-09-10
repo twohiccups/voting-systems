@@ -45,16 +45,13 @@ function GridBG() {
                     backgroundImage:
                         `linear-gradient(0deg, rgba(0,0,0,0.06) 1px, transparent 1px),
              linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px)`,
-                    backgroundSize: '32px 32px',
+                    backgroundSize: '64px 64px',
                     backgroundPosition: 'center',
                 }}
             />
             <div
                 className="absolute inset-0"
-                style={{
-                    background:
-                        'radial-gradient(ellipse at 30% -10%, rgba(59,130,246,0.12), transparent 60%), radial-gradient(ellipse at 80% 120%, rgba(8,145,178,0.12), transparent 60%)',
-                }}
+
             />
         </div>
     );
@@ -110,13 +107,13 @@ function OrbitsBG({ animate }: { animate: boolean }) {
         <svg className="absolute inset-0 h-full w-full" aria-hidden>
             <defs>
                 <radialGradient id="orb-glow" cx="50%" cy="10%" r="80%">
-                    <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.18" />
-                    <stop offset="60%" stopColor="#22d3ee" stopOpacity="0.10" />
+                    <stop offset="0%" stopColor="#e2a1c3" stopOpacity="0.18" />
+                    <stop offset="60%" stopColor="#e2a1c3" stopOpacity="0.10" />
                     <stop offset="100%" stopColor="transparent" />
                 </radialGradient>
                 <linearGradient id="arc" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.28" />
-                    <stop offset="100%" stopColor="#22d3ee" stopOpacity="0.12" />
+                    <stop offset="0%" stopColor="#e2d1c3" stopOpacity="0.28" />
+                    <stop offset="100%" stopColor="#e2a1c3" stopOpacity="0.12" />
                 </linearGradient>
                 <filter id="soften" x="-20%" y="-20%" width="140%" height="140%">
                     <feGaussianBlur stdDeviation="6" />
@@ -151,8 +148,8 @@ function OrbitsBG({ animate }: { animate: boolean }) {
 
             {/* off-center soft blobs to break symmetry */}
             <g filter="url(#soften)" opacity="0.55">
-                <circle cx="20%" cy="10%" r="22%" fill="#60a5fa" opacity="0.08" />
-                <circle cx="85%" cy="85%" r="26%" fill="#22d3ee" opacity="0.08" />
+                <circle cx="20%" cy="10%" r="22%" fill="#e2d1c3" opacity="0.08" />
+                <circle cx="85%" cy="85%" r="26%" fill="#e2e1b3" opacity="0.08" />
             </g>
 
             <style>{`
