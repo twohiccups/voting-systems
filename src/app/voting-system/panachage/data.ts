@@ -1,114 +1,108 @@
-// app/voting-system/fptp/data.ts
+// app/voting-system/panachage/data.ts
 import { ProsCons, UseCase } from "@/app/types";
 import {
-    BallotType, FeatureChoices, FeatureId,
-    MajorityGuarantee, SeatType,
-    SpoilerRisk, StrategicPressure, TallyingComplexity, VoterComplexity
+  BallotType,
+  FeatureChoices,
+  FeatureId,
+  MajorityGuarantee,
+  SeatType,
+  SpoilerRisk,
+  StrategicPressure,
+  TallyingComplexity,
+  VoterComplexity,
 } from "@/lib/features/types";
 
-
-export const name = "First-Past-the-Post";
-export const aka = ["Plurality"];
+export const name = "Panachage";
+export const aka = ["Open-List with Cross-Party Voting", "Free List Voting"];
 
 export const introParagraph: string = `
-  First Past the Post is one of the simplest ways to run an election.
-  Each voter chooses one candidate, and the candidate with the most votes wins.
-  Its appeal lies in its speed and straightforwardness: results are easy to count and quick to announce.
-  However, FPTP can also produce outcomes where a candidate wins without securing a majority of votes,
-  raising questions about how well it reflects the overall preferences of voters.
+  Panachage lets voters pick individual candidates across different party lists in the same
+  multi-member district—mixing and matching their preferred slate. In many implementations,
+  voters can also give multiple votes to the same candidate (“cumulation”) and reorder
+  candidates within lists. Seats are allocated proportionally at the party/list level using
+  the sum of candidate votes, and those candidate totals determine who actually fills the
+  seats. The system blends proportional outcomes with strong voter-level control.
 `;
 
 export const strengths: ProsCons[] = [
-    {
-        title: "Very simple ballots and counting; easy to explain.",
-        summary: "Voters mark one name and you add up the marks—fewer steps, fewer mistakes.",
-        details: "Poll workers need minimal training, audit trails are straightforward, and error rates tend to stay low because there are fewer places to go wrong.",
-    },
-    {
-        title: "Fast results and low administrative cost.",
-        summary: "Single-mark tallies produce quick preliminaries and uncomplicated recounts.",
-        details: "Even in large jurisdictions, preliminary results can be reported quickly and recounts are comparatively simple, keeping election-night logistics and budgets lean.",
-    },
-    {
-        title: "Clear single representative per district (with single-member districts).",
-        summary: "Accountability is direct—constituents know exactly who represents them.",
-        details: "Each area elects a single winner who is easy to identify and contact. If voters are unhappy, there’s a clear person to hold to account in the next election.",
-    },
+  {
+    title: "Fine-grained voter choice across party lines.",
+    summary: "Voters select people, not just parties—mix, match, and reorder.",
+    details:
+      "Panachage empowers voters to craft a personal slate across lists and reward individual candidates, increasing accountability and encouraging cross-party consensus candidates.",
+  },
+  {
+    title: "Proportional-ish outcomes with reduced spoiler effects.",
+    summary: "Multiple seats dampen ‘winner-take-all’ distortions.",
+    details:
+      "Because seats are distributed in proportion to aggregated candidate/list support, smaller groups can earn representation and ideological vote-splitting is less punishing than in single-winner systems.",
+  },
+  {
+    title: "Encourages local and personal representation.",
+    summary: "Well-known community figures can outperform party rankings.",
+    details:
+      "Candidate-centric voting can elevate responsive, popular individuals and foster stronger constituency links within proportional frameworks.",
+  },
 ];
 
 export const weaknesses: ProsCons[] = [
-    {
-        title: "Winners may have <50% support in multi-candidate races.",
-        summary: "Plurality winners can take office without majority backing in crowded fields.",
-        details: "When three or more credible candidates split the vote, the winner may be opposed by most voters, which can feel counter-majoritarian—especially when margins are tight.",
-    },
-    {
-        title: "Encourages strategic voting; minor-party ‘spoiler’ effects.",
-        summary: "Voters may pick a viable second choice to avoid ‘wasting’ their vote.",
-        details: "Smaller parties can split ideologically similar blocs and unintentionally help an opponent win. This dynamic can also discourage sincere voting and depress minor-party growth.",
-    },
-    {
-        title: "Often disproportional seat outcomes vs. vote share.",
-        summary: "Seat totals can amplify regional strongholds and under-represent dispersed voters.",
-        details: "A party can secure a majority of seats without a majority of votes if its support is efficiently distributed across districts, producing mismatches between votes and seats.",
-    },
+  {
+    title: "Ballot complexity and potential for voter error.",
+    summary: "Many names, multiple marks, possible cumulation rules.",
+    details:
+      "Long candidate lists and flexible marking increase cognitive load. Clear instructions and ballot design are critical to keep error rates low.",
+  },
+  {
+    title: "Counting, auditing, and communication are more complex.",
+    summary: "Tally rules and thresholds are harder to explain.",
+    details:
+      "Summing candidate votes to party totals, handling cumulation, and then filling seats by candidate rank require robust procedures and voter education.",
+  },
+  {
+    title: "Weaker party cohesion; intra-party competition.",
+    summary: "Candidates compete with allies for preference votes.",
+    details:
+      "Open competition inside lists can fragment party messaging and encourage personalistic campaigns, sometimes at the expense of coordinated platforms.",
+  },
 ];
 
 export const keyFeatures: Partial<FeatureChoices> = {
-    [FeatureId.Seats]: SeatType.MultiWinner,
-    [FeatureId.BallotType]: BallotType.List, // Voters may reorder or mix candidates across lists
-    [FeatureId.MajorityGuarantee]: MajorityGuarantee.No, // No guaranteed majority
-    [FeatureId.VoterComplexity]: VoterComplexity.High, // Very flexible, requires careful candidate-level marking
-    [FeatureId.TallyingComplexity]: TallyingComplexity.Complex, // Transfer and reallocation within/between lists
-    [FeatureId.SpoilerRisk]: SpoilerRisk.Low, // Proportional systems dampen spoilers
-    [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // Incentives for splitting, reordering
+  [FeatureId.Seats]: SeatType.MultiWinner, // Multi-member districts
+  [FeatureId.BallotType]: BallotType.List, // Voters may reorder and mix candidates across lists (panachage)
+  [FeatureId.MajorityGuarantee]: MajorityGuarantee.No, // No guaranteed majority winner
+  [FeatureId.VoterComplexity]: VoterComplexity.High, // Many choices; sometimes cumulation allowed
+  [FeatureId.TallyingComplexity]: TallyingComplexity.Complex, // Aggregate candidate votes to lists; fill seats by candidate rank
+  [FeatureId.SpoilerRisk]: SpoilerRisk.Low, // Proportional allocation mitigates spoilers
+  [FeatureId.StrategicPressure]: StrategicPressure.Moderate, // List management, vote distribution, and personal vote strategies
 };
 
-
-
 export const useCases: UseCase[] = [
-
-    {
-        country: "United Kingdom",
-        bodies: ["House of Commons (general elections)"],
-    },
-    {
-        country: "United States of America",
-        bodies: [
-            "U.S. House of Representatives (most states use single-member districts)",
-            "Most state legislatures",
-        ],
-    },
-    {
-        country: "Canada",
-        bodies: ["House of Commons (federal)", "Most provincial legislatures"],
-    },
-    {
-        country: "India",
-        bodies: ["Lok Sabha (lower house of Parliament)", "Most State Assemblies"],
-    },
-    {
-        country: "Bangladesh",
-        bodies: ["Jatiya Sangsad (National Parliament)"],
-    },
-    {
-        country: "Nigeria",
-        bodies: ["House of Representatives", "Senate"],
-    },
-    {
-        country: "Pakistan",
-        bodies: ["National Assembly", "Provincial Assemblies"],
-    },
-    {
-        country: "Malaysia",
-        bodies: ["Dewan Rakyat (House of Representatives)"],
-    },
-    {
-        country: "Nepal",
-        bodies: ["House of Representatives (165 of 275 seats via FPTP)"],
-    },
-    {
-        country: "Jamaica",
-        bodies: ["House of Representatives"],
-    },
+  {
+    country: "Switzerland",
+    bodies: [
+      "Many cantonal and communal councils (open lists with panachage and often cumulation)",
+    ],
+  },
+  {
+    country: "Luxembourg",
+    bodies: ["Chamber of Deputies", "Communal councils"],
+  },
+  {
+    country: "Liechtenstein",
+    bodies: ["Landtag (national parliament)"],
+  },
+  {
+    country: "Germany",
+    bodies: [
+      "Local elections in several Länder (e.g., Baden-Württemberg, Bavaria) with panachage/cumulation variants",
+    ],
+  },
+  {
+    country: "Czech Republic",
+    bodies: ["Municipal elections (open lists with panachage-style candidate votes)"],
+  },
+  {
+    country: "Belgium (select municipalities)",
+    bodies: ["Certain local councils with list-open features allowing cross-list choices"],
+  },
 ];

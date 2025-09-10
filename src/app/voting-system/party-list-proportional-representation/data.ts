@@ -21,7 +21,7 @@ import {
  * apportionment formula, and the party’s candidates take the seats in list order
  * or according to personal vote totals.
  */
-export const slug = "party-list-pr";
+export const slug = "party-list-proportional-representation";
 export const name = "Party-List Proportional Representation";
 export const aka: string[] = ["List PR"];
 

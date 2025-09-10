@@ -1,39 +1,82 @@
-'use client'
+'use client';
 
-import { BallotCard, BallotOption } from "@/app/ballots/components/Ballot";
-import { useState } from "react";
+import * as React from 'react';
+import { BallotCard, BallotOption, BallotDivider } from '@/app/ballots/components/Ballot';
+import { FooterActions } from '@/app/ballots/components/common';
+import { mmpLocalCandidates, mmpParties } from '@/lib/candidates/data';
 
-// --- Ballot Example (interactive) ---
 export function Ballot() {
-    const [selectedId, setSelectedId] = useState<string | null>(null);
 
-    const candidates = [
-        { id: 'a', label: 'Alice Johnson', sublabel: 'Green Party' },
-        { id: 'b', label: 'Brian Smith', sublabel: 'Conservative Party' },
-        { id: 'c', label: 'Carla Nguyen', sublabel: 'Liberal Party' },
-    ];
+    const localCandidates = mmpLocalCandidates;
+    const parties = mmpParties;
+
+    const [selectedLocalId, setSelectedLocalId] = React.useState<string | null>(null);
+    const [selectedPartyId, setSelectedPartyId] = React.useState<string | null>(null);
+
+    const localSummary = selectedLocalId
+        ? `Local choice: ${localCandidates.find(c => c.id === selectedLocalId)?.label}`
+        : 'No local candidate selected.';
+    const partySummary = selectedPartyId
+        ? `Party choice: ${parties.find(p => p.id === selectedPartyId)?.name}`
+        : 'No party selected.';
 
     return (
-        <BallotCard
-            title="Mayor Election"
-            instructions="Vote for ONE candidate only by marking the box next to their name."
-        >
-            <div role="group" aria-label="FPTP choices" className="grid gap-2">
-                {candidates.map((c) => (
-                    <BallotOption
-                        key={c.id}
-                        id={c.id}
-                        label={c.label}
-                        sublabel={c.sublabel}
-                        variant="checkbox"
-                        checked={selectedId === c.id}
-                        onCheckedChange={(isChecked) =>
-                            setSelectedId(isChecked ? c.id : null)
-                        }
-                    />
-                ))}
-            </div>
-        </BallotCard>
+        <div>
+            {/* First ballot: local constituency vote */}
+            <BallotCard
+                title="Your District Representative"
+                instructions="Mark one local candidate."
+                className="mb-6"
+            >
+                <div className="space-y-2">
+                    {localCandidates.map(c => (
+                        <BallotOption
+                            key={c.id}
+                            label={c.label}
+                            sublabel={c.sublabel}
+                            variant="checkbox"
+                            checked={selectedLocalId === c.id}
+                            onCheckedChange={checked => setSelectedLocalId(checked ? c.id : null)}
+                        />
+                    ))}
+                </div>
+                <FooterActions
+                    summary={localSummary}
+                    isValid={selectedLocalId !== null}
+                    submitLabel="Next"
+                    onSubmit={() => { }}
+                    onClear={() => setSelectedLocalId(null)}
+                />
+            </BallotCard>
+
+            <BallotDivider />
+
+            {/* Second ballot: party list vote */}
+            <BallotCard
+                title="Party Vote"
+                instructions="Mark one party."
+            >
+                <div className="space-y-2">
+                    {parties.map(p => (
+                        <BallotOption
+                            key={p.id}
+                            label={p.name}
+                            sublabel={p.tagline}
+                            variant="checkbox"
+                            checked={selectedPartyId === p.id}
+                            onCheckedChange={checked => setSelectedPartyId(checked ? p.id : null)}
+                        />
+                    ))}
+                </div>
+                <FooterActions
+                    summary={partySummary}
+                    helper="Seats are allocated proportionally based on party vote."
+                    isValid={selectedPartyId !== null}
+                    submitLabel="Cast Vote"
+                    onSubmit={() => console.log('Submitted:', { selectedLocalId, selectedPartyId })}
+                    onClear={() => setSelectedPartyId(null)}
+                />
+            </BallotCard>
+        </div>
     );
 }
-

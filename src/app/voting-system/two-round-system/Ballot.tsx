@@ -1,39 +1,38 @@
 'use client'
 
-import { BallotCard, BallotOption } from "@/app/ballots/components/Ballot";
-import { useState } from "react";
+import SingleChoiceBallot from "@/app/ballots/components/SingleChoiceBallot";
+import { SimpleTabs } from "@/app/components/Tabs";
+import { fourCandidates } from "@/lib/candidates/data";
 
 // --- Ballot Example (interactive) ---
 export function Ballot() {
-    const [selectedId, setSelectedId] = useState<string | null>(null);
-
-    const candidates = [
-        { id: 'a', label: 'Alice Johnson', sublabel: 'Green Party' },
-        { id: 'b', label: 'Brian Smith', sublabel: 'Conservative Party' },
-        { id: 'c', label: 'Carla Nguyen', sublabel: 'Liberal Party' },
-    ];
-
+    const candidates = fourCandidates;
+    const roundOneWinners = [fourCandidates[1], fourCandidates[2]]
     return (
-        <BallotCard
-            title="Mayor Election"
-            instructions="Vote for ONE candidate only by marking the box next to their name."
-        >
-            <div role="group" aria-label="FPTP choices" className="grid gap-2">
-                {candidates.map((c) => (
-                    <BallotOption
-                        key={c.id}
-                        id={c.id}
-                        label={c.label}
-                        sublabel={c.sublabel}
-                        variant="checkbox"
-                        checked={selectedId === c.id}
-                        onCheckedChange={(isChecked) =>
-                            setSelectedId(isChecked ? c.id : null)
-                        }
-                    />
-                ))}
-            </div>
-        </BallotCard>
+        <SimpleTabs defaultValue="round-1">
+            <SimpleTabs.List>
+                <SimpleTabs.Trigger value="round-1">Round 1</SimpleTabs.Trigger>
+                <SimpleTabs.Trigger value="round-2">Round 2 / Runoff</SimpleTabs.Trigger>
+            </SimpleTabs.List>
+
+            <SimpleTabs.Content value="round-1">
+                <SingleChoiceBallot
+                    title="City Mayor Election — Round 1"
+                    instructions="Choose one candidate. If no candidate wins a majority of votes in this round, the top two candidates will advance to a runoff."
+                    candidates={candidates}
+                />
+            </SimpleTabs.Content>
+
+            <SimpleTabs.Content value="round-2">
+                <SingleChoiceBallot
+                    title="City Mayor Election — Runoff"
+                    instructions="As no candidate won a majority in the first round, the top two candidates now compete head-to-head. Choose one candidate. The winner will be elected mayor."
+                    candidates={roundOneWinners}
+                />
+            </SimpleTabs.Content>
+
+        </SimpleTabs >
+
     );
 }
 

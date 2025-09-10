@@ -16,7 +16,7 @@ export const aka: string[] = ["Range Voting"];
 
 export const introParagraph: string = `
   In score voting, each voter assigns every candidate a score within a
-  predefined range (for example 0–5 or 0–10). All scores are
+  predefined range, for example 1–5 or 0–10. All scores are
   aggregated—typically by averaging—and the candidate with the highest
   overall score wins. Allowing voters to express varying degrees of
   approval means that strong support and mild approval both count, making

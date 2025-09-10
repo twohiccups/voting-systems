@@ -4,7 +4,7 @@ import * as React from 'react';
 import ApprovalBallot from './components/ApprovalBallot';
 import MultiChoiceBallot from './components/MultiChoiceBallot';
 import RankedBallot from './components/RankedBallot';
-import ScoredBallot from './components/ScoredBallot';
+import ScoredBallot from './components/ScoreBallot';
 import SingleChoiceBallot from './components/SingleChoiceBallot';
 import CumulativeBallot from './components/CumulativeBallot';
 import PartyListBallot from './components/PartyListBallot';

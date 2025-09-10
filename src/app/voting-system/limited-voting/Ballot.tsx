@@ -5,7 +5,6 @@ import * as React from 'react';
 import { fiveCandidates } from '@/lib/candidates/data';
 import { FooterActions } from '@/app/ballots/components/common';
 
-const candidates = fiveCandidates;
 
 export default function LimitedVotingBallot() {
     const [selected, setSelected] = React.useState<Set<string>>(new Set());

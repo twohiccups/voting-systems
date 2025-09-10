@@ -15,8 +15,8 @@ export interface SystemContent {
     keyFeatures: FeatureChoices;  // your fptpRatings
     useCases: UseCase[];
     components: {
-        Ballot: ComponentType;           // bespoke per system
-        HowItWorks: ComponentType;
+        Ballot?: ComponentType;           // bespoke per system
+        HowItWorks?: ComponentType;
         Walkthrough?: ComponentType;
         FeaturesSide?: ComponentType;    // optional override
         UseCases?: ComponentType;

@@ -2,9 +2,8 @@
 
 import * as React from 'react';
 import { BallotCard, BallotOption, BallotDivider } from '@/app/ballots/components/Ballot';
-import { FooterActions, labelFor } from './common';
 import { Party } from '@/app/types';
-
+import { labelFor, FooterActions } from '@/app/ballots/components/common';
 
 export default function PanachageBallot({
     parties,
@@ -15,41 +14,57 @@ export default function PanachageBallot({
     seats?: number;
     cumulateMax?: number;
 }) {
-    // If cumulateMax === 1, track a Set of selected candidate IDs.
-    // If > 1, track a Map of candidateId -> votes (0..cumulateMax).
     const simpleMode = cumulateMax <= 1;
 
-    const allCandidates = React.useMemo(
-        () => parties.flatMap((p) => p.candidates),
-        [parties]
-    );
+    // Flatten once for summaries & resets
+    const allCandidates = React.useMemo(() => parties.flatMap((p) => p.candidates), [parties]);
 
     // ----- State -----
+    // Simple mode: set of selected IDs
     const [selections, setSelections] = React.useState<Set<string>>(new Set());
+
+    // Cumulation mode: map candidateId -> votes (0..cumulateMax)
     const [allocations, setAllocations] = React.useState<Map<string, number>>(
         () => new Map(allCandidates.map((c) => [c.id, 0]))
     );
 
-    // ----- Derived totals -----
+    // Keep allocations in sync if the parties prop changes
+    React.useEffect(() => {
+        setAllocations((prev) => {
+            const next = new Map<string, number>();
+            for (const c of allCandidates) next.set(c.id, prev.get(c.id) ?? 0);
+            return next;
+        });
+    }, [allCandidates]);
+
+    // ----- Totals -----
     const totalVotes = React.useMemo(() => {
         if (simpleMode) return selections.size;
-        // sum of all allocated votes
-        return Array.from(allocations.values()).reduce((a, b) => a + (b || 0), 0);
+        let sum = 0;
+        allocations.forEach((v) => (sum += v || 0));
+        return sum;
     }, [simpleMode, selections, allocations]);
 
     const remaining = seats - totalVotes;
-    const isValid = remaining >= 0;
+    const isOver = remaining < 0;
+    const isValid = !isOver && totalVotes > 0 && totalVotes <= seats;
 
-    const warning =
-        remaining < 0
-            ? `Too many selections/votes. Reduce by ${Math.abs(remaining)} to stay within ${seats} total.`
-            : '';
+    const warning = isOver
+        ? `Too many selections/votes. Reduce by ${Math.abs(remaining)} to stay within ${seats} total.`
+        : '';
+
+    const helper =
+        remaining >= 0
+            ? `Remaining: ${remaining} ${remaining === 1 ? 'vote' : 'votes'}`
+            : `Over by ${Math.abs(remaining)}`;
 
     // ----- Updaters -----
     function toggleCheckbox(id: string, checked: boolean) {
         setSelections((prev) => {
             const next = new Set(prev);
             if (checked) {
+                // Enforce seat cap in simple checkbox mode
+                if (next.size >= seats) return prev; // ignore extra checks
                 next.add(id);
             } else {
                 next.delete(id);
@@ -58,11 +73,25 @@ export default function PanachageBallot({
         });
     }
 
-    function setScore(id: string, next: number | null) {
-        const v = clampNumber(next ?? 0, 0, cumulateMax);
+    // Compute a per-candidate effective max that respects both cumulateMax *and* remaining pool.
+    function effectiveMaxFor(id: string) {
+        const current = allocations.get(id) ?? 0;
+        const rem = seats - totalVotes; // remaining before this change
+        // You can always keep what you already allocated; you can add up to rem more (bounded by cumulateMax)
+        return Math.min(cumulateMax, current + Math.max(0, rem));
+    }
+
+    function setScore(id: string, requested: number | null) {
+        const current = allocations.get(id) ?? 0;
+        const effMax = effectiveMaxFor(id);
+        const next = clampNumber(requested ?? 0, 0, effMax);
+
+        // If unchanged, no-op
+        if (next === current) return;
+
         setAllocations((prev) => {
             const map = new Map(prev);
-            map.set(id, v);
+            map.set(id, next);
             return map;
         });
     }
@@ -72,6 +101,7 @@ export default function PanachageBallot({
         setAllocations(new Map(allCandidates.map((c) => [c.id, 0])));
     }
 
+    // ----- Summary -----
     const summary = React.useMemo(() => {
         if (simpleMode) {
             const picked = Array.from(selections);
@@ -79,7 +109,6 @@ export default function PanachageBallot({
                 ? `You selected: ${picked.map((id) => labelFor(allCandidates, id)).join(', ')}`
                 : 'No selections yet.';
         }
-        // cumulation summary
         const parts = allCandidates
             .map((c) => {
                 const v = allocations.get(c.id) ?? 0;
@@ -88,9 +117,6 @@ export default function PanachageBallot({
             .filter(Boolean) as string[];
         return parts.length ? `You allocated: ${parts.join(', ')}` : 'No allocations yet.';
     }, [simpleMode, selections, allocations, allCandidates]);
-
-    const helper =
-        remaining >= 0 ? `Remaining: ${remaining} ${remaining === 1 ? 'vote' : 'votes'}` : `Over by ${Math.abs(remaining)}`;
 
     return (
         <BallotCard
@@ -107,7 +133,7 @@ export default function PanachageBallot({
                     <fieldset
                         key={p.id}
                         aria-labelledby={`party-${p.id}-legend`}
-                        className="border border-[var(--border)]"
+                        className={`border ${isOver ? 'border-red-300 bg-red-50' : 'border-[var(--border)]'}`}
                     >
                         <legend
                             id={`party-${p.id}-legend`}
@@ -130,6 +156,8 @@ export default function PanachageBallot({
                                         variant="checkbox"
                                         checked={selections.has(c.id)}
                                         onCheckedChange={(checked) => toggleCheckbox(c.id, checked)}
+                                        // soft-disable if no remaining seats and not already selected
+                                        disabled={!selections.has(c.id) && remaining <= 0}
                                     />
                                 ) : (
                                     <BallotOption
@@ -141,7 +169,8 @@ export default function PanachageBallot({
                                         score={allocations.get(c.id) ?? 0}
                                         onScoreChange={(v) => setScore(c.id, v)}
                                         scoreMin={0}
-                                        scoreMax={cumulateMax}
+                                        // Per-row max respects remaining pool so users can’t overshoot seats
+                                        scoreMax={effectiveMaxFor(c.id)}
                                     />
                                 )
                             )}
@@ -158,6 +187,18 @@ export default function PanachageBallot({
                 isValid={isValid}
                 warning={warning}
                 helper={helper}
+                submitLabel="Cast Vote"
+                onSubmit={() => {
+                    if (simpleMode) {
+                        const selected = Array.from(selections);
+                        console.log('Submitted panachage (simple):', { selected });
+                    } else {
+                        const payload = Array.from(allocations.entries())
+                            .filter(([, v]) => v > 0)
+                            .map(([candidateId, votes]) => ({ candidateId, votes }));
+                        console.log('Submitted panachage (cumulation):', payload);
+                    }
+                }}
             />
         </BallotCard>
     );

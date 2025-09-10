@@ -7,9 +7,10 @@ import { Candidate } from '@/app/types';
 import { useState } from 'react';
 
 export default function RankedBallot({
+    title = "Presidential Primary",
     candidates,
     instructions = "Rank candidates by preference. Use 1 for your favorite, 2 for your next choice, and so on. Avoid duplicate ranks. Leave blank candidates you don't like, they will receive minimal points"
-}: { candidates: Candidate[], instructions?: string }) {
+}: { title?: string, candidates: Candidate[], instructions?: string }) {
     type RankMap = Record<string, number | null>;
     const [ranks, setRanks] = useState<RankMap>(() =>
         Object.fromEntries(candidates.map((c) => [c.id, null]))
@@ -24,7 +25,7 @@ export default function RankedBallot({
 
     return (
         <BallotCard
-            title="Presidential Primary"
+            title={title}
             instructions={instructions}
             className="mb-8"
         >

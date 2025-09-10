@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import type { TaxonomySystem, VotingSystem } from "../types";
 import { Chip, Td, Th } from "./primitives";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { VotingSystem, TaxonomySystem } from "@/lib/taxonomy/types";
 
 type Props = {
     systems: VotingSystem[];

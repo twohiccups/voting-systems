@@ -142,10 +142,10 @@ export const VotingSystems: VotingSystem[] = [
     },
     {
         id: "party-list",
-        name: "Party-List PR",
+        name: "Party-List Proportional Representation",
         shortDescription: "Parties win seats based on vote share; candidates taken from lists",
         taxonomyId: "Proportional",
-        slug: "party-list-pr"
+        slug: "party-list-proportional-representation"
     },
     {
         id: "ranked-pairs",
@@ -198,30 +198,3 @@ export const VotingSystems: VotingSystem[] = [
     }
 ]
 
-
-
-
-const slugs = [
-    "approval-voting",
-    "block-voting",
-    "borda-count",
-    "condorcet-method",
-    "copelands-method",
-    "cumulative-voting",
-    "dual-member-proportional",
-    "exhaustive-ballot",
-    "first-past-the-post",
-    "limited-voting",
-    "majority-bonus-system",
-    "mixed-member-proportional",
-    "panachage",
-    "parallel-voting",
-    "party-list-pr",
-    "ranked-pairs",
-    "score-voting",
-    "single-non-transferable-vote",
-    "single-transferable-vote",
-    "sortition",
-    "supplementary-vote",
-    "two-round-system"
-]

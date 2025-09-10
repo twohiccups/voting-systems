@@ -5,8 +5,6 @@ import { BallotCard, BallotOption, BallotDivider } from '@/app/ballots/component
 import { FooterActions, labelFor } from './common';
 import { Party } from '@/app/types';
 
-
-
 export default function OpenListBallot({
     parties,
     preferMax = 2, // max candidate preferences within the chosen party
@@ -36,8 +34,17 @@ export default function OpenListBallot({
     function togglePref(id: string, checked: boolean) {
         setPrefs((prev) => {
             const next = new Set(prev);
-            if (checked) next.add(id);
-            else next.delete(id);
+            if (checked) {
+                // Enforce preferMax hard limit (no-ops if already selected)
+                if (!next.has(id)) {
+                    if (preferMax !== undefined && preferMax !== null && next.size >= preferMax) {
+                        return prev; // refuse to over-select
+                    }
+                    next.add(id);
+                }
+            } else {
+                next.delete(id);
+            }
             return next;
         });
     }
@@ -58,7 +65,7 @@ export default function OpenListBallot({
     }, [prefs, chosenParty]);
 
     const remaining = preferMax - prefs.size;
-    const tooMany = remaining < 0;
+    const tooMany = remaining < 0; // should never be true now, but keep for safety
     const hasPartyProblem = requireParty && !chosenParty;
 
     const warning = [
@@ -89,6 +96,8 @@ export default function OpenListBallot({
         setSelectedPartyId(null);
         setPrefs(new Set());
     }
+
+    const reachedMax = preferMax !== undefined && preferMax !== null && prefs.size >= preferMax;
 
     return (
         <BallotCard
@@ -135,18 +144,22 @@ export default function OpenListBallot({
 
                             {/* Candidate preferences (open-list influence) */}
                             <div className="px-3 pb-3 space-y-2">
-                                {p.candidates.map((c) => (
-                                    <BallotOption
-                                        key={c.id}
-                                        id={`openlist-pref-${c.id}`}
-                                        label={c.label}
-                                        sublabel={c.sublabel}
-                                        variant="checkbox"
-                                        checked={prefs.has(c.id)}
-                                        onCheckedChange={(checked) => togglePref(c.id, checked)}
-                                        disabled={disabledCandidates}
-                                    />
-                                ))}
+                                {p.candidates.map((c) => {
+                                    const isChecked = prefs.has(c.id);
+                                    const disableForMax = reachedMax && !isChecked; // allow unchecking even at max
+                                    return (
+                                        <BallotOption
+                                            key={c.id}
+                                            id={`openlist-pref-${c.id}`}
+                                            label={c.label}
+                                            sublabel={c.sublabel}
+                                            variant="checkbox"
+                                            checked={isChecked}
+                                            onCheckedChange={(checked) => togglePref(c.id, checked)}
+                                            disabled={disabledCandidates || disableForMax}
+                                        />
+                                    );
+                                })}
                             </div>
                         </fieldset>
                     );

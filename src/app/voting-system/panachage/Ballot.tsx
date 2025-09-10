@@ -1,39 +1,28 @@
-'use client'
 
-import { BallotCard, BallotOption } from "@/app/ballots/components/Ballot";
-import { useState } from "react";
+// --- File: app/ballots/components/Ballot.tsx (refactor)
+"use client";
 
-// --- Ballot Example (interactive) ---
-export function Ballot() {
-    const [selectedId, setSelectedId] = useState<string | null>(null);
+import PanachageBallot from "@/app/ballots/components/PanachageBallot";
+import { SimpleTabs } from "@/app/components/Tabs";
+import { panachageParties } from "@/lib/candidates/data";
 
-    const candidates = [
-        { id: 'a', label: 'Alice Johnson', sublabel: 'Green Party' },
-        { id: 'b', label: 'Brian Smith', sublabel: 'Conservative Party' },
-        { id: 'c', label: 'Carla Nguyen', sublabel: 'Liberal Party' },
-    ];
-
+export default function Ballot() {
     return (
-        <BallotCard
-            title="Mayor Election"
-            instructions="Vote for ONE candidate only by marking the box next to their name."
-        >
-            <div role="group" aria-label="FPTP choices" className="grid gap-2">
-                {candidates.map((c) => (
-                    <BallotOption
-                        key={c.id}
-                        id={c.id}
-                        label={c.label}
-                        sublabel={c.sublabel}
-                        variant="checkbox"
-                        checked={selectedId === c.id}
-                        onCheckedChange={(isChecked) =>
-                            setSelectedId(isChecked ? c.id : null)
-                        }
-                    />
-                ))}
-            </div>
-        </BallotCard>
+        <div className="space-y-4">
+            <SimpleTabs defaultValue="one">
+                <SimpleTabs.List>
+                    <SimpleTabs.Trigger value="one">One per candidate</SimpleTabs.Trigger>
+                    <SimpleTabs.Trigger value="cumulative">Cumulative</SimpleTabs.Trigger>
+                </SimpleTabs.List>
+
+                <SimpleTabs.Content value="one">
+                    <PanachageBallot parties={panachageParties} />
+                </SimpleTabs.Content>
+
+                <SimpleTabs.Content value="cumulative">
+                    <PanachageBallot parties={panachageParties} cumulateMax={2} />
+                </SimpleTabs.Content>
+            </SimpleTabs>
+        </div>
     );
 }
-

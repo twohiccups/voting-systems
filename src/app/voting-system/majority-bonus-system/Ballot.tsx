@@ -1,9 +1,7 @@
 'use client'
 
-import { BallotCard, BallotOption } from "@/app/ballots/components/Ballot";
 import PartyListBallot from "@/app/ballots/components/PartyListBallot";
 import { defaultPartiesClosed } from "@/lib/candidates/data";
-import { useState } from "react";
 
 // --- Ballot Example (interactive) ---
 export function Ballot() {

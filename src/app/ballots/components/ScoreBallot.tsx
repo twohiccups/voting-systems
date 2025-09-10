@@ -6,7 +6,7 @@ import { FooterActions, scoreSummary } from './common';
 import { Candidate } from '@/app/types';
 
 
-export default function ScoredBallot({ candidates }: { candidates: Candidate[] }) {
+export default function ScoreBallot({ candidates }: { candidates: Candidate[] }) {
     type ScoreMap = Record<string, number | null>;
     const [scores, setScores] = React.useState<ScoreMap>(() =>
         Object.fromEntries(candidates.map((c) => [c.id, null]))
@@ -18,8 +18,8 @@ export default function ScoredBallot({ candidates }: { candidates: Candidate[] }
 
     return (
         <BallotCard
-            title="Party Platform Planks"
-            instructions="Score each candidate on a 0–10 scale. Leave blank for no opinion."
+            title="Candidate Score Ballot"
+            instructions="Score each candidate from 0 (strongly oppose) to 10 (strongly support). Leave blank if you have no opinion."
             className="mb-8"
         >
             <div className="space-y-2">
