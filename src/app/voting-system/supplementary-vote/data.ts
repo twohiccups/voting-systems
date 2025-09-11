@@ -77,7 +77,8 @@ export const keyFeatures: Partial<FeatureChoices> = {
 
 export const useCases: UseCase[] = [
   {
-    country: "United Kingdom (historical)",
+    country: "United Kingdom",
+    note: " historical",
     bodies: [
       "London Mayor and many English mayoral/PCC elections (2000–2021/22, replaced by FPTP from 2023)",
     ],
@@ -89,7 +90,8 @@ export const useCases: UseCase[] = [
     ],
   },
   {
-    country: "Australia (historical, state level)",
+    country: "Australia",
+    note: "historical, state level",
     bodies: [
       "Queensland state elections (early 20th century contingent vote periods)",
     ],

@@ -946,7 +946,7 @@ export const countries = [
         "code": "um"
     },
     {
-        "name": "United States of America",
+        "name": "United States",
         "code": "us"
     },
     {
@@ -1038,7 +1038,7 @@ export const countries = [
         "code": "gb-eng"
     },
     {
-        "name": "Europe",
+        "name": "European Union",
         "code": "eu"
     },
     {

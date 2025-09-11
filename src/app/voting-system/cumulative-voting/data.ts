@@ -68,7 +68,7 @@ export const keyFeatures: Partial<FeatureChoices> = {
 
 export const useCases: UseCase[] = [
     {
-        country: "United States of America",
+        country: "United States",
         bodies: [
             "Certain local school boards and city councils (especially under voting rights settlements)",
             "Corporate shareholder elections",

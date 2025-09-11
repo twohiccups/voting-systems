@@ -175,12 +175,14 @@ export const StepList: React.FC<StepListProps> = ({
 // ---------- Layout wrapper: StepCard ----------
 
 
-export function Card({ title, children }: { title: string; children: React.ReactNode }) {
+export function Card({ title, children }: { title?: string; children: React.ReactNode }) {
     return (
         <section className="rounded-3xl border border-gray-200/80 bg-white/80 backdrop-blur px-5 py-4 shadow-sm transition-shadow hover:shadow-md">
-            <div className="flex items-center gap-3">
-                <h3 className="text-base font-semibold tracking-tight">{title}</h3>
-            </div>
+            {title ??
+                <div className="flex items-center gap-3">
+                    <h3 className="text-base font-semibold tracking-tight">{title}</h3>
+                </div>
+            }
             <div className="mt-3">{children}</div>
         </section>
     );
@@ -433,7 +435,7 @@ export function BulletList({
                         aria-hidden
                     />
                     <div className="min-w-0">
-                        <p className="font-medium text-sm sm:text-base text-[var(--card-foreground)] leading-snug">
+                        <p className="font-bold text-sm sm:text-base text-[var(--card-foreground)] leading-snug">
                             {it.label}
                         </p>
                         {it.detail ? (

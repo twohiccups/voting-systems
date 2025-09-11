@@ -45,7 +45,7 @@ function GridBG() {
                     backgroundImage:
                         `linear-gradient(0deg, rgba(0,0,0,0.06) 1px, transparent 1px),
              linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px)`,
-                    backgroundSize: '64px 64px',
+                    backgroundSize: '128px 128px',
                     backgroundPosition: 'center',
                 }}
             />

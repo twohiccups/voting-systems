@@ -83,7 +83,7 @@ export const useCases: UseCase[] = [
         bodies: ["House of Representatives (federal)", "Most state lower houses"],
     },
     {
-        country: "United States of America",
+        country: "United States",
         bodies: [
             "Maine statewide elections (since 2018)",
             "Alaska statewide elections (since 2022, with a top-four primary)",

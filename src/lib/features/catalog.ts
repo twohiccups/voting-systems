@@ -8,14 +8,12 @@ import {
     SeatType,
     BallotType,
     MajorityGuarantee,
-    CountingRule,
     Proportionality,
     VoterComplexity,
     TallyingComplexity,
     BallotErrorHandling,
     SpoilerRisk,
     StrategicPressure,
-    RepresentationStyle,
 } from "./types";
 
 /**
@@ -97,43 +95,6 @@ export const featureCatalog: SystemFeature[] = [
                 label: MajorityGuarantee.No,
                 detail:
                     "A candidate may win with less than half the vote, as in first-past-the-post, approval voting, or proportional lists.",
-            },
-        ],
-    },
-    {
-        id: FeatureId.Counting,
-        title: "Counting rule",
-        description:
-            "The algorithm that translates ballots into winners or seat allocations.",
-        items: [
-            {
-                label: CountingRule.Plurality,
-                detail:
-                    "The candidate with the most votes wins, even if they lack a majority.",
-            },
-            {
-                label: CountingRule.MajorityRunoff,
-                detail:
-                    "A winner is chosen by requiring over 50%, either through a second round or through instant runoffs.",
-            },
-            {
-                label: CountingRule.Transferable,
-                detail:
-                    "Votes are transferred from eliminated or surplus candidates, as in ranked-choice or single transferable vote.",
-            },
-            {
-                label: CountingRule.ProportionalFormula,
-                detail:
-                    "Seats are distributed in proportion to vote share, using formulas such as D’Hondt, Sainte-Laguë, or the Hare quota.",
-            },
-            {
-                label: CountingRule.PairwiseComparisons,
-                detail:
-                    "Candidates are compared head-to-head, as in Condorcet methods or Ranked Pairs.",
-            },
-            {
-                label: CountingRule.Scoring,
-                detail: "Candidates with the highest total score wins.",
             },
         ],
     },
@@ -250,17 +211,6 @@ export const featureCatalog: SystemFeature[] = [
             { label: StrategicPressure.High, detail: "Common, as in lesser-evil voting under first-past-the-post." },
             { label: StrategicPressure.Moderate, detail: "Sometimes advantageous in two-round or ranked-choice systems." },
             { label: StrategicPressure.Low, detail: "Voters can usually vote sincerely in approval, score, or proportional systems." },
-        ],
-    },
-    {
-        id: FeatureId.RepresentationStyle,
-        title: "Representation style",
-        description:
-            "The overall philosophy of governance implied by the rule.",
-        items: [
-            { label: RepresentationStyle.Majoritarian, detail: "Aims to produce a single clear winner or majority government." },
-            { label: RepresentationStyle.Proportional, detail: "Seeks to reflect the diversity of preferences across parties and candidates." },
-            { label: RepresentationStyle.Mixed, detail: "Combines both approaches, as in mixed-member proportional or parallel systems." },
         ],
     },
 ];

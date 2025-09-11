@@ -83,13 +83,13 @@ export const useCases: UseCase[] = [
         ],
     },
     {
-        country: "United Kingdom (historical)",
+        country: "United Kingdom",
         bodies: [
-            "19th-century multi-member constituencies (Limited Vote used in some periods)",
+            "In 19th-century multi-member constituencies (Limited Vote used in some periods)",
         ],
     },
     {
-        country: "United States of America",
+        country: "United States",
         bodies: [
             "Various local jurisdictions (school boards, city councils) using limited voting under voting-rights settlements or local charters",
         ],

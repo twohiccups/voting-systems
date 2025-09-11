@@ -75,7 +75,7 @@ export const useCases: UseCase[] = [
         bodies: ["House of Commons (general elections)"],
     },
     {
-        country: "United States of America",
+        country: "United States",
         bodies: [
             "U.S. House of Representatives (most states use single-member districts)",
             "Most state legislatures",

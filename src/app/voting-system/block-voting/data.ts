@@ -79,7 +79,7 @@ export const keyFeatures: Partial<FeatureChoices> = {
 
 export const useCases: UseCase[] = [
     {
-        country: "United States of America",
+        country: "United States",
         bodies: [
             "Many at-large city councils and school boards (varies by jurisdiction)",
         ],

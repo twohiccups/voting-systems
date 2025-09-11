@@ -104,5 +104,5 @@ export const useCases: UseCase[] = [
   { country: "Japan", bodies: ["House of Representatives (lower house)"] },
   { country: "Taiwan", bodies: ["Legislative Yuan"] },
   { country: "Armenia", bodies: ["National Assembly"] },
-  { country: "Russia & Argentina", bodies: ["Lower houses of parliament"] },
+  { country: "Argentina", bodies: ["Lower houses of parliament"] },
 ];

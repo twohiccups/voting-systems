@@ -102,7 +102,7 @@ export const useCases: UseCase[] = [
     bodies: ["Municipal elections (open lists with panachage-style candidate votes)"],
   },
   {
-    country: "Belgium (select municipalities)",
+    country: "Belgium",
     bodies: ["Certain local councils with list-open features allowing cross-list choices"],
   },
 ];

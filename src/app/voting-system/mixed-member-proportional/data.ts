@@ -1,14 +1,14 @@
 import { ProsCons, UseCase } from "@/app/types";
 import {
-    BallotType,
-    FeatureChoices,
-    FeatureId,
-    MajorityGuarantee,
-    SeatType,
-    SpoilerRisk,
-    StrategicPressure,
-    TallyingComplexity,
-    VoterComplexity,
+  BallotType,
+  FeatureChoices,
+  FeatureId,
+  MajorityGuarantee,
+  SeatType,
+  SpoilerRisk,
+  StrategicPressure,
+  TallyingComplexity,
+  VoterComplexity,
 } from "@/lib/features/types";
 
 /**
@@ -40,57 +40,57 @@ export const introParagraph: string = `
 `;
 
 export const strengths: ProsCons[] = [
-    {
-        title: "Combines proportionality with local representation",
-        summary: "Voters have both a local MP and a proportional party outcome.",
-        details: `MMP retains single-member districts, giving constituents
+  {
+    title: "Combines proportionality with local representation",
+    summary: "Voters have both a local MP and a proportional party outcome.",
+    details: `MMP retains single-member districts, giving constituents
       geographic representatives, while also ensuring that each party’s
       total number of seats matches its share of the vote. This provides
       the fairness of list PR without sacrificing local ties.`,
-    },
-    {
-        title: "Two votes give voters flexibility",
-        summary: "Support a local candidate and a different party.",
-        details: `Under MMP, electors can split their votes—backing a local
+  },
+  {
+    title: "Two votes give voters flexibility",
+    summary: "Support a local candidate and a different party.",
+    details: `Under MMP, electors can split their votes—backing a local
       representative from one party and giving their party vote to another.
       This encourages sincere choice and can benefit smaller parties that
       lack strong local bases.`,
-    },
-    {
-        title: "Compensatory allocation corrects distortions",
-        summary: "Seats are topped up to match vote shares.",
-        details: `Because list seats are allocated after district results, MMP
+  },
+  {
+    title: "Compensatory allocation corrects distortions",
+    summary: "Seats are topped up to match vote shares.",
+    details: `Because list seats are allocated after district results, MMP
       corrects disproportionate outcomes. Parties with equal vote shares
       end up with equal seat shares, preventing anomalies where a party wins
       a majority of seats on a minority of votes.`,
-    },
+  },
 ];
 
 export const weaknesses: ProsCons[] = [
-    {
-        title: "Complexity and dual representation",
-        summary: "Two votes and two types of members may confuse voters.",
-        details: `MMP ballots require voters to understand both district and
+  {
+    title: "Complexity and dual representation",
+    summary: "Two votes and two types of members may confuse voters.",
+    details: `MMP ballots require voters to understand both district and
       party votes, and legislatures include two categories of members. Some
       voters may be uncertain about how their votes interact or who to hold
       accountable, potentially reducing transparency.`,
-    },
-    {
-        title: "Overhang seats and size variability",
-        summary: "Parliament size may fluctuate to preserve proportionality.",
-        details: `When a party wins more constituency seats than its share of the
+  },
+  {
+    title: "Overhang seats and size variability",
+    summary: "Parliament size may fluctuate to preserve proportionality.",
+    details: `When a party wins more constituency seats than its share of the
       party vote would allot, extra or “overhang” seats can be created,
       increasing the size of the legislature. This complicates seat
       allocation and can create tension between proportionality and fixed
       chamber sizes.`,
-    },
-    {
-        title: "Party lists can reduce accountability",
-        summary: "List MPs are chosen by party leaders.",
-        details: `In many MMP systems, voters cannot influence the ranking of
+  },
+  {
+    title: "Party lists can reduce accountability",
+    summary: "List MPs are chosen by party leaders.",
+    details: `In many MMP systems, voters cannot influence the ranking of
       candidates on party lists. This gives party organisations considerable
       control over who enters parliament and may distance list MPs from voters.`,
-    },
+  },
 ];
 
 export const keyFeatures: Partial<FeatureChoices> = {
@@ -104,8 +104,8 @@ export const keyFeatures: Partial<FeatureChoices> = {
 };
 
 export const useCases: UseCase[] = [
-    { country: "Germany", bodies: ["Bundestag"] },
-    { country: "New Zealand", bodies: ["House of Representatives"] },
-    { country: "Scotland & Wales", bodies: ["Devolved parliaments"] },
-    { country: "Bolivia & Lesotho", bodies: ["National legislatures"] },
+  { country: "Germany", bodies: ["Bundestag"] },
+  { country: "New Zealand", bodies: ["House of Representatives"] },
+  { country: "Scotland", bodies: ["Devolved parliaments"] },
+  { country: "Bolivia", bodies: ["National legislatures"] },
 ];

@@ -80,7 +80,8 @@ export const keyFeatures: Partial<FeatureChoices> = {
 
 export const useCases: UseCase[] = [
   {
-    country: "Japan (historical)",
+    country: "Japan",
+    note: "historical",
     bodies: ["House of Representatives (multi-member districts, until 1994 reform)"],
   },
   {

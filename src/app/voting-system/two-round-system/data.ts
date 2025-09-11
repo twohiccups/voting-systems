@@ -95,7 +95,8 @@ export const useCases: UseCase[] = [
     bodies: ["Presidential elections (two-round system)"],
   },
   {
-    country: "Georgia (USA)",
+    country: "United States",
+    note: "Georgia",
     bodies: ["Statewide and congressional elections in some cycles (majority-runoff variant)"],
   },
 ];

@@ -116,7 +116,11 @@ export const useCases: UseCase[] = [
         bodies: ['President of the European Parliament'],
     },
     {
-        country: 'United Kingdom and Canada',
+        country: 'United Kingdom',
+        bodies: ['Election of the Speaker of the House of Commons'],
+    },
+    {
+        country: 'Canada',
         bodies: ['Election of the Speaker of the House of Commons'],
     },
     {

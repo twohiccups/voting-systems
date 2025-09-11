@@ -53,43 +53,53 @@ export default function HowItWorksTemplate({ steps, className, layout }: FlowSte
         const listEl = listRef.current;
         if (!el || !listEl) return;
 
-        const bounce = (i: number, slots: number) => {
-            const period = Math.max((slots - 1) * 2, 1);
-            const t = i % period;
-            return t <= slots - 1 ? t : period - t;
-        };
-
         const compute = () => {
+            const el = containerRef.current;
             const n = steps.length;
+            if (!el) return;
+
+            // Read container width for the horizontal spread calc
             const containerRect = el.getBoundingClientRect();
 
-            const cardRects = liRefs.current
-                .filter(Boolean)
-                .map((node) => (node as HTMLLIElement).getBoundingClientRect());
+            // Measure each card (fallback if not yet measured)
+            const rects = liRefs.current.map((node) =>
+                node ? node.getBoundingClientRect() : ({ width: FALLBACK_CARD.width, height: FALLBACK_CARD.height } as DOMRect)
+            );
+            const heights = rects.map((r) => r?.height ?? FALLBACK_CARD.height);
+            const tallest = Math.max(...heights, FALLBACK_CARD.height);
 
-            const tallest = Math.max(FALLBACK_CARD.height, ...cardRects.map((r) => r.height || 0));
-            const sampleW = FALLBACK_CARD.width;
-
+            // Horizontal spread logic (unchanged)
+            const sampleW = rects[0]?.width || FALLBACK_CARD.width;
             const usableW = Math.max(0, (containerRect.width - sampleW) * SPREAD_FRACTION);
             const slots = Math.max(
                 MIN_SLOTS,
                 Math.floor(containerRect.width / (sampleW * WIDTH_TO_CARD_RATIO))
             );
-
             const stepX = slots > 1 ? usableW / (slots - 1) : 0;
-            const stepY = tallest + EXTRA_GAP;
 
-            const nextOffsets: Offset[] = new Array(n).fill(0).map((_, i) => {
+            // Helper to bounce slot index for left/center/right spread
+            const bounce = (i: number, s: number) => {
+                const period = Math.max((s - 1) * 2, 1);
+                const t = i % period;
+                return t <= s - 1 ? t : period - t;
+            };
+
+            // 🔑 Cumulative Y using each card’s own height
+            const nextOffsets: { x: number; y: number }[] = new Array(n);
+            let yCursor = 0;
+            for (let i = 0; i < n; i++) {
                 const slot = bounce(i, slots);
                 const x = -usableW / 2 + slot * stepX;
-                const y = i * stepY;
-                return { x, y };
-            });
+                nextOffsets[i] = { x, y: yCursor };
+                // advance by this card's height + gap
+                yCursor += (heights[i] || FALLBACK_CARD.height) + EXTRA_GAP;
+            }
 
             setOffsets(nextOffsets);
-            setCardHeight(tallest);
-            setContainerHeight(tallest + (n - 1) * stepY + EXTRA_GAP);
+            setCardHeight(tallest); // optional to keep around; no longer used to force height
+            setContainerHeight(yCursor); // total stacked height
         };
+
 
         const ro = new ResizeObserver(compute);
         ro.observe(el);
@@ -176,7 +186,6 @@ function StepItem({
     dir,
     viewportAmount,
     prefersReducedMotion,
-    fixedHeight,
     children,
 }: StepItemProps) {
     const itemRef = useRef<HTMLLIElement | null>(null);
@@ -214,23 +223,22 @@ function StepItem({
             ref={itemRef}
             initial={{ x: initialX, y, opacity: 0 }}
             animate={controls}
-            // lock height so all cards match; keep overflow hidden to avoid layout jumps
-            style={{ y, height: fixedHeight, maxHeight: fixedHeight, overflow: "hidden" }}
+            style={{ y }}
             whileHover={{ scale: 1.06 }}
             className="
-        absolute left-1/2 top-0 -translate-x-1/2
-        w-full max-w-sm sm:w-[20rem]
-        will-change-transform
-        rounded-xl bg-[var(--background)]/60 border border-[var(--border)]
-        shadow-sm backdrop-blur
-        p-3 sm:p-4
-        flex gap-3 items-start
-      "
+    absolute left-1/2 top-0 -translate-x-1/2
+    w-full max-w-sm sm:w-[30rem]
+    will-change-transform
+    rounded-xl bg-white/40 border border-[var(--border)]
+    shadow-sm backdrop-blur
+    p-3 sm:p-4
+    flex gap-3 items-start
+    min-h-[100px]"
         >
-            {/* make inner content fill so visual height is consistent */}
-            <div className="flex items-start gap-3 w-full h-full">
+            <div className="flex items-start gap-3 w-full">
                 {children}
             </div>
         </motion.li>
+
     );
 }

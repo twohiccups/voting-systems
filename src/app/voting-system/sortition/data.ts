@@ -107,15 +107,16 @@ export const keyFeatures: Partial<FeatureChoices> = {
 
 export const useCases: UseCase[] = [
     {
-        country: "Ancient Greece",
+        country: "Greece",
+        note: "ancient",
         bodies: ["Athenian magistracies and the Council of Five Hundred"],
     },
     {
-        country: "United States and other common-law countries",
+        country: "United States",
         bodies: ["Juries in criminal and civil trials"],
     },
     {
-        country: "Ireland, Iceland, and others",
+        country: "Iceland",
         bodies: ["Citizens’ assemblies on constitutional or policy issues"],
     },
 ];

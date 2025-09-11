@@ -104,7 +104,8 @@ export const keyFeatures: Partial<FeatureChoices> = {
 
 export const useCases: UseCase[] = [
   {
-    country: "Canada (proposed)",
+    country: "Canada",
+    note: "proposed",
     bodies: ["Provincial legislative elections (pilot proposals)"],
   },
 ];
