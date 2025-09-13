@@ -179,11 +179,10 @@ export default function FacetFilters({
                         >
                             <div
                                 className="
-      grid gap-3
-      sm:grid-cols-2
-      lg:grid-cols-4
-      [grid-template-columns:repeat(auto-fill,minmax(200px,1fr))]
-    "
+                                    grid gap-3
+                                    sm:grid-cols-2
+                                    lg:grid-cols-4
+                                    [grid-template-columns:repeat(auto-fill,minmax(200px,1fr))]"
                             >
                                 {facetConfig.map(({ key, label, options }) => (
                                     <FacetSelect
