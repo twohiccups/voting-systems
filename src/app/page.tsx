@@ -1,5 +1,5 @@
 // app/(site)/page.tsx
-import React from "react";
+import React, { Suspense } from "react";
 import HeroHeader from "@/app/components/HeroHeader";
 import IntroSection from "@/app/components/IntroSection";
 import VotingTaxonomy from "@/app/components/VotingTaxonomy";
@@ -67,8 +67,11 @@ export default function Home() {
         <Container>
           <Section className="min-h-screen">
             <SectionHeading id="voting-systems" title="Explore Voting Systems" />
-            <VotingSystemsGallery
-            />
+
+            <Suspense fallback={<div className="text-sm text-muted-foreground">Loading gallery…</div>}>
+              <VotingSystemsGallery />
+            </Suspense>
+
           </Section>
         </Container>
       </GeometricBleed>

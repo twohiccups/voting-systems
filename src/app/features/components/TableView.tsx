@@ -1,6 +1,6 @@
 import { BulletList, Td, Th } from '@/app/components/primitives';
+import { FeatureSection } from '@/app/types';
 import React from 'react';
-import { FeatureSection } from '../page';
 
 export function TableView({ sections }: { sections: FeatureSection[] }) {
     return (

@@ -1,15 +1,15 @@
+// common.tsx
 import * as React from 'react';
 
 // ------------------------------------
 // Types
 // ------------------------------------
 
-// common.tsx
 export type FooterActionsProps = {
     summary: React.ReactNode;
-    warning?: React.ReactNode;              // legacy: treated as warningAlways
-    warningAlways?: React.ReactNode;        // NEW: show always
-    warningOnSubmit?: React.ReactNode;      // NEW: show only after submit attempt & invalid
+    warning?: React.ReactNode;              
+    warningAlways?: React.ReactNode;        
+    warningOnSubmit?: React.ReactNode;
     helper?: React.ReactNode;
 
     onClear?: () => void;
@@ -21,7 +21,7 @@ export type FooterActionsProps = {
 
 export function FooterActions({
     summary,
-    warning,                // legacy alias
+    warning,
     warningAlways,
     warningOnSubmit,
     helper,

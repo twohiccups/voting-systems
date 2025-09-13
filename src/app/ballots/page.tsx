@@ -15,8 +15,6 @@ import HeroHeader from '../components/HeroHeader';
 import { StepCard, StepList } from '../components/primitives';
 import { QuoteBlock } from '../components/QuoteBlock';
 import SectionHeading from '../components/SectionHeading';
-
-// NEW: layout primitives
 import { FullBleed } from '@/app/components/FullBleed';
 import Section from '@/app/components/Section';
 import { Container } from '@/app/components/Container';
@@ -41,7 +39,7 @@ function TableOfContents({ sections }: { sections: { id: string; title: string }
         );
 
         sections.forEach((s) => {
-            const el = document.getElementById(s.id); // now the <h2>
+            const el = document.getElementById(s.id); 
             if (el) observer.observe(el);
         });
 

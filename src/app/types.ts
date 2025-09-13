@@ -40,3 +40,13 @@ export type FlowStep = {
     num?: number;
     text: React.ReactNode;
 };
+
+
+export type FeatureItem = { label: string; detail?: string };
+
+export type FeatureSection = {
+    id: string;
+    title: string;
+    description?: string;
+    items: FeatureItem[];
+};

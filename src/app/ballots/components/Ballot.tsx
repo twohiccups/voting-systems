@@ -2,9 +2,6 @@
 
 import * as React from 'react';
 
-// Simplified: no globals import, no cx helper. We inline class merging with
-// [ ... ].filter(Boolean).join(' ').
-
 export type BallotCardProps = {
     title?: string;
     instructions?: string;
@@ -69,7 +66,6 @@ function CheckboxSquare({ checked, disabled, size = 30, ariaLabel }: CheckboxSqu
             aria-hidden={ariaLabel ? undefined : true}
             className={[
                 'flex items-center justify-center border text-[var(--foreground)]',
-                // Default: light mode → card background, dark mode → muted background
                 'bg-[var(--card)] dark:bg-[var(--muted)]',
                 'rounded-none border-[var(--border)] theme-transition',
                 disabled ? 'opacity-50' : '',
@@ -172,7 +168,6 @@ export type BallotOptionProps = {
 };
 
 export function BallotOption({
-    // id is intentionally unused to avoid cross-instance collisions
     label,
     sublabel,
     variant = 'checkbox',
@@ -245,7 +240,6 @@ export function BallotOption({
             {control}
 
             {variant === 'checkbox' ? (
-                // Real checkbox stays inside the label → implicit labeling, no id needed
                 <input
                     type="checkbox"
                     className="sr-only"
