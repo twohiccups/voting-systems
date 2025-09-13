@@ -2,12 +2,13 @@
 
 import * as React from "react";
 import TaxonomyCard from "./TaxonomyCard";
-import { TaxonomySystems } from "../../lib/taxonomy/catalog";
-import { Dot, NextIcon, PrevIcon } from "./primitives";
+import { Button, Dot, NextIcon, PrevIcon } from "./primitives";
 import { TaxonomySystem } from "@/lib/taxonomy/types";
+import { taxonomy } from "@/lib/taxonomy/catalog";
+import Link from "next/link";
 
-
-const intro = `There isn’t a single "natural" map of voting methods. This is one practical way to group them into categories—each emphasizing a different design goal or trade-off.`;
+const lead =
+    "There’s no single “natural” map of voting methods. This is one practical way to group them—each category highlights different design goals and trade-offs.";
 
 function MobileSlideshow({
     systems,
@@ -91,16 +92,11 @@ function MobileSlideshow({
     );
 }
 
-export default function VotingTaxonomy({
-    systems = TaxonomySystems,
-}: {
-    systems?: TaxonomySystem[];
-    heading?: string;
-}) {
+export default function VotingTaxonomy({ }: { heading?: string }) {
     // Hide "Other" in the UI but keep it available in the exported list for filters, etc.
     const visibleSystems = React.useMemo(
-        () => (systems || []).filter((s) => s.id !== "Other"),
-        [systems]
+        () => (taxonomy || []).filter((s) => s.id !== "Other"),
+        [taxonomy]
     );
 
     const [index, setIndex] = React.useState(0);
@@ -128,11 +124,12 @@ export default function VotingTaxonomy({
         <div className="sm:min-h-[50vh]">
             {/* Header */}
             <div className="mb-6 sm:mb-8 lg:mb-10">
-                <p className="mt-2 sm:mt-3 text-base sm:text-base md:text-lg text-muted-foreground">
-                    {intro}
+                <p className="mt-2 sm:mt-3 text-base md:text-lg text-muted-foreground">
+                    {lead}
                 </p>
             </div>
 
+            {/* System grouping (above CTAs) */}
             {/* Mobile: slideshow */}
             <MobileSlideshow
                 systems={visibleSystems}
@@ -150,6 +147,64 @@ export default function VotingTaxonomy({
                     <TaxonomyCard key={system.name} system={system} />
                 ))}
             </div>
+
+            {/* Simple explainer (no card UI) + CTAs */}
+            {/* Features section */}
+            <section
+                className="mt-8 sm:mt-10 border-t border-[var(--border)] pt-5 sm:pt-6"
+                aria-labelledby="features-heading"
+            >
+                <h3
+                    id="features-heading"
+                    className="text-base font-semibold text-[var(--foreground)]"
+                >
+                    System Features
+                </h3>
+                <p className="mt-2 text-sm sm:text-base text-[var(--muted-foreground)]">
+                    Different voting systems can be described in terms of their properties:
+                    things like majority guarantees, how votes are tallied, or whether {" "}
+                    <Link href="https://en.wikipedia.org/wiki/Spoiler_effect">spoiler effect</Link> {" "} occurs. The <strong>Features</strong> page collects these
+                    building blocks, and as the project grows, more will be added.
+                </p>
+
+                <div className=" text-center mt-4">
+                    <Link href={"/features"}>
+                        <Button>
+                            System Features
+                        </Button>
+                    </Link>
+                </div>
+            </section>
+
+            {/* Ballots section */}
+            <section
+                className="mt-8 sm:mt-10 border-t border-[var(--border)] pt-5 sm:pt-6"
+                aria-labelledby="ballots-heading"
+            >
+                <h3
+                    id="ballots-heading"
+                    className="text-base font-semibold text-[var(--foreground)]"
+                >
+                    Ballot Types
+                </h3>
+                <p className="mt-2 text-sm sm:text-base text-[var(--muted-foreground)]">
+                    Each system also meets voters through a <strong>ballot</strong>: the
+                    physical paper or digital interface where choices are marked. The
+                    <strong> Ballots</strong> page shows a growing collection of examples.
+                </p>
+
+                <div className="mt-4 text-center">
+                    <Link
+                        href="/ballots"
+                    >
+                        <Button>
+                            Ballot Examples
+                        </Button>
+
+                    </Link>
+                </div>
+            </section>
+
         </div>
     );
 }

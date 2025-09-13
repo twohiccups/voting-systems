@@ -120,16 +120,16 @@ function ImageCredit({
     return (
         <div className={`${base} ${posClasses[position]}`} role="note" aria-label="Image credit">
             {href ? (
-                <a
+                <Link
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="underline decoration-white/40 underline-offset-2 hover:decoration-white"
+                    className="text-white px-1"
                 >
                     {content}
-                </a>
+                </Link>
             ) : (
-                content
+                <span className=" text-white px-1">{content}</span>
             )}
         </div>
     );

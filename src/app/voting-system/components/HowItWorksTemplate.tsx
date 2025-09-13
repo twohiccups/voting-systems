@@ -226,14 +226,14 @@ function StepItem({
             style={{ y }}
             whileHover={{ scale: 1.06 }}
             className="
-    absolute left-1/2 top-0 -translate-x-1/2
-    w-full max-w-sm sm:w-[30rem]
-    will-change-transform
-    rounded-xl bg-white/40 border border-[var(--border)]
-    shadow-sm backdrop-blur
-    p-3 sm:p-4
-    flex gap-3 items-start
-    min-h-[100px]"
+                absolute left-1/2 top-0 -translate-x-1/2
+                w-full max-w-lg sm:w-[30rem]
+                will-change-transform
+                rounded-xl bg-white/40 border border-[var(--border)]
+                shadow-sm backdrop-blur
+                p-3 sm:p-4
+                flex gap-3 items-start
+                min-h-[100px]"
         >
             <div className="flex items-start gap-3 w-full">
                 {children}

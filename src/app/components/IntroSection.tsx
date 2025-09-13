@@ -67,11 +67,11 @@ export default function IntroSection() {
                 whileHover={{
                     rotateX: -1,
                     rotateY: 1,
-                    scale: 1.05,
+                    scale: 1.03,
                     boxShadow:
                         "0 20px 40px rgba(0,0,0,0.25), 0 10px 15px rgba(0,0,0,0.1)",
                 }}
-                transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                transition={{ type: "spring", stiffness: 250, damping: 15 }}
             >
                 <motion.ul
                     className="space-y-4 sm:space-y-5 lg:space-y-6 mt-6"

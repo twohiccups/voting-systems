@@ -65,15 +65,17 @@ export default function FeaturesPage() {
 
             <Container>
                 <div className="flex flex-wrap gap-2 items-center">
-                    <ViewToggle
-                        value={view === 'sections' ? 'grid' : 'table'}
-                        onChange={(v) => setView(v === 'grid' ? 'sections' : 'table')}
-                        aria-label="Toggle features view"
-                    />
-                    <div className="ml-auto min-w-[200px] max-w-sm">
+                    <div className="hidden sm:block">
+                        <ViewToggle
+                            value={view === 'sections' ? 'grid' : 'table'}
+                            onChange={(v) => setView(v === 'grid' ? 'sections' : 'table')}
+                            aria-label="Toggle features view"
+                        />
+                    </div>
+                    <div className="mr-auto min-w-[200px] max-w-sm">
                         <input
-                            className="input w-full"
-                            placeholder="Search features, e.g. ‘Condorcet’, ‘lists’, ‘runoff’…"
+                            className="input w-full "
+                            placeholder="Search features"
                             value={q}
                             onChange={(e) => setQ(e.target.value)}
                             inputMode="search"

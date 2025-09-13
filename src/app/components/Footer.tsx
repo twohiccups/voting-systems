@@ -30,6 +30,9 @@ export function Footer() {
                         Ballots
                     </Link>
                 </nav>
+                <div>
+                    Should you find any errors, reach out to koshkinmark@gmail.com
+                </div>
             </div>
         </footer>
     );

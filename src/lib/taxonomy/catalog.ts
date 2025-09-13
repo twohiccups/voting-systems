@@ -1,6 +1,6 @@
 import { TaxonomySystem, VotingSystem } from "./types";
 
-export const TaxonomySystems: TaxonomySystem[] = [
+export const taxonomy: TaxonomySystem[] = [
     {
         id: 'Plurality',
         name: "Plurality Systems",
@@ -34,7 +34,7 @@ export const TaxonomySystems: TaxonomySystem[] = [
 ]
 
 // Sorted by slug
-export const VotingSystems: VotingSystem[] = [
+export const votingSystems: VotingSystem[] = [
     {
         id: "approval",
         name: "Approval Voting",

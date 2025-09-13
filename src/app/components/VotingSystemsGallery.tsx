@@ -1,14 +1,28 @@
 "use client";
 
 import * as React from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import VotingSystemCard from "./VotingSystemCard";
-import { Chip, ViewToggle } from "./primitives";
 import VotingSystemsTable from "./VotingSystemsTable";
-import { VotingSystem, TaxonomySystem } from "@/lib/taxonomy/types";
+import { ViewToggle } from "./primitives";
+import { taxonomy, votingSystems } from "@/lib/taxonomy/catalog";
+import FacetFilters from "./FacetFilters";
 
+import { useKeyFeatures } from "@/hooks/useKeyFeatures";
+import { FeatureId } from "@/lib/features/types";
+import {
+    UnifiedFilters,
+    parseFiltersFromQuery,
+    GallerySystem,
+    matchesUnifiedFilters,
+    ANY,
+    putFiltersInQuery,
+    CATEGORY_KEY,
+} from "@/utils/featureFilters";
+
+/** -------- Local hook: media query for table view -------- */
 function useCanUseTable(breakpoint: string = "(min-width: 768px)") {
-    const [canUse, setCanUse] = React.useState<boolean>(false);
-
+    const [canUse, setCanUse] = React.useState(false);
     React.useEffect(() => {
         if (typeof window === "undefined" || !("matchMedia" in window)) return;
         const mql = window.matchMedia(breakpoint);
@@ -17,73 +31,135 @@ function useCanUseTable(breakpoint: string = "(min-width: 768px)") {
         mql.addEventListener?.("change", update);
         return () => mql.removeEventListener?.("change", update);
     }, [breakpoint]);
-
     return canUse;
 }
 
 export default function VotingSystemsGallery({
-    systems,
-    taxonomy,
+    initialQuery,
 }: {
-    systems: VotingSystem[];
-    taxonomy: TaxonomySystem[];
+    initialQuery?: Record<string, string | string[] | undefined>;
 }) {
-    const ALL = "All" as const;
-    type FilterKey = typeof ALL | TaxonomySystem["id"];
-
-    const [active, setActive] = React.useState<FilterKey>(ALL);
     const [view, setView] = React.useState<"grid" | "table">("grid");
+    const canUseTable = useCanUseTable();
 
-    const canUseTable = useCanUseTable(); // md and up
+    // App Router bits
+    const pathname = usePathname();
+    const router = useRouter();
+    const searchParams = useSearchParams();
 
-    // Force grid when table is not allowed (mobile)
+    // Initialize unified filters (features + category) from URL on first render
+    const [filters, setFilters] = React.useState<UnifiedFilters>(() => {
+        if (initialQuery) {
+            const q = new URLSearchParams();
+            Object.entries(initialQuery).forEach(([k, v]) => {
+                if (typeof v === "string") q.set(k, v);
+            });
+            return parseFiltersFromQuery(q);
+        }
+        return parseFiltersFromQuery(new URLSearchParams(searchParams?.toString()));
+    });
+
+    // Defer filter value to keep UI responsive while computing
+    const deferredFilters = React.useDeferredValue(filters);
+    const [, startTransition] = React.useTransition();
+
+    // Keep view to grid on small screens
     React.useEffect(() => {
         if (!canUseTable && view !== "grid") setView("grid");
     }, [canUseTable, view]);
 
-    const normalized = React.useMemo(() => {
+    // Normalize taxonomyId presence
+    const normalized = React.useMemo<GallerySystem[]>(() => {
         const fallback =
-            taxonomy.find((t) => t.id === "other")?.id || (taxonomy[0]?.id ?? "other");
-        return systems.map((s) => ({ ...s, taxonomyId: s.taxonomyId ?? fallback }));
-    }, [systems, taxonomy]);
+            taxonomy.find((t) => t.id === "other")?.id ||
+            (taxonomy[0]?.id ?? "other");
+        return votingSystems.map((s) => ({
+            ...s,
+            taxonomyId: s.taxonomyId ?? fallback,
+        })) as GallerySystem[];
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
+    // Stable list for the lazy features hook
+    const systemsForKeyFeatures = React.useMemo(
+        () => normalized.map(({ slug, keyFeatures }) => ({ slug, keyFeatures })),
+        [normalized]
+    );
+
+    // Lazy-load keyFeatures for systems that don't have them
+    const featuresBySlug = useKeyFeatures(systemsForKeyFeatures);
+
+    // Attach loaded features without changing identity if already present
+    const withFeatures = React.useMemo<GallerySystem[]>(
+        () =>
+            normalized.map((s) =>
+                s.keyFeatures ? s : { ...s, keyFeatures: featuresBySlug[s.slug] }
+            ),
+        [normalized, featuresBySlug]
+    );
+
+    // Apply unified filters (category + features)
     const filtered = React.useMemo(() => {
-        if (active === ALL) return normalized;
-        return normalized.filter((s) => s.taxonomyId === active);
-    }, [normalized, active]);
+        return withFeatures.filter((s) => matchesUnifiedFilters(s, deferredFilters));
+    }, [withFeatures, deferredFilters]);
 
-    const activeLabel =
-        active === ALL ? "All" : taxonomy.find((t) => t.id === active)?.name ?? "Unknown";
+    const hasActiveFacets = React.useMemo(() => {
+        return Object.entries(filters).some(([_, v]) => v && v !== ANY);
+    }, [filters]);
+
+    // Debounced + deduped URL sync (lighter than router.replace)
+    const lastQsRef = React.useRef<string>("");
+    React.useEffect(() => {
+        const q = new URLSearchParams(searchParams?.toString());
+        putFiltersInQuery(q, filters);
+        const nextQs = q.toString();
+        if (nextQs === lastQsRef.current) return;
+
+        const id = setTimeout(() => {
+            lastQsRef.current = nextQs;
+            const url = nextQs ? `${pathname}?${nextQs}` : pathname || "/";
+            window.history.replaceState(null, "", url);
+            // router.replace(url, { scroll: false });
+        }, 150);
+
+        return () => clearTimeout(id);
+    }, [filters, pathname, router, searchParams]);
+
+    /** facet helpers */
+    const setFacet = (
+        key: keyof UnifiedFilters,
+        value: UnifiedFilters[keyof UnifiedFilters]
+    ) =>
+        startTransition(() => {
+            setFilters((prev) => ({ ...prev, [key]: value }));
+        });
+
+    const clearAllFacets = () =>
+        startTransition(() => {
+            setFilters(
+                () =>
+                    Object.fromEntries(
+                        [
+                            CATEGORY_KEY,
+                            FeatureId.Seats,
+                            FeatureId.BallotType,
+                            FeatureId.MajorityGuarantee,
+                            FeatureId.VoterComplexity,
+                            FeatureId.TallyingComplexity,
+                            FeatureId.SpoilerRisk,
+                            FeatureId.StrategicPressure,
+                        ].map((k) => [k as keyof UnifiedFilters, ANY])
+                    ) as UnifiedFilters
+            );
+        });
 
     return (
-        <div>
-
-            {/* Bubble filters */}
-            <div className="mb-6">
-                <div
-                    className="flex flex-wrap items-center gap-2"
-                    role="tablist"
-                    aria-label="Filter by voting system type"
-                >
-                    <Chip
-                        isActive={active === ALL}
-                        onClick={() => setActive(ALL)}
-                        ariaLabel="Show all systems"
-                    >
-                        All
-                    </Chip>
-                    {taxonomy.map((t) => (
-                        <Chip
-                            key={t.id}
-                            isActive={active === t.id}
-                            onClick={() => setActive(t.id as FilterKey)}
-                            ariaLabel={`Filter by ${t.id}`}
-                        >
-                            {t.id}
-                        </Chip>
-                    ))}
-                </div>
-            </div>
+        <div className="flex flex-col gap-4">
+            <FacetFilters
+                filters={filters}
+                onChangeFacet={setFacet}
+                onClearAll={clearAllFacets}
+            />
 
             {/* View toggle + count */}
             <div className="mb-5 flex items-center justify-between gap-2 sm:gap-3">
@@ -93,22 +169,28 @@ export default function VotingSystemsGallery({
                         {filtered.length}
                     </span>{" "}
                     {filtered.length === 1 ? "system" : "systems"}
-                    {active !== ALL && (
+                    {filters[CATEGORY_KEY] && filters[CATEGORY_KEY] !== ANY && (
                         <>
-                            {" "}in{" "}
+                            {" "}
+                            in{" "}
                             <span className="font-medium text-card-foreground">
-                                {activeLabel}
+                                {String(filters[CATEGORY_KEY])}
                             </span>
                         </>
                     )}
+                    {hasActiveFacets && <span> with selected filters</span>}
                 </p>
-                <ViewToggle value={view} onChange={setView} allowTable={canUseTable} />
+                <ViewToggle
+                    value={view}
+                    onChange={setView}
+                    allowTable={canUseTable}
+                />
             </div>
 
             {view === "grid" && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
                     {filtered.map((s) => (
-                        <VotingSystemCard key={s.id} system={s} />
+                        <VotingSystemCard key={s.id ?? s.slug} system={s} />
                     ))}
                 </div>
             )}
@@ -117,7 +199,9 @@ export default function VotingSystemsGallery({
                 <VotingSystemsTable
                     systems={filtered}
                     taxonomy={taxonomy}
-                    onTaxonomyClick={(id) => setActive(id as FilterKey)}
+                    onTaxonomyClick={(id) =>
+                        setFilters((prev) => ({ ...prev, [CATEGORY_KEY]: id }))
+                    }
                 />
             )}
         </div>

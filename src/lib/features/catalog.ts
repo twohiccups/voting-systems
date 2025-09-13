@@ -127,11 +127,10 @@ export const featureCatalog: SystemFeature[] = [
         description:
             "The level of effort required from voters to express their preferences accurately.",
         items: [
-
             {
                 label: VoterComplexity.Low,
                 detail:
-                    "Marking a single or muliple ‘X’s on the ballot or marking approvals and disapprovals.",
+                    "Marking a single or multiple ‘X’s on the ballot or marking approvals and disapprovals.",
             },
             {
                 label: VoterComplexity.Moderate,
@@ -230,14 +229,22 @@ export const featureOrder: FeatureId[] = [
     FeatureId.RepresentationStyle,
 ];
 
-/** Fast lookups by id */
-export const featureById = new Map<FeatureId, SystemFeature>(
-    featureCatalog.map((f) => [f.id, f]),
+/**
+ * Build a dictionary for O(1) lookups.
+ * Using Partial<Record<FeatureId, SystemFeature>> because not every FeatureId
+ * is necessarily present in featureCatalog. Use getFeature(...) to assert presence.
+ */
+export const featureById = featureCatalog.reduce(
+    (acc, f) => {
+        acc[f.id] = f;
+        return acc;
+    },
+    {} as Partial<Record<FeatureId, SystemFeature>>,
 );
 
 /** Helper: get one feature (throws if missing so bugs surface early) */
 export function getFeature(id: FeatureId): SystemFeature {
-    const f = featureById.get(id);
+    const f = featureById[id];
     if (!f) throw new Error(`Unknown feature: ${id}`);
     return f;
 }

@@ -22,28 +22,10 @@ const electionQuotes: { quote: string; author: string }[] = [
 ];
 
 type KeyFeaturesProps = {
-    /** Human-readable system name shown in the header row (e.g., “First-Past-the-Post”). */
     systemName: string;
-
-    /**
-     * Partial mapping of feature ratings for the system.
-     */
     featureChoices: FeatureChoices;
-
-    /**
-     * Full feature catalog (the same array you previously imported as `systemFeatures`).
-     * The component will filter this down to whatever exists in `ratings`.
-     */
-    /**
-     * Optional anchor base for feature links. Defaults to "/features".
-     * Links will be `${linkBase}#${feature.id}`.
-     */
     linkBase?: string;
-
-    /** Optional: customize the title text. Default: "Key Facts" */
     title?: string;
-
-    /** Optional: show a random quote footer (default false) */
     showQuote?: boolean;
 };
 
@@ -53,7 +35,6 @@ export default function KeyFeatures({
     linkBase = "/features",
     showQuote = false,
 }: KeyFeaturesProps) {
-    // Pick a random quote once per render
     const randomQuote = React.useMemo(
         () => electionQuotes[Math.floor(Math.random() * electionQuotes.length)],
         []

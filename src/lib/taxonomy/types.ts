@@ -1,4 +1,5 @@
-import { VotingSystems } from "./catalog";
+import { votingSystems } from "./catalog";
+
 
 
 export interface TaxonomySystem {
@@ -16,4 +17,4 @@ export interface VotingSystem {
     slug: string
 }
 
-export type VotingSystemSlug = typeof VotingSystems[number]["slug"];
+export type VotingSystemSlug = typeof votingSystems[number]["slug"];

@@ -2,6 +2,16 @@
 
 import * as React from "react";
 
+export function Button({ children, onClick }: { children: React.ReactNode; onClick?: () => void }) {
+    return (
+        <button className="inline-flex items-center rounded-lg border border-[var(--border)] bg-white px-4 py-2 text-sm font-medium text-[var(--card-foreground)] 
+            hover:bg-[var(--accent)] hover:text-white hover:border-[var(--accent)] transition"
+            onClick={onClick}>
+            {children}
+        </button>
+
+    )
+}
 export function Dot({ active }: { active: boolean }) {
     return (
         <span
@@ -177,13 +187,13 @@ export const StepList: React.FC<StepListProps> = ({
 
 export function Card({ title, children }: { title?: string; children: React.ReactNode }) {
     return (
-        <section className="rounded-3xl border border-gray-200/80 bg-white/80 backdrop-blur px-5 py-4 shadow-sm transition-shadow hover:shadow-md">
+        <section className="rounded-3xl border border-gray-200/80 bg-white/80 backdrop-blur px-5 py-5 shadow-sm transition-shadow hover:shadow-md">
             {title ??
                 <div className="flex items-center gap-3">
                     <h3 className="text-base font-semibold tracking-tight">{title}</h3>
                 </div>
             }
-            <div className="mt-3">{children}</div>
+            <div>{children}</div>
         </section>
     );
 }
