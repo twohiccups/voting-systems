@@ -1,6 +1,6 @@
 'use client'
 
-import CloseListBallot from "@/app/ballots/components/CloseListBallot";
+import CloseListBallot from "@/app/ballots/components/ClosedListBallot";
 import OpenListBallot from "@/app/ballots/components/OpenListBallot";
 import { SimpleTabs } from "@/app/components/Tabs";
 import { panachageParties } from "@/lib/candidates/data";

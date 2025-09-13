@@ -168,6 +168,7 @@ export type BallotOptionProps = {
 };
 
 export function BallotOption({
+    // id is intentionally unused to avoid cross-instance collisions
     label,
     sublabel,
     variant = 'checkbox',

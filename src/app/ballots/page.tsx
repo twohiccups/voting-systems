@@ -10,6 +10,7 @@ import CumulativeBallot from './components/CumulativeBallot';
 import PartyListBallot from './components/PartyListBallot';
 import PanachageBallot from './components/PanachageBallot';
 import OpenListBallot from './components/OpenListBallot';
+import ClosedListBallot from './components/ClosedListBallot';
 import HeroHeader from '../components/HeroHeader';
 import { StepCard, StepList } from '../components/primitives';
 import { QuoteBlock } from '../components/QuoteBlock';
@@ -22,6 +23,7 @@ import { defaultParties, defaultPartiesClosed, fourCandidates } from '@/lib/cand
 
 const candidates = fourCandidates;
 const parties = defaultParties;
+const partiesClosed = defaultPartiesClosed;
 
 function TableOfContents({ sections }: { sections: { id: string; title: string }[] }) {
     const [activeId, setActiveId] = React.useState<string | null>(null);
@@ -173,8 +175,15 @@ export default function BallotTypesShowcasePage() {
                             </Section>
 
                             <Section>
-                                <SectionHeading id="partylist" title="Party-List Ballot (Closed List)" />
-                                <PartyListBallot parties={parties} />
+                                <SectionHeading id="closed-list" title="Closed-List Party Ballot" />
+                                <ClosedListBallot parties={partiesClosed} />
+                            </Section>
+
+                            <Section>
+                                <SectionHeading
+                                    id="open-list" title="Open-List Party Ballot)"
+                                />
+                                <OpenListBallot parties={parties} preferMax={2} />
                             </Section>
 
                             <Section>
@@ -188,14 +197,6 @@ export default function BallotTypesShowcasePage() {
                                     title="Panachage with Cumulation (e.g., up to 2 per candidate)"
                                 />
                                 <PanachageBallot parties={parties} seats={5} cumulateMax={2} />
-                            </Section>
-
-                            <Section>
-                                <SectionHeading
-                                    id="open-list"
-                                    title="Open-List Party Ballot (Party vote + candidate preferences)"
-                                />
-                                <OpenListBallot parties={parties} preferMax={2} />
                             </Section>
 
                             <div className="text-center">
