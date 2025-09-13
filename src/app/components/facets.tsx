@@ -38,9 +38,9 @@ export const FacetSelect = React.memo(function FacetSelect<T extends readonly (s
 
     return (
         <div className="flex flex-col">
-            <span className="text-muted-foreground font-semibold">{label}:</span>
+            <span className="text-muted-foreground font-semibold mb-1 ">{label}:</span>
             <select
-                className="text-base rounded-md border bg-white px-2 py-1 w-2/3"
+                className="text-base rounded-md border bg-white px-2 py-2 w-full sm:w-[90%]"
                 value={String(value)}
                 onChange={handleChange}
             >

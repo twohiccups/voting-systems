@@ -5,7 +5,6 @@ import { BallotCard, BallotOption, BallotDivider } from '@/app/ballots/component
 import { FooterActions } from './common';
 import { Party } from '@/app/types';
 
-
 export default function PartyListBallot({
     parties,
     instructions = "Mark one party. Candidates are seated from the party list based on proportional seat allocation."
@@ -13,8 +12,6 @@ export default function PartyListBallot({
     parties: Party[];
     instructions?: string;
 }) {
-
-
     const [selectedPartyId, setSelectedPartyId] = React.useState<string | null>(null);
 
     function toggleParty(id: string, checked: boolean) {
@@ -40,9 +37,11 @@ export default function PartyListBallot({
             instructions={instructions}
             className="mb-8"
         >
-            <div className="space-y-2">
+            {/* Prevent horizontal scroll on tiny screens */}
+            <div className="space-y-2 overflow-hidden">
                 {parties.map((p) => (
-                    <div key={p.id} className="border border-[var(--border)] theme-transition">
+                    // min-w-0 lets inner text wrap instead of forcing overflow
+                    <div key={p.id} className="border border-[var(--border)] theme-transition min-w-0">
                         {/* Use checkbox variant but enforce single selection in state */}
                         <BallotOption
                             id={`party-${p.id}`}
@@ -51,15 +50,23 @@ export default function PartyListBallot({
                             variant="checkbox"
                             checked={selectedPartyId === p.id}
                             onCheckedChange={(checked) => toggleParty(p.id, checked)}
-                            className="rounded-none"
+                            // ensure the clickable row takes full width; allow text to wrap
+                            className="rounded-none w-full min-w-0"
                         />
 
                         {/* Party’s closed list preview */}
                         <div className="px-3 pb-3 text-xs text-[var(--muted-foreground)]">
-                            <ol className="list-decimal pl-5 space-y-0.5">
+                            {/* Constrain list so very long lists don’t blow up the card on mobile */}
+                            <ol className="list-decimal pl-5 space-y-0.5 max-h-40 overflow-auto sm:max-h-none">
                                 {p.candidates.map((c, idx) => (
-                                    <li key={c.id} className="truncate">
-                                        <span className="text-[var(--card-foreground)]">{c.label}</span>
+                                    <li
+                                        key={c.id}
+                                        // On mobile, wrap + break long words; only truncate on >= sm
+                                        className="min-w-0 break-words whitespace-normal sm:truncate"
+                                    >
+                                        <span className="text-[var(--card-foreground)]">
+                                            {c.label}
+                                        </span>
                                         {c.sublabel ? (
                                             <span className="ml-1 text-[var(--muted-foreground)]">— {c.sublabel}</span>
                                         ) : null}

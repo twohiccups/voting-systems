@@ -45,18 +45,9 @@ function MobileSlideshow({
                 {/* Controls */}
                 <div className="mt-4 flex items-center justify-between px-2">
                     {/* Prev */}
-                    <button
-                        type="button"
-                        onClick={prev}
-                        aria-label="Previous slide"
-                        className="inline-flex items-center justify-center rounded-xl border px-3 py-2 
-              text-sm font-medium shadow-sm active:scale-[0.98]
-              bg-card text-card-foreground border-border 
-              hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 
-              focus-visible:outline-ring"
-                    >
+                    <Button onClick={prev}>
                         <PrevIcon className="h-5 w-5" />
-                    </button>
+                    </Button>
 
                     {/* Dots */}
                     <div className="flex items-center gap-2">
@@ -74,21 +65,12 @@ function MobileSlideshow({
                     </div>
 
                     {/* Next */}
-                    <button
-                        type="button"
-                        onClick={next}
-                        aria-label="Next slide"
-                        className="inline-flex items-center justify-center rounded-xl border px-3 py-2 
-              text-sm font-medium shadow-sm active:scale-[0.98]
-              bg-card text-card-foreground border-border 
-              hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 
-              focus-visible:outline-ring"
-                    >
+                    <Button onClick={next}>
                         <NextIcon className="h-5 w-5" />
-                    </button>
+                    </Button>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 
@@ -148,7 +130,6 @@ export default function VotingTaxonomy({ }: { heading?: string }) {
                 ))}
             </div>
 
-            {/* Simple explainer (no card UI) + CTAs */}
             {/* Features section */}
             <section
                 className="mt-8 sm:mt-10 border-t border-[var(--border)] pt-5 sm:pt-6"

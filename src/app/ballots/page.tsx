@@ -10,7 +10,6 @@ import CumulativeBallot from './components/CumulativeBallot';
 import PartyListBallot from './components/PartyListBallot';
 import PanachageBallot from './components/PanachageBallot';
 import OpenListBallot from './components/OpenListBallot';
-import ClosedListBallot from './components/CloseListBallot';
 import HeroHeader from '../components/HeroHeader';
 import { StepCard, StepList } from '../components/primitives';
 import { QuoteBlock } from '../components/QuoteBlock';
@@ -23,7 +22,6 @@ import { defaultParties, defaultPartiesClosed, fourCandidates } from '@/lib/cand
 
 const candidates = fourCandidates;
 const parties = defaultParties;
-const partiesClosed = defaultPartiesClosed;
 
 function TableOfContents({ sections }: { sections: { id: string; title: string }[] }) {
     const [activeId, setActiveId] = React.useState<string | null>(null);
@@ -39,7 +37,7 @@ function TableOfContents({ sections }: { sections: { id: string; title: string }
         );
 
         sections.forEach((s) => {
-            const el = document.getElementById(s.id); 
+            const el = document.getElementById(s.id);
             if (el) observer.observe(el);
         });
 
@@ -99,15 +97,15 @@ export default function BallotTypesShowcasePage() {
     ];
 
     const ballotItems = [
-        { question: 'List of options', detail: 'Candidates, parties, or issues appear on the ballot.' },
+        { question: 'List of options', detail: 'Candidates, parties, or issues appear on the ballot' },
         {
             question: 'Instructions',
             detail:
-                "Tell voters how to correctly mark their choice (e.g., ‘Mark one candidate only’ or ‘Rank candidates 1, 2, 3…’).",
+                "Tell voters how to correctly mark their choice",
         },
         {
             question: 'Space to mark the vote',
-            detail: 'Check box, circle, ranking, or other method to record the choice.',
+            detail: 'Check box, circle, ranking, or other method to record the choice',
         },
     ];
 
@@ -198,11 +196,6 @@ export default function BallotTypesShowcasePage() {
                                     title="Open-List Party Ballot (Party vote + candidate preferences)"
                                 />
                                 <OpenListBallot parties={parties} preferMax={2} />
-                            </Section>
-
-                            <Section>
-                                <SectionHeading id="closed-list" title="Party-List Ballot (Closed List)" />
-                                <ClosedListBallot parties={partiesClosed} />
                             </Section>
 
                             <div className="text-center">

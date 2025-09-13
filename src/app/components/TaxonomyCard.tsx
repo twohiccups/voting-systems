@@ -8,9 +8,8 @@ import { Card } from "./primitives";
 export default function TaxonomyCard({ system }: { system: TaxonomySystem }) {
     return (
         <Card
-
         >
-            <div className="p-4 sm:p-5 lg:p-6">
+            <div className="min-h-[120px] p-4 sm:p-5 lg:p-6">
                 <h3 className="text-lg sm:text-xl font-semibold leading-snug tracking-tight">
                     {system.name}
                 </h3>

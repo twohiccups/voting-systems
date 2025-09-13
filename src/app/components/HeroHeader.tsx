@@ -39,6 +39,13 @@ export default function HeroHeader({
                 backgroundPosition: "center",
             }}
         >
+            {imageCredit && (
+                <ImageCredit
+                    text={imageCredit}
+                    href={imageCreditLink}
+                    position={creditPosition}
+                />
+            )}
             {/* Overlay gradient for readability */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/30" />
 
@@ -67,14 +74,7 @@ export default function HeroHeader({
                 {ctaText && ctaLink && <MotionCTA href={ctaLink} label={ctaText} />}
             </div>
 
-            {/* Optional image credit */}
-            {imageCredit && (
-                <ImageCredit
-                    text={imageCredit}
-                    href={imageCreditLink}
-                    position={creditPosition}
-                />
-            )}
+
         </header>
     );
 }
@@ -89,12 +89,7 @@ function ImageCredit({
     href?: string;
     position?: Corner;
 }) {
-    const posClasses: Record<Corner, string> = {
-        "top-left": "top-3 left-3",
-        "top-right": "top-3 right-3",
-        "bottom-left": "bottom-3 left-3",
-        "bottom-right": "bottom-3 right-3",
-    };
+
 
     const base =
         "pointer-events-auto absolute z-[5] select-none rounded-full bg-black/55 px-3 py-1 text-xs text-white/90 backdrop-blur-sm ring-1 ring-white/15 shadow-sm";
@@ -118,7 +113,7 @@ function ImageCredit({
     );
 
     return (
-        <div className={`${base} ${posClasses[position]}`} role="note" aria-label="Image credit">
+        <div className={`${base} top-3 right-3`} role="note" aria-label="Image credit">
             {href ? (
                 <Link
                     href={href}
