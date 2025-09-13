@@ -20,7 +20,7 @@ export default function ClosedListBallot({ parties }: { parties: Party[] }) {
 
     return (
         <BallotCard
-            title="Legislature — Party List (Closed List)"
+            title="Legislature — Closed Party List"
             instructions="Mark one party. Candidate order is fixed by the party and shown for reference."
             className="mb-8"
         >

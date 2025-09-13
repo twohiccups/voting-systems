@@ -101,7 +101,7 @@ export default function OpenListBallot({
 
     return (
         <BallotCard
-            title="Legislature — Party List (Open List)"
+            title="Legislature — Open Party List"
             instructions={`Mark one party for your list vote. Optionally give up to ${preferMax} preference votes to candidates within that party to influence the order in which they are seated.`}
             className="mb-8"
         >
