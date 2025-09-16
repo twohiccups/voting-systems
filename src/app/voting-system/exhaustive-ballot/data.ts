@@ -11,20 +11,7 @@ import {
     VoterComplexity,
 } from "@/lib/features/types";
 
-/**
- * Data definitions for the exhaustive ballot.
- *
- * The exhaustive ballot is a majority‑seeking system in which voters cast a single vote
- * for their preferred candidate.  If no candidate secures an outright majority,
- * the candidate with the fewest votes is eliminated and a fresh round of voting is held.
- * Balloting continues, with the weakest candidate removed each time, until one candidate
- * garners a majority of the votes.  Because electors have the opportunity to revise
- * their choice between rounds, candidates must appeal to a broad cross‑section of the
- * electorate and build consensus【312072163993559†L738-L744】.  The multi‑round nature
- * makes the system unsuitable for large‑scale public elections but well‑suited to small
- * deliberative bodies or high‑stakes selections such as the Swiss Federal Council or
- * the presidents of certain parliaments【312072163993559†L348-L381】.
- */
+
 export const slug = 'exhaustive-ballot';
 export const name = 'Exhaustive Ballot';
 export const aka: string[] = ['Repeated Elimination', 'Multiple‑Round Voting'];
@@ -49,7 +36,7 @@ export const strengths: ProsCons[] = [
         details: `As the least‑popular candidates are eliminated, their supporters can
           reallocate their votes.  Candidates hoping to survive must appeal to a
           broad cross‑section of voters and negotiate with rivals, fostering a
-          consensus choice rather than a polarising plurality winner【312072163993559†L738】.`,
+          consensus choice rather than a polarising plurality winner.`,
     },
     {
         title: 'Allows voters to adjust preferences between rounds',
@@ -85,7 +72,7 @@ export const weaknesses: ProsCons[] = [
           (supporting a less‑preferred viable candidate to prevent their
           favourite from being eliminated) or the “push‑over” tactic (voting
           for a weak candidate to face an easier opponent later).  These
-          strategies rely on anticipating others’ behaviour and can backfire【312072163993559†L610-L640】.`
+          strategies rely on anticipating others’ behaviour and can backfire.`
     },
     {
         title: 'Time‑consuming and potentially exhausting',
